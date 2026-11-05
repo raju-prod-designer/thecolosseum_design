@@ -1,0 +1,4 @@
+/* Scoped to the illustration. No global page styles. */
+[data-clash-hero]{--arena-paper:#fbfcf7;width:100%;overflow:hidden;overflow:clip;pointer-events:none}
+[data-clash-hero]>svg{display:block;width:100%;height:auto;max-width:none}
+@media(max-width:760px){[data-clash-hero]>svg{width:138%;margin-left:-19%}}

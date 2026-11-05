@@ -1,0 +1,29 @@
+/* Scoped exclusively to the illustration; no footer typography or layout rules. */
+.arena-illustration {
+  --arena-paper: #fbfcf7;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  overflow: clip;
+  pointer-events: none;
+  isolation: isolate;
+  container-type: inline-size;
+}
+.arena-illustration > svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+}
+/* A narrow footer trims only the distant landscape, keeping both principal
+   subjects readable. This responds to the illustration's actual container. */
+@container (max-width: 640px) {
+  .arena-illustration > svg {
+    width: 165.8%;
+    height: auto;
+    margin-inline-start: -43%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .arena-illustration [data-layer="dust"] { visibility: hidden; }
+}
