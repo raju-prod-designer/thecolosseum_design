@@ -1,0 +1,896 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>theColosseum — Candidate profile</title>
+<link rel="stylesheet" href="colosseum.css" />
+<style>
+:root{--blue:#678DC6;--field:#f4f4f3;--line:#e6e4df;--ink2:#1c1d1c}
+html,body{height:auto}
+html{scrollbar-width:none}html::-webkit-scrollbar{display:none}
+body{background:#fff;color:var(--ink2);margin:0}
+a{color:var(--ink2);text-decoration:none;font-weight:600}
+a:hover{color:var(--blue)}
+.app{min-height:100vh;height:auto;overflow:visible;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;padding:30px 32px 60px;zoom:0.9}
+.app-top{width:100%;position:relative;display:flex;align-items:center;justify-content:center;margin-bottom:30px}
+.app-logo{font-weight:800;font-size:26px;letter-spacing:-0.03em;color:var(--ink2);line-height:1}
+.app-logo .the{font-weight:400}
+.app-back{position:absolute;left:0;top:50%;transform:translateY(-50%);display:inline-flex;align-items:center;gap:7px;font-family:inherit;font-size:13.5px;font-weight:600;color:var(--ink2);background:transparent;border:0;padding:0;cursor:pointer;text-decoration:none}
+.app-back:hover{color:var(--blue)}
+.app-back svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.app-user{position:absolute;right:0;top:50%;transform:translateY(-50%)}
+.app-user.open{z-index:200}
+.app-user-btn{width:26px;height:26px;border-radius:50%;overflow:hidden;border:1px solid var(--line);background:#fff;padding:0;cursor:pointer;display:block;transition:border-color .18s,box-shadow .18s}
+.app-user-btn img{width:100%;height:100%;object-fit:cover;display:block}
+.app-user-btn:hover{border-color:var(--ink2)}
+.app-user.open .app-user-btn{border-color:var(--blue);box-shadow:0 0 0 3px rgba(103,141,198,.16)}
+.app-user-menu{position:absolute;top:calc(100% + 10px);right:0;z-index:200;min-width:176px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 16px 40px rgba(31,33,32,.16);padding:6px;display:none}
+.app-user.open .app-user-menu{display:block}
+.app-user-opt{display:flex;align-items:center;gap:11px;padding:9px 11px;border-radius:10px;cursor:pointer;font-size:13px;font-weight:600;color:var(--ink2)}
+.app-user-opt+.app-user-opt{margin-top:2px}
+.app-user-opt:hover{background:var(--field)}
+.app-user-opt svg{width:17px;height:17px;stroke:var(--ink2);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.app-user-sep{border-top:1px solid var(--line);margin:5px 4px}
+.app-user-opt.danger{color:oklch(0.6 0.13 25)}
+.app-user-opt.danger svg{stroke:oklch(0.6 0.13 25)}
+.app-user-opt.danger:hover{background:oklch(0.6 0.13 25 / 0.08)}
+
+.page{width:100%;max-width:940px}
+.pg-switch{display:flex;justify-content:center;margin:0 0 34px}
+.seg{display:inline-flex;gap:3px;background:var(--field);border:1px solid var(--line);border-radius:999px;padding:3px}
+.seg-btn{font-family:inherit;font-size:13px;font-weight:600;color:var(--t-mute);background:transparent;border:0;border-radius:999px;padding:8px 22px;cursor:pointer;transition:background .15s,color .15s}
+.seg-btn:hover{color:var(--ink2)}
+.seg-btn.on{background:#fff;color:var(--ink2);font-weight:700;box-shadow:0 1px 3px rgba(31,33,32,.12)}
+.view{display:none}
+.view.on{display:block;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* profile */
+.pf-head{display:flex;align-items:flex-start;gap:22px;padding:0 0 26px;border-bottom:1px solid var(--line)}
+.pf-av{width:88px;height:88px;border-radius:50%;overflow:hidden;border:1px solid var(--line);flex:none}
+.pf-av img{width:100%;height:100%;object-fit:cover;display:block}
+.pf-id{flex:1;min-width:0}
+.pf-name{font-family:"P22Mackinac",serif;font-weight:500;font-size:32px;letter-spacing:-0.02em;line-height:1.1;margin:0 0 6px}
+.pf-role{font-size:15px;color:var(--t-body);margin:0 0 12px}
+.pf-badges{display:flex;flex-wrap:wrap;gap:8px}
+.pf-chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--t-body);background:var(--field);border:1px solid var(--line);border-radius:999px;padding:5px 12px}
+.pf-chip svg{width:13px;height:13px;stroke:var(--t-mute);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.pf-chip.tier{color:var(--ink2);background:rgba(201,162,74,.13);border-color:rgba(201,162,74,.3)}
+.pf-chip.score{color:var(--blue);background:rgba(103,141,198,.12);border-color:rgba(103,141,198,.25)}
+.pf-edit{flex:none;font-family:inherit;font-size:13px;font-weight:600;color:var(--ink2);background:#fff;border:1px solid var(--line);border-radius:999px;padding:9px 18px;cursor:pointer;transition:border-color .15s,color .15s}
+.pf-edit:hover{border-color:var(--ink2);color:var(--blue)}
+.pf-acts{flex:none;display:flex;align-items:center;gap:10px}
+.pf-export{flex:none;font-family:inherit;font-size:13px;font-weight:600;color:#fff;background:var(--ink);border:1px solid var(--ink);border-radius:999px;padding:9px 18px;cursor:pointer;transition:opacity .15s}
+.pf-export:hover{opacity:.85}
+.rz-ov{position:fixed;inset:0;z-index:400;display:none;align-items:flex-start;justify-content:center;padding:48px 24px;overflow:auto;background:rgba(28,29,28,.28);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}
+.rz-ov.on{display:flex;animation:fadeIn .22s ease}
+.rz-modal{position:relative;width:100%;max-width:720px;background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 26px 70px rgba(31,33,32,.24);padding:38px 44px 42px}
+.rz-x{position:absolute;top:16px;right:16px;width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--line);background:#fff;border-radius:50%;cursor:pointer;padding:0}
+.rz-x svg{width:16px;height:16px;stroke:var(--ink2);fill:none;stroke-width:2;stroke-linecap:round}
+.rz-x:hover{border-color:var(--ink2)}
+.rz{display:flex;flex-direction:column;gap:22px}
+.rz-head{display:flex;flex-direction:column;gap:4px;padding-bottom:20px;border-bottom:1px solid var(--line)}
+.rz-name{font-family:"P22Mackinac",serif;font-weight:500;font-size:26px;letter-spacing:-.02em;color:var(--ink2);margin:0}
+.rz-role{font-size:14.5px;font-weight:600;color:var(--t-body);margin:0}
+.rz-contact{font-size:12.5px;color:var(--t-mute);margin:2px 0 0}
+.rz-sec{display:flex;flex-direction:column;gap:12px}
+.rz-sec h4{font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--t-mute);margin:0}
+.rz-sec>p{font-size:13.5px;line-height:1.55;color:var(--t-body);margin:0;text-wrap:pretty}
+.rz-job{display:flex;flex-direction:column;gap:4px}
+.rz-job+.rz-job{margin-top:14px}
+.rz-job-top{display:flex;align-items:baseline;justify-content:space-between;gap:14px}
+.rz-title{font-size:14px;font-weight:700;color:var(--ink2)}
+.rz-when{font-size:12px;color:var(--t-mute);font-variant-numeric:tabular-nums;flex:none}
+.rz-org{font-size:13px;font-weight:600;color:var(--t-body)}
+.rz-bul{margin:6px 0 0;padding-left:18px;display:flex;flex-direction:column;gap:5px}
+.rz-bul li{font-size:13px;line-height:1.45;color:var(--t-body);text-wrap:pretty}
+.rz-skills{display:flex;flex-wrap:wrap;gap:7px}
+.rz-skills span{font-size:12px;font-weight:600;color:var(--t-body);background:var(--field);border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+.rz-foot{display:flex;justify-content:flex-end;gap:10px;padding-top:6px}
+
+.pf-body{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:46px;padding:28px 0 0;align-items:start}
+.pf-sec+.pf-sec{margin-top:34px}
+.pf-body>div>.pf-sec:first-child{margin-top:0}
+.pf-h{font-family:"P22Mackinac",serif;font-weight:500;font-size:19px;letter-spacing:-0.01em;margin:0 0 14px}
+.pf-h-row{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 0 14px}
+.pf-h-row .pf-h{margin:0}
+.pf-retake{font:inherit;font-size:12.5px;font-weight:600;color:var(--ink2);background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 15px;cursor:pointer;flex:none;transition:border-color .15s}
+.pf-retake:hover:not([disabled]){border-color:var(--ink2)}
+.pf-retake[disabled]{opacity:.45;cursor:not-allowed}
+.pf-year{font-size:12px;font-weight:600;color:var(--t-mute);background:var(--field);border:1px solid var(--line);border-radius:999px;padding:6px 13px;flex:none}
+.pf-lede{font-size:14.5px;line-height:1.7;color:var(--t-body);margin:0;text-wrap:pretty}
+.pf-list{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.pf-list li{display:flex;gap:10px;font-size:14.5px;line-height:1.6;color:var(--t-body)}
+.pf-list li::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--blue);flex:none;margin-top:9px}
+.pf-pills{display:flex;flex-wrap:wrap;gap:8px}
+.pf-pill{font-size:13px;font-weight:600;color:var(--ink2);background:var(--field);border:1px solid var(--line);border-radius:999px;padding:7px 14px}
+.pf-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.pf-fld{border:1px solid var(--line);border-radius:14px;padding:13px 16px;background:#fff}
+.pf-fld .k{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--t-faint);margin:0 0 5px}
+.pf-fld .v{font-size:14.5px;font-weight:600;color:var(--ink2)}
+
+/* score */
+.sc-card{background:var(--field);border:1px solid var(--line);border-radius:18px;padding:18px 20px}
+.sc-top{display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;list-style:none}
+.sc-top::-webkit-details-marker{display:none}
+.sc-card[open] .sc-top{padding-bottom:16px;border-bottom:1px solid var(--line)}
+.sc-lbl{font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t-mute)}
+.sc-right{display:flex;align-items:center;gap:14px}
+.sc-num{font-family:"P22Mackinac",serif;font-weight:500;font-size:38px;line-height:1;letter-spacing:-0.03em}
+.sc-num span{font-size:16px;color:var(--t-mute);letter-spacing:0}
+.sc-chev{width:16px;height:16px;stroke:var(--t-mute);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .18s ease;flex:none}
+.sc-card[open] .sc-chev{transform:rotate(180deg)}
+.sc-dims{display:grid;gap:16px;padding:16px 0 0}
+.sc-dim{display:grid;grid-template-columns:1fr auto;gap:6px 12px;align-items:center}
+.sc-dim-n{font-size:13.5px;font-weight:600;text-transform:capitalize}
+.sc-dim-s{font-size:12.5px;color:var(--t-mute);font-variant-numeric:tabular-nums}
+.sc-bar{grid-column:1/-1;height:5px;border-radius:99px;background:var(--line);overflow:hidden}
+.sc-bar i{display:block;height:100%;border-radius:99px;background:var(--ink2)}
+.sc-dim.best .sc-bar i{background:var(--blue)}
+.sc-note{grid-column:1/-1;font-size:12.5px;line-height:1.5;color:var(--t-mute);margin:-2px 0 0}
+
+/* links rail */
+.pf-links{display:grid;gap:11px}
+.pf-link{display:flex;align-items:center;gap:11px;font-size:14px;font-weight:600;color:var(--ink2);word-break:break-all}
+.pf-link svg{width:17px;height:17px;fill:var(--t-mute);flex:none}
+.pf-link svg.stroke{fill:none;stroke:var(--t-mute);stroke-width:1.6;stroke-linecap:round}
+.pf-link span{text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--line)}
+.pf-link:hover span{text-decoration-color:var(--blue)}
+.rail-sec+.rail-sec{margin-top:30px;padding-top:26px;border-top:1px solid var(--line)}
+.rail-h{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--t-faint);margin:0 0 14px}
+
+/* activity */
+.act{display:flex;gap:9px;align-items:flex-start}
+.act-days{display:grid;grid-template-rows:repeat(7,minmax(0,1fr));gap:2px;font-size:9px;line-height:1;color:var(--t-faint);font-weight:600;grid-column:1;grid-row:2;align-self:stretch}.act{display:grid!important;grid-template-columns:auto minmax(0,1fr);column-gap:9px;align-items:stretch}.act-main{display:contents}.act-months{grid-column:2;grid-row:1;margin-right:4px}.act-grid{grid-column:2;grid-row:2;margin-right:4px;align-self:start}.act-legend{grid-column:2;grid-row:3}
+.act-days span{display:flex;align-items:center}
+.act-main{flex:1;min-width:0;overflow:hidden;padding-right:4px;box-sizing:border-box}
+.act-months{display:grid;grid-auto-flow:column;font-size:11px;color:var(--t-mute);font-weight:600;margin:0 0 4px}
+.act-grid{display:grid;grid-auto-flow:column;grid-template-columns:repeat(52,1fr);grid-template-rows:repeat(7,auto);gap:2px}
+.act-grid i{width:100%;aspect-ratio:1;border-radius:50%;background:var(--field);display:block}
+.act-grid i[data-l="1"]{background:rgba(103,141,198,.3)}
+.act-grid i[data-l="2"]{background:rgba(103,141,198,.55)}
+.act-grid i[data-l="3"]{background:var(--blue)}
+.act-legend{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--t-mute);margin:14px 0 0;justify-content:flex-end}
+.act-legend i{width:10px;height:10px;border-radius:50%;display:block;background:var(--field)}
+.act-grid i:hover{outline:1.5px solid var(--ink2);outline-offset:1px}
+.act-tip{position:fixed;z-index:60;pointer-events:none;opacity:0;transition:opacity .12s;background:var(--ink2,#1a1a1a);color:#fff;border-radius:10px;padding:9px 11px;font-size:11.5px;line-height:1.45;min-width:180px;box-shadow:0 8px 24px rgba(0,0,0,.18)}
+.act-tip.on{opacity:1}
+.act-tip b{display:block;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;opacity:.65;margin:0 0 5px}
+.act-tip .r{display:flex;justify-content:space-between;gap:14px}
+.act-tip .r span:last-child{font-variant-numeric:tabular-nums;font-weight:700}
+
+/* arena record */
+.ar-stats{display:flex;flex-wrap:wrap;gap:10px}
+.ar-stat{flex:1 1 120px;border:1px solid var(--line);border-radius:12px;padding:11px 14px;background:#fff}
+.ar-stat b{display:block;font-family:"P22Mackinac",serif;font-weight:500;font-size:22px;letter-spacing:-.02em;color:var(--ink2);line-height:1.1;font-variant-numeric:tabular-nums}
+.ar-stat span{display:block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;color:var(--t-faint);margin-top:3px}
+.ar-list{display:flex;flex-direction:column;gap:8px}
+.ar-row{display:flex;align-items:center;gap:14px;border:1px solid var(--line);border-radius:12px;padding:12px 15px;background:#fff;text-align:left}
+.ar-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.ar-t{font-size:13.5px;font-weight:700;color:var(--ink2);line-height:1.25}
+.ar-m{font-size:11.5px;color:var(--t-faint);font-weight:600}
+.ar-kind{flex:none;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;color:#5b6b86;background:#efefec;border-radius:999px;padding:4px 9px}
+.ar-kind.bounty{color:#8a6f2c;background:rgba(201,162,74,.18)}
+.ar-prize{flex:none;font-size:13px;font-weight:700;color:#2f6d4a;font-variant-numeric:tabular-nums}
+.ar-stage{flex:none;display:flex;flex-direction:column;gap:5px;align-items:flex-end;width:186px}
+.ar-stage-t{font-size:11.5px;font-weight:700;color:var(--ink2)}
+.ar-pips{display:flex;gap:3px;width:100%}
+.ar-pips i{flex:1;height:3px;border-radius:2px;background:var(--line)}
+.ar-pips i.on{background:var(--ink2)}
+
+.pgr{display:flex;align-items:center;justify-content:flex-end;gap:8px;margin-top:12px}
+.pgr button{width:30px;height:30px;border:1px solid var(--line);background:#fff;border-radius:50%;display:grid;place-items:center;cursor:pointer;transition:border-color .15s}
+.pgr button:hover:not([disabled]){border-color:var(--ink2)}
+.pgr button[disabled]{opacity:.35;cursor:default}
+.pgr svg{width:14px;height:14px;stroke:var(--ink2);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+.arm-back{position:fixed;inset:0;z-index:420;display:flex;align-items:center;justify-content:center;padding:28px;background:rgba(28,28,26,.28);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);opacity:0;transition:opacity .2s ease}
+.arm-back.on{opacity:1}
+.arm{position:relative;width:min(680px,100%);max-height:88vh;overflow:auto;background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 24px 60px rgba(28,28,26,.22);padding:26px 30px 30px;transform:translateY(10px) scale(.985);transition:transform .22s cubic-bezier(.2,.7,.3,1)}
+.arm::-webkit-scrollbar{display:none}
+.arm-back.on .arm{transform:none}
+.arm-x{position:absolute;top:22px;right:26px;width:32px;height:32px;border:0;background:rgba(255,255,255,.9);border-radius:50%;cursor:pointer;display:grid;place-items:center}
+.arm-x svg{width:15px;height:15px;stroke:var(--ink2);stroke-width:2;fill:none;stroke-linecap:round}
+.arm-hd{display:flex;align-items:center;gap:10px;margin:0 0 14px;padding-right:40px}
+.arm-co{display:flex;align-items:center;gap:10px;min-width:0}
+.arm-co-ic{flex:none;width:44px;height:44px;border-radius:50%;overflow:hidden;background:#fff;border:1px solid var(--line);display:grid;place-items:center}
+.arm-co-ic img{width:100%;height:100%;object-fit:cover}
+.arm-co-nm{display:block;font-size:13.5px;font-weight:700;color:var(--ink2);line-height:1.2}
+.arm-co-tag{display:block;font-size:11.5px;color:var(--t-faint);font-weight:600}
+.arm-co-txt{display:flex;flex-direction:column;min-width:0}
+.arm-chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 20px}
+.arm-chip{border:1px solid var(--line);border-radius:11px;padding:8px 13px;min-width:110px}
+.arm-chip span{display:block;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--t-faint)}
+.arm-chip b{display:block;font-size:13.5px;color:var(--ink2);margin-top:2px;font-variant-numeric:tabular-nums}
+.arm-chip.win b{color:#2f6d4a}
+.arm-card{border:1px solid var(--line);border-radius:14px;padding:4px 18px 6px;margin:0;background:#fff}
+.arm-sec{padding:14px 0;border-bottom:1px solid var(--line)}
+.arm-sec:last-child{border-bottom:0}
+.arm-sec h4{margin:0 0 7px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--t-faint)}
+.arm-sec p{margin:0 0 8px;font-size:13.5px;line-height:1.55;color:var(--t-body);text-wrap:pretty}
+.arm-sec p:last-child{margin:0}
+.arm-sec ul{margin:0;padding-left:17px;display:flex;flex-direction:column;gap:5px}
+.arm-sec li{font-size:13px;line-height:1.5;color:var(--t-body)}
+.arm-stage-row{display:flex;align-items:center;gap:14px;margin-top:2px}
+.arm-stage-row .ar-pips{max-width:280px}
+.arm-stage-row b{font-size:13.5px;color:var(--ink2)}
+.arm-t{font-family:"P22Mackinac",serif;font-weight:500;font-size:23px;letter-spacing:-.02em;line-height:1.2;color:var(--ink2);margin:0 0 4px}
+.arm-sub{font-size:12.5px;color:var(--t-faint);font-weight:600;margin:0 0 18px}
+.arm-sk{display:flex;flex-wrap:wrap;gap:6.5px}
+.arm-sk span{font-size:9.6px;font-weight:600;color:#2b2b28;background:#efefec;border-radius:999px;padding:4px 9.5px}
+.ar-row{cursor:pointer;transition:border-color .15s,transform .15s,box-shadow .15s}
+.ar-row:hover{border-color:#b8b9b6;transform:translateY(-1px);box-shadow:var(--shadow-card)}
+
+/* ratings */
+.rt-top{display:flex;align-items:baseline;gap:12px;margin:0 0 14px}
+.rt-avg{font-family:"P22Mackinac",serif;font-weight:500;font-size:30px;letter-spacing:-.02em;line-height:1}
+.rt-avg span{font-size:15px;color:var(--t-mute)}
+.rt-count{font-size:12.5px;color:var(--t-faint);font-weight:600}
+.stars{display:inline-flex;gap:2px}
+.stars svg{width:14px;height:14px;fill:var(--line)}
+.stars svg.on{fill:#c9a24a}
+.stars .half{position:relative;display:inline-flex}
+.stars .half svg:last-child{position:absolute;inset:0;clip-path:inset(0 50% 0 0)}
+.rt-list{display:flex;flex-direction:column;gap:8px}
+.rt-row{border:1px solid var(--line);border-radius:12px;padding:13px 15px;background:#fff}
+.rt-hd{display:flex;align-items:center;gap:10px;margin:0 0 6px}
+.rt-co{font-size:13px;font-weight:700;color:var(--ink2)}
+.rt-when{font-size:11.5px;color:var(--t-faint);font-weight:600;margin-left:auto}
+.rt-row p{margin:0;font-size:13px;line-height:1.6;color:var(--t-body);text-wrap:pretty}
+
+/* badges */
+.bdg-grid{display:flex;flex-wrap:wrap;gap:18px}
+.bdg{width:74px;text-align:center}
+.bdg-hex{position:relative;width:60px;height:66px;margin:0 auto 8px;display:grid;place-items:center;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:var(--field);border:0}
+.bdg-hex svg{width:24px;height:24px;stroke:var(--t-mute);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.bdg.earned .bdg-hex{background:rgba(103,141,198,.14)}
+.bdg.earned .bdg-hex svg{stroke:var(--blue)}
+.bdg.gold .bdg-hex{background:rgba(201,162,74,.16)}
+.bdg.gold .bdg-hex svg{stroke:#a7842f}
+.bdg-n{font-size:11px;font-weight:600;color:var(--t-body);line-height:1.35}
+.bdg.locked{opacity:.45}
+
+/* onboarding */
+.qz{max-width:640px;margin:0 auto;text-align:left}
+.qz-head{display:flex;align-items:center;gap:18px;margin-bottom:22px}
+.qz-avatar{position:relative;width:65px;height:65px;flex:none;border-radius:50%;overflow:hidden;border:1px solid var(--line);cursor:pointer;background:#fff}
+.qz-avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.qz-avatar-up{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(20,20,20,.5);opacity:0;transition:opacity .2s ease}
+.qz-avatar:hover .qz-avatar-up{opacity:1}
+.qz-avatar-up svg{width:20px;height:20px;fill:#fff}
+.qz-div{border-top:1px solid var(--line);margin:0 0 30px}
+.qz-steps{display:flex;gap:10px;flex:1}
+.qz-steps .qs{flex:1;text-align:left;position:relative}
+.qz-steps .qs .bar{position:relative;height:3px;border-radius:2px;background:var(--line);margin:9px 0 0;overflow:hidden}
+.qz-steps .qs .bar-fill{position:absolute;left:0;top:0;height:100%;width:0;background:var(--ink2);border-radius:2px;transition:width .4s ease}
+.qz-steps .qs.done .bar-fill,.qz-steps .qs.active .bar-fill{width:100%}
+.qz-steps .qs .t{font-size:12px;font-weight:600;color:var(--t-faint);transition:color .3s}
+.qz-steps .qs.active .t,.qz-steps .qs.done .t{color:var(--ink2)}
+.qz-step{display:none}
+.qz-step.on{display:block;animation:fadeIn .3s ease}
+.qz-h{font-family:"P22Mackinac",serif;font-weight:500;font-size:30px;letter-spacing:-0.02em;line-height:1.15;margin:0 0 28px}
+.qz-q{margin-bottom:36px}
+.qz-q>.flbl{margin-bottom:11px}
+.flbl{display:block;font-size:13.5px;font-weight:600;color:var(--ink2);margin:0 0 7px}
+.flbl .ast{color:#c0605a}
+.finput{width:100%;box-sizing:border-box;font-family:inherit;font-size:14.5px;color:var(--ink2);background:var(--field);border:1px solid var(--field);border-radius:999px;padding:13px 18px;outline:none;transition:border-color .15s,box-shadow .15s,background .15s}
+.finput::placeholder{color:var(--t-faint)}
+.finput:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(103,141,198,.16);background:#fff}
+.qz-opts{display:flex;flex-wrap:wrap;gap:9px}
+.qz-pill{font-family:inherit;font-size:13.5px;font-weight:600;color:var(--ink2);background:var(--field);border:1.5px solid var(--field);border-radius:999px;padding:9px 16px;cursor:pointer;transition:background .15s,border-color .15s,color .15s}
+.qz-pill:hover{border-color:var(--line)}
+.qz-pill.sel{background:var(--ink2);border-color:var(--ink2);color:#fff}
+.qz-ta{width:100%;box-sizing:border-box;font-family:inherit;font-size:14.5px;line-height:1.55;color:var(--ink2);background:var(--field);border:1px solid var(--field);border-radius:16px;padding:14px 18px;outline:none;resize:none;min-height:104px;transition:border-color .15s,box-shadow .15s}
+.qz-ta::placeholder{color:var(--t-faint)}
+.qz-ta:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(103,141,198,.16);background:#fff}
+.qz-social{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.qz-sl{position:relative;display:flex;align-items:center}
+.qz-sl-ic{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:17px;height:17px;display:grid;place-items:center;pointer-events:none}
+.qz-sl-ic svg{width:17px;height:17px;fill:var(--t-mute)}
+.qz-sl .finput{padding-left:42px;padding-right:12px}
+.qz-comp{position:relative;max-width:260px}
+.qz-comp-cur{position:absolute;left:18px;top:50%;transform:translateY(-50%);font-size:14.5px;font-weight:600;color:var(--t-mute);pointer-events:none}
+.qz-comp .finput{padding-left:34px}
+.actions{display:flex;align-items:center;justify-content:space-between;margin-top:40px;padding-top:24px;border-top:1px solid var(--line);gap:14px}
+.actions.end{justify-content:flex-end}
+.btn-black{background:var(--ink2);color:#fff;border:0;font-family:inherit;font-size:14px;font-weight:700;padding:13px 26px;border-radius:999px;cursor:pointer;transition:background .15s}
+.btn-black:hover{background:var(--blue)}
+.link-back{display:inline-flex;align-items:center;gap:6px;background:transparent;border:0;font-family:inherit;font-size:14px;font-weight:600;color:var(--ink2);cursor:pointer}
+.link-back:hover{color:var(--blue)}
+.qz-saved{font-size:13px;font-weight:600;color:var(--blue);opacity:0;transition:opacity .25s}
+.qz-saved.show{opacity:1}
+@media (max-width:880px){.pf-body{grid-template-columns:1fr;gap:32px}}
+</style>
+<style id="tc-mark-css">.tc-mark{display:inline-flex;align-items:center;flex:none;margin-right:.5em;vertical-align:-.12em;line-height:0}.tc-mark svg{width:1em;height:1.08em;display:block}</style><style id="onb-sync-css">
+.ccpick{position:relative}
+.ccode{display:flex;align-items:center;gap:8px;background:var(--field);border:1px solid var(--field);border-radius:var(--r-pill);padding:13px 16px;font-size:14.5px;font-weight:600;color:var(--ink2);cursor:pointer;white-space:nowrap;font-family:inherit}
+.ccode:hover{border-color:var(--line)}
+.ccpick.open .ccode{border-color:var(--blue);box-shadow:0 0 0 3px rgba(103,141,198,.16);background:#fff}
+.ccode .ccflag{width:22px;height:16px;object-fit:cover;border-radius:2px;flex:none}
+.ccode svg{width:14px;height:14px;stroke:var(--t-mute);fill:none;stroke-width:2;transition:transform .18s}
+.ccpick.open .ccode svg{transform:rotate(180deg)}
+.ccmenu{position:absolute;top:calc(100% + 8px);left:0;z-index:60;width:300px;max-width:80vw;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 16px 40px rgba(31,33,32,.16);padding:8px;display:none}
+.ccpick.open .ccmenu{display:block}
+.ccsearch{width:100%;font-family:inherit;font-size:13.5px;color:var(--ink2);background:var(--field);border:1px solid var(--field);border-radius:var(--r-pill);padding:9px 14px;outline:none;margin-bottom:6px}
+.ccsearch:focus{border-color:var(--blue);background:#fff}
+.cclist{max-height:240px;overflow-y:auto}
+.ccopt{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:9px;cursor:pointer;font-size:13.5px;color:var(--ink2)}
+.ccopt:hover{background:var(--field)}
+.ccopt.on{background:var(--field)}
+.dd-menu .ccopt.on,.dd-menu .ccopt.on:hover{background:var(--ink2);color:#fff}
+.dd-menu .ccopt.on .nm{color:#fff}
+.ccopt .fl{width:22px;height:16px;object-fit:cover;border-radius:2px;flex:none}
+.ccopt .nm{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--t-body)}
+.ccopt .cd{flex:none;font-weight:600;color:var(--ink2)}
+.qz-trio{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-items:end}
+.qz-f{display:flex;flex-direction:column;min-width:0}
+.qz-f .flbl{margin-bottom:8px}
+.ccode.dd-full{width:100%;justify-content:flex-start;font-weight:500;font-size:14px;padding:13px 16px;box-sizing:border-box}
+.ccode.dd-full .dd-v{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left}
+.dd-menu{width:100%;min-width:232px}
+.qz-duo{grid-template-columns:repeat(2,minmax(0,1fr))}
+.qz-up-row{margin-top:14px}
+.qz-up{display:flex;align-items:center;gap:14px;min-width:0;padding:16px 18px;border:1.5px dashed var(--line);border-radius:14px;background:#fff;cursor:pointer;transition:border-color .15s,background .15s}
+.qz-up:hover{border-color:var(--t-faint);background:var(--field)}
+.qz-up-ic{flex:none;display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--field)}
+.qz-up-ic svg{width:17px;height:17px;fill:none;stroke:var(--ink2);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.qz-up-txt{display:flex;flex-direction:column;gap:2px;min-width:0}
+.qz-up-t{font-size:14.5px;font-weight:700;color:var(--ink2)}
+.qz-up-s{font-size:12.5px;color:var(--t-faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.qz-up.has{border-style:solid;border-color:var(--ink2)}
+.qz-up.has .qz-up-s{color:var(--ink2)}
+.qz-other{position:relative;display:inline-flex;align-items:center;padding:0;cursor:text;overflow:hidden;max-width:100%;transition:background .2s,border-color .2s,box-shadow .2s}
+.qz-other .ot-txt{padding:9px 16px;pointer-events:none}
+.qz-other .ot-in{width:0;min-width:0;border:0;background:transparent;font-family:inherit;font-size:13.5px;font-weight:600;color:var(--ink2);outline:none;padding:0;transition:width .35s cubic-bezier(.4,0,.15,1),padding .35s cubic-bezier(.4,0,.15,1)}
+.qz-other .ot-in::placeholder{color:var(--t-faint);font-weight:500}
+.qz-other.editing{background:#fff;border-color:var(--blue);box-shadow:0 0 0 3px rgba(103,141,198,.16);cursor:text}
+.qz-other.editing .ot-txt{display:none}
+.qz-other.editing .ot-in{width:230px;padding:9px 16px}
+.qz-break{flex-basis:100%;height:0;margin:0;padding:0}
+.qz-file{position:relative;display:flex;align-items:center;background:var(--field);border:1px solid var(--field);border-radius:var(--r-pill);padding:13px 16px 13px 42px;cursor:pointer;font-family:inherit;font-size:14.5px;color:var(--t-faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:border-color .15s,color .15s}
+.qz-file:hover{border-color:var(--line)}
+.qz-file.has{color:var(--ink2);font-weight:600}
+.qz-file .qz-sl-ic{left:14px}
+@media (max-width:720px){.qz-trio{grid-template-columns:1fr}}
+.qz-other .ot-in{font-size:16px}
+</style><style id="onb-links-css">
+.fwrap{position:relative}
+.gh-ic{position:absolute;left:16px;top:50%;transform:translateY(-50%);width:17px;height:17px;fill:var(--t-mute);pointer-events:none}
+.gh-wrap .finput{padding-left:44px}
+.btn-linkedin{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;font-family:inherit;font-size:14.5px;font-weight:600;color:var(--ink2);background:var(--field);border:1px solid var(--field);border-radius:var(--r-pill);padding:13px 18px;cursor:pointer;transition:background .15s,color .15s,border-color .15s}
+.btn-linkedin:hover{background:#0a66c2;border-color:#0a66c2;color:#fff}
+.btn-linkedin svg{width:18px;height:18px;fill:var(--t-mute);flex:none;transition:fill .15s}
+.btn-linkedin:hover svg{fill:#fff}
+.fwrap .eye{position:absolute;right:16px;top:50%;transform:translateY(-50%);width:20px;height:20px;stroke:var(--t-mute);fill:none;stroke-width:1.8;cursor:pointer;background:transparent;border:0;padding:0}
+.fwrap .eye:hover{stroke:var(--ink2)}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fres{margin-top:14px}
+.qz-file{position:relative;display:flex;align-items:center;background:var(--field);border:1px solid var(--field);border-radius:var(--r-pill);padding:13px 16px 13px 42px;cursor:pointer;font-family:inherit;font-size:14.5px;color:var(--t-faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:border-color .15s,color .15s}
+.qz-file:hover{border-color:var(--line)}
+.qz-file.has{color:var(--ink2);font-weight:600}
+.qz-file .qz-sl-ic{left:14px}
+.qz-links .fres{margin-top:14px}.qz-links .fres .flbl{display:block;margin-bottom:8px}.qz-links .frow .flbl{display:block;margin-bottom:8px}@media (max-width:720px){.qz-links .frow{grid-template-columns:1fr}}
+</style></head>
+<body>
+<div class="app">
+  <div class="app-top">
+    <a class="app-back" href="Candidate - Webapp copy.html"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>Back to challenges</a>
+    <div class="app-logo"><span class="tc-mark"><svg viewBox="0 0 40 42" aria-hidden="true"><path fill="#648dc6" d="M1 1H16V8H8V34H16V41H1ZM39 1H24V8H32V34H24V41H39Z"></path></svg></span><span class="the">the</span>Colosseum</div>
+    <div class="app-user">
+      <button class="app-user-btn" type="button" aria-label="Account menu"><img src="assets/candidate-profile.png" alt="Your profile" /></button>
+      <div class="app-user-menu">
+        <div class="app-user-opt" data-go="profile"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/></svg><span>Profile</span></div>
+        <div class="app-user-opt" data-go="settings"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1.08-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 8.6a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Settings</span></div>
+        <div class="app-user-sep"></div>
+        <div class="app-user-opt danger"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>Log out</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="pg-switch">
+      <div class="seg">
+        <button class="seg-btn on" type="button" data-view="profile">Profile</button>
+        <button class="seg-btn" type="button" data-view="onboarding">Onboarding</button>
+      </div>
+    </div>
+
+    <div class="view on" id="viewProfile">
+      <div class="pf-head">
+        <span class="pf-av"><img src="assets/candidate-profile.png" alt="" /></span>
+        <div class="pf-id">
+          <h1 class="pf-name">Marcus Vela</h1>
+          <p class="pf-role">Product Designer (UX/UI) · 5–8 years · Remote (EU)</p>
+          <div class="pf-badges">
+            <span class="pf-chip tier">Bronze tier</span>
+            <span class="pf-chip score">Assessment 84%</span>
+            <span class="pf-chip"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><polyline points="12 9 12 13 15 15"/></svg>Available within 2 weeks</span>
+          </div>
+        </div>
+        <div class="pf-acts"><button class="pf-edit" type="button" data-view="onboarding">Edit profile</button><button class="pf-export" type="button">Export Resume</button></div>
+      </div>
+
+      <div class="pf-body">
+        <div style="min-width:0">
+          <div class="pf-sec">
+            <div class="pf-h-row"><h2 class="pf-h">Arena activity</h2><span class="pf-year">Year: 2026</span></div>
+            <div class="act">
+              <div class="act-days"><span>M</span><span></span><span>W</span><span></span><span>F</span><span></span><span>S</span></div>
+              <div class="act-main">
+                <div class="act-months" id="actMonths"></div>
+                <div class="act-grid" id="actGrid"></div>
+                <div class="act-legend"><span>Less</span><i></i><i style="background:rgba(103,141,198,.3)"></i><i style="background:rgba(103,141,198,.55)"></i><i style="background:var(--blue)"></i><span>More</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="pf-sec">
+            <div class="ar-stats">
+              <div class="ar-stat"><b>45</b><span>Challenges</span></div>
+              <div class="ar-stat"><b>10</b><span>Wins</span></div>
+              <div class="ar-stat"><b>$9,100</b><span>Bounties earned</span></div>
+              <div class="ar-stat"><b>Top 4%</b><span>Arena rank</span></div>
+            </div>
+          </div>
+          <div class="pf-sec">
+            <h2 class="pf-h">Challenges won</h2>
+            <div class="ar-list" id="wonList"></div>
+            <div class="pgr" id="wonPgr"></div>
+          </div>
+          <div class="pf-sec">
+            <h2 class="pf-h">Currently pursuing</h2>
+            <div class="ar-list" id="purList"></div>
+            <div class="pgr" id="purPgr"></div>
+          </div>
+          <div class="pf-sec">
+            <h2 class="pf-h">Ratings</h2>
+            <div class="rt-top" id="rtTop"></div>
+            <div class="ar-list rt-list" id="rtList"></div>
+            <div class="pgr" id="rtPgr"></div>
+          </div>
+          <div class="pf-sec">
+            <h2 class="pf-h">About</h2>
+            <p class="pf-lede">Product designer working on complex, data-heavy interfaces. Comfortable owning a problem end to end, from discovery and flows through polished UI and handoff.</p>
+          </div>
+          <div class="pf-sec">
+            <h2 class="pf-h">Achievements</h2>
+            <ul class="pf-list">
+              <li>Redesigned onboarding that lifted activation by 34%</li>
+              <li>Built and maintained a design system used by 40+ engineers</li>
+            </ul>
+          </div>
+          <div class="pf-sec">
+            <h2 class="pf-h">Skills</h2>
+            <div class="pf-pills"><span class="pf-pill">Figma</span><span class="pf-pill">Interaction design</span><span class="pf-pill">Design systems</span><span class="pf-pill">User research</span><span class="pf-pill">Prototyping</span></div>
+          </div>
+          <div class="pf-sec">
+            <h2 class="pf-h">Preferences</h2>
+            <div class="pf-grid">
+              <div class="pf-fld"><span class="k">Work preference</span><span class="v">Remote</span></div>
+              <div class="pf-fld"><span class="k">Availability</span><span class="v">Within 2 weeks</span></div>
+              <div class="pf-fld"><span class="k">Target compensation</span><span class="v">$150,000</span></div>
+              <div class="pf-fld"><span class="k">Years of experience</span><span class="v">5–8</span></div>
+            </div>
+          </div>
+          <div class="pf-sec">
+            <h2 class="pf-h">What matters most</h2>
+            <div class="pf-pills"><span class="pf-pill">Craft &amp; quality</span><span class="pf-pill">Close to users</span></div>
+          </div>
+          <div class="pf-sec">
+            <h2 class="pf-h">Ideal company</h2>
+            <p class="pf-lede">A product-led company where design sits close to the decisions, craft is taken seriously, and designers own a problem rather than a screen.</p>
+          </div>
+          <div class="pf-sec">
+            <div class="pf-h-row"><h2 class="pf-h">Assessment</h2><button class="pf-retake" type="button" disabled>Retake in 3 days</button></div>
+            <details class="sc-card">
+              <summary class="sc-top"><span class="sc-lbl">Assessment score</span><span class="sc-right"><span class="sc-num">84<span>%</span></span><svg class="sc-chev" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span></summary>
+              <div class="sc-dims">
+                <div class="sc-dim"><span class="sc-dim-n">communication</span><span class="sc-dim-s">82%</span><span class="sc-bar"><i style="width:82%"></i></span><span class="sc-note">Walked through a design decision clearly, but stayed general on tradeoffs.</span></div>
+                <div class="sc-dim best"><span class="sc-dim-n">collaboration</span><span class="sc-dim-s">91%</span><span class="sc-bar"><i style="width:91%"></i></span><span class="sc-note">Gave a real situation with an engineer and what you did about it.</span></div>
+                <div class="sc-dim"><span class="sc-dim-n">ownership</span><span class="sc-dim-s">80%</span><span class="sc-bar"><i style="width:80%"></i></span><span class="sc-note">Described how you usually operate more than something you actually did.</span></div>
+                <div class="sc-dim"><span class="sc-dim-n">resilience</span><span class="sc-dim-s">86%</span><span class="sc-bar"><i style="width:86%"></i></span><span class="sc-note">Handled the pressure well; you left the outcome open.</span></div>
+                <div class="sc-dim"><span class="sc-dim-n">craft</span><span class="sc-dim-s">79%</span><span class="sc-bar"><i style="width:79%"></i></span><span class="sc-note">Never named the skill you were building.</span></div>
+              </div>
+            </details>
+          </div>
+        </div>
+
+        <div>
+          <div class="rail-sec">
+            <h3 class="rail-h">Links</h3>
+            <div class="pf-links">
+              <a class="pf-link" href="#"><svg class="stroke" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M5.2 6.4c2.6 3 4.3 6.7 5 11.1"/><path d="M2.3 13.6c4.2-.9 8.4-.2 12 2.1"/><path d="M8.6 2.7c3.3 4 5.4 8.6 6.2 13.8"/><path d="M21.8 10.6c-4.9.6-9-.8-12.4-3.9"/></svg><span>dribbble/marcusvela</span></a>
+              <a class="pf-link" href="#"><svg viewBox="0 0 24 24"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-.95 1.83-1.95 3.76-1.95 4.02 0 4.76 2.5 4.76 5.76V21h-4v-5.6c0-1.34-.03-3.07-1.9-3.07-1.9 0-2.2 1.46-2.2 2.97V21H9z"/></svg><span>in/marcusvela</span></a>
+              <a class="pf-link" href="#"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm6.9 6h-2.5a15.6 15.6 0 0 0-1.4-3.5A8 8 0 0 1 18.9 8zM12 4c.8 1.1 1.4 2.4 1.8 4h-3.6c.4-1.6 1-2.9 1.8-4zM4.3 14a8 8 0 0 1 0-4h2.9a17.6 17.6 0 0 0 0 4zm.8 2h2.5c.3 1.3.8 2.5 1.4 3.5A8 8 0 0 1 5.1 16zm2.5-8H5.1a8 8 0 0 1 3.9-3.5A15.6 15.6 0 0 0 7.6 8zM12 20c-.8-1.1-1.4-2.4-1.8-4h3.6c-.4 1.6-1 2.9-1.8 4zm2.2-6H9.8a15.4 15.4 0 0 1 0-4h4.4a15.4 15.4 0 0 1 0 4zm.6 5.5c.6-1 1.1-2.2 1.4-3.5h2.5a8 8 0 0 1-3.9 3.5zM16.8 14a17.6 17.6 0 0 0 0-4h2.9a8 8 0 0 1 0 4z"/></svg><span>marcusvela.design</span></a>
+            </div>
+          </div>
+          <div class="rail-sec">
+            <h3 class="rail-h">Badges</h3>
+            <div class="bdg-grid">
+              <div class="bdg gold"><span class="bdg-hex"><svg viewBox="0 0 24 24"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M6 4h12v5a6 6 0 0 1-12 0z"/><path d="M6 5H4a2 2 0 0 0 2 4"/><path d="M18 5h2a2 2 0 0 1-2 4"/></svg></span><span class="bdg-n">First win</span></div>
+              <div class="bdg earned"><span class="bdg-hex"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span><span class="bdg-n">10 challenges</span></div>
+              <div class="bdg earned"><span class="bdg-hex"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><polyline points="12 9 12 13 15 15"/></svg></span><span class="bdg-n">Fast submit</span></div>
+              <div class="bdg earned"><span class="bdg-hex"><svg viewBox="0 0 24 24"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z"/></svg></span><span class="bdg-n">Top 5%</span></div>
+              <div class="bdg locked"><span class="bdg-hex"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span><span class="bdg-n">Gold tier</span></div>
+              <div class="bdg locked"><span class="bdg-hex"><svg viewBox="0 0 24 24"><path d="M12 3v18"/><path d="M5 8h14"/><circle cx="12" cy="14" r="5"/></svg></span><span class="bdg-n">Bounty hunter</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="view" id="viewOnboarding">
+      <div class="qz">
+        <div class="qz-head">
+          <label class="qz-avatar" title="Change photo"><img src="assets/candidate-profile.png" alt="Your profile" /><span class="qz-avatar-up"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4zM9 3l-1.8 2H4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-3.2L15 3H9zm3 15a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/></svg></span><input class="qz-avatar-input" type="file" accept="image/*" hidden /></label>
+          <div class="qz-steps">
+            <div class="qs active" data-step="0"><div class="t">About you</div><div class="bar"><div class="bar-fill"></div></div></div>
+            <div class="qs" data-step="1"><div class="t">Skills &amp; Availability</div><div class="bar"><div class="bar-fill"></div></div></div>
+            <div class="qs" data-step="2"><div class="t">Expectations</div><div class="bar"><div class="bar-fill"></div></div></div>
+          </div>
+        </div>
+        <div class="qz-div"></div>
+
+        <div class="qz-step on" data-step="0">
+          <h2 class="qz-h">Tell us about yourself</h2>
+      <div class="qz-q">
+        <label class="flbl">What best describes you?</label>
+        <div class="qz-opts" data-multi><button type="button" class="qz-pill">Software engineer</button><button type="button" class="qz-pill">Frontend</button><button type="button" class="qz-pill sel">Backend</button><button type="button" class="qz-pill">Full-stack</button><button type="button" class="qz-pill sel">Data / ML</button><button type="button" class="qz-pill">DevOps / Infra</button><button type="button" class="qz-pill">QA</button><button type="button" class="qz-pill">Security</button><span class="qz-break"></span><label class="qz-pill qz-other" data-other><span class="ot-txt">Other</span><input class="ot-in" type="text" placeholder="Tell us your role" /></label></div>
+      </div>
+      <div class="qz-q">
+        <div class="qz-trio">
+          <div class="qz-f"><label class="flbl">Years of experience</label><div class="ccpick sel-dd" data-dd="years"><button class="ccode dd-full" type="button"><span class="dd-v">5–8 years</span><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button><div class="ccmenu dd-menu"><div class="cclist"></div></div></div></div>
+          <div class="qz-f"><label class="flbl">Designation</label><input class="finput" type="text" placeholder="e.g. Senior Backend Engineer" value="Senior Backend Engineer" /></div>
+          <div class="qz-f"><label class="flbl">Location</label><div class="ccpick sel-dd" data-dd="country"><button class="ccode dd-full" type="button"><img class="ccflag" src="https://flagcdn.com/w40/us.png" alt="" /><span class="dd-v">United States</span><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button><div class="ccmenu dd-menu"><input class="ccsearch" placeholder="Search country" /><div class="cclist"></div></div></div></div>
+        </div>
+      </div>
+      <div class="qz-q">
+        <label class="flbl">Your achievements</label>
+        <textarea class="qz-ta" placeholder="Notable wins, awards, or recognition">Led migration that cut API latency by 40%
+Open-source maintainer with 2k+ GitHub stars</textarea>
+      </div>
+      <div class="qz-q qz-links"><div class="frow">
+            <div>
+              <label class="flbl">LinkedIn</label>
+              <button class="btn-linkedin" type="button">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 110-4.13 2.06 2.06 0 010 4.13zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"></path></svg>
+                Connect LinkedIn
+              </button>
+            </div>
+            <div>
+              <label class="flbl">GitHub</label>
+              <div class="fwrap gh-wrap">
+                <svg class="gh-ic" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
+                <input class="finput" type="url" placeholder="https://github.com/you" />
+              </div>
+            </div>
+          </div><div class="fres"><label class="flbl">Resume</label><label class="qz-file has"><span class="qz-sl-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm0 2 4 4h-4V4zM8 13h8v1.6H8V13zm0 3.4h8V18H8v-1.6z"/></svg></span><input type="file" accept=".pdf,.doc,.docx" hidden /><span class="qz-file-txt">Marcus_Vela_Resume.pdf</span></label></div></div>
+      <div class="qz-q">
+        <label class="flbl">More ways to know you better</label>
+        <div class="qz-social" style="grid-template-columns:1fr 1fr">
+          <div class="qz-sl"><span class="qz-sl-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 3h3l-6.9 7.9L22 21h-6.3l-4.9-6.4L5.1 21H2l7.4-8.5L2 3h6.4l4.4 5.9zm-1.1 16h1.7L7.7 4.8H5.9z"/></svg></span><input class="finput" type="url" placeholder="Twitter / X" /></div>
+          <div class="qz-sl"><span class="qz-sl-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm6.9 6h-2.5a15.6 15.6 0 0 0-1.4-3.5A8 8 0 0 1 18.9 8zM12 4c.8 1.1 1.4 2.4 1.8 4h-3.6c.4-1.6 1-2.9 1.8-4zM4.3 14a8 8 0 0 1 0-4h2.9a17.6 17.6 0 0 0 0 4zm.8 2h2.5c.3 1.3.8 2.5 1.4 3.5A8 8 0 0 1 5.1 16zm2.5-8H5.1a8 8 0 0 1 3.9-3.5A15.6 15.6 0 0 0 7.6 8zM12 20c-.8-1.1-1.4-2.4-1.8-4h3.6c-.4 1.6-1 2.9-1.8 4zm2.2-6H9.8a15.4 15.4 0 0 1 0-4h4.4a15.4 15.4 0 0 1 0 4zm.6 5.5c.6-1 1.1-2.2 1.4-3.5h2.5a8 8 0 0 1-3.9 3.5zM16.8 14a17.6 17.6 0 0 0 0-4h2.9a8 8 0 0 1 0 4z"/></svg></span><input class="finput" type="url" placeholder="Website" /></div>
+        </div>
+      </div>
+      <div class="actions end">
+            <button class="btn-black" type="button" data-qz="next">Continue</button>
+          </div>
+        </div>
+
+        <div class="qz-step" data-step="1">
+          <h2 class="qz-h">Your skills &amp; setup</h2>
+      <div class="qz-q">
+        <label class="flbl">Your strongest skills</label>
+        <div class="qz-opts" data-multi><button type="button" class="qz-pill sel">Go</button><button type="button" class="qz-pill sel">Distributed systems</button><button type="button" class="qz-pill sel">System design</button><button type="button" class="qz-pill">Python</button><button type="button" class="qz-pill">React</button><button type="button" class="qz-pill">Postgres</button><button type="button" class="qz-pill">Kubernetes</button><span class="qz-break"></span><label class="qz-pill qz-other" data-other><span class="ot-txt">Other</span><input class="ot-in" type="text" placeholder="Add skills, comma separated" /></label></div>
+      </div>
+      <div class="qz-q">
+        <label class="flbl">Work preference</label>
+        <div class="qz-opts"><button type="button" class="qz-pill sel">Remote</button><button type="button" class="qz-pill">Hybrid</button><button type="button" class="qz-pill">On-site</button></div>
+      </div>
+      <div class="qz-q">
+        <label class="flbl">Availability to join</label>
+        <div class="qz-opts"><button type="button" class="qz-pill">Immediately</button><button type="button" class="qz-pill sel">Within 2 weeks</button><button type="button" class="qz-pill">1 month</button><button type="button" class="qz-pill">Just exploring</button></div>
+      </div>
+      <div class="actions">
+            <button class="link-back" type="button" data-qz="back">← Back</button>
+            <button class="btn-black" type="button" data-qz="next">Continue</button>
+          </div>
+        </div>
+
+        <div class="qz-step" data-step="2">
+          <h2 class="qz-h">What you're looking for</h2>
+      <div class="qz-q">
+        <label class="flbl">What matters most in your next role?</label>
+        <div class="qz-opts" data-multi><button type="button" class="qz-pill sel">Hard technical problems</button><button type="button" class="qz-pill sel">Growth & learning</button><button type="button" class="qz-pill">Compensation</button><button type="button" class="qz-pill">Team quality</button><button type="button" class="qz-pill">Ownership</button><button type="button" class="qz-pill">Remote flexibility</button></div>
+      </div>
+      <div class="qz-q">
+        <div class="qz-trio qz-duo">
+          <div class="qz-f"><label class="flbl">Current compensation (USD, yearly)</label><div class="qz-comp"><span class="qz-comp-cur">$</span><input class="finput" type="number" min="0" step="1000" inputmode="numeric" placeholder="120,000" /></div></div>
+          <div class="qz-f"><label class="flbl">Target compensation (USD, yearly)</label><div class="qz-comp"><span class="qz-comp-cur">$</span><input class="finput" type="number" min="0" step="1000" inputmode="numeric" placeholder="150,000" value="150000" /></div></div>
+        </div>
+        <div class="qz-trio qz-duo qz-up-row"><label class="qz-up"><span class="qz-up-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V4"/><path d="M7.5 8.5 12 4l4.5 4.5"/><path d="M5 15v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3"/></svg></span><span class="qz-up-txt"><span class="qz-up-t">Previous offer letter</span><span class="qz-up-s" data-def="PDF, DOC or image · up to 10 MB">PDF, DOC or image · up to 10 MB</span></span><input type="file" accept=".pdf,.doc,.docx,image/*" hidden /></label><label class="qz-up"><span class="qz-up-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V4"/><path d="M7.5 8.5 12 4l4.5 4.5"/><path d="M5 15v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3"/></svg></span><span class="qz-up-txt"><span class="qz-up-t">Last 3 salary slips</span><span class="qz-up-s" data-def="PDF or image · select multiple files">PDF or image · select multiple files</span></span><input type="file" accept=".pdf,image/*" multiple hidden /></label></div>
+      </div>
+      <div class="qz-q">
+        <label class="flbl">What kind of company would you love to work for?</label>
+        <textarea class="qz-ta" placeholder="A sentence or two about your ideal company">A product-led company with a strong engineering culture, where reliability is valued and engineers own their systems end to end.</textarea>
+      </div>
+      <div class="actions">
+            <button class="link-back" type="button" data-qz="back">← Back</button>
+            <span style="display:flex;align-items:center;gap:14px"><span class="qz-saved" id="qzSaved">Changes saved</span><button class="btn-black" type="button" data-qz="save">Save changes</button></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var userMenu=document.querySelector('.app-user');
+  userMenu.querySelector('.app-user-btn').addEventListener('click',function(e){e.stopPropagation();userMenu.classList.toggle('open');});
+  document.addEventListener('click',function(){userMenu.classList.remove('open');});
+
+  var views={profile:document.getElementById('viewProfile'),onboarding:document.getElementById('viewOnboarding')};
+  function show(v){
+    Object.keys(views).forEach(function(k){views[k].classList.toggle('on',k===v);});
+    document.querySelectorAll('.seg-btn').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-view')===v);});
+    window.scrollTo(0,0);
+  }
+  document.querySelectorAll('[data-view]').forEach(function(b){b.addEventListener('click',function(){show(b.getAttribute('data-view'));});});
+  if(location.hash==='#onboarding')show('onboarding');window.addEventListener('hashchange',function(){if(location.hash==='#onboarding')show('onboarding');});
+  document.addEventListener('click',function(e){if(!e.target.closest('[data-qz="finish"]'))return;try{var P=JSON.parse(localStorage.getItem('tc-pc')||'{}');P.onb=1;localStorage.setItem('tc-pc',JSON.stringify(P));}catch(x){}});
+
+  // onboarding steps
+  var steps=document.querySelectorAll('.qz-step'),marks=document.querySelectorAll('.qz-steps .qs'),cur=0;
+  function goStep(n){
+    cur=Math.max(0,Math.min(steps.length-1,n));
+    steps.forEach(function(s,i){s.classList.toggle('on',i===cur);});
+    marks.forEach(function(m,i){m.classList.toggle('active',i===cur);m.classList.toggle('done',i<cur);});
+    window.scrollTo(0,0);
+  }
+  document.querySelectorAll('[data-qz]').forEach(function(b){b.addEventListener('click',function(){
+    var a=b.getAttribute('data-qz');
+    if(a==='next')goStep(cur+1);
+    else if(a==='back')goStep(cur-1);
+    else{var s=document.getElementById('qzSaved');s.classList.add('show');setTimeout(function(){location.href='Candidate - Webapp copy.html';},700);}
+  });});
+  document.querySelectorAll('.qz-opts').forEach(function(g){g.addEventListener('click',function(e){
+    if(e.target.classList.contains('ot-in'))return;var p=e.target.closest('.qz-pill');if(!p)return;
+    if(p.hasAttribute('data-other')){var oin=p.querySelector('.ot-in');p.classList.add('editing');setTimeout(function(){oin.focus();},60);oin.onblur=function(){if(!oin.value.trim())p.classList.remove('editing');};return;}
+    if(g.hasAttribute('data-multi'))p.classList.toggle('sel');
+    else{g.querySelectorAll('.qz-pill').forEach(function(x){x.classList.remove('sel');});p.classList.add('sel');}
+  });});
+
+  // activity heatmap
+  var months=['Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug'],weeks=52;
+  var mEl=document.getElementById('actMonths'),gEl=document.getElementById('actGrid');
+  mEl.style.gridTemplateColumns='repeat(12,1fr)';
+  mEl.innerHTML=months.map(function(m){return '<span>'+m+'</span>';}).join('');
+  var end=new Date();end.setHours(0,0,0,0);
+  var start=new Date(end.getTime()-(weeks*7-1)*864e5);
+  start.setDate(start.getDate()-((start.getDay()+6)%7));
+  var MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var cells='',data=[],idx=0;
+  for(var w=0;w<weeks;w++){
+    for(var d=0;d<7;d++){
+      var recency=w/weeks,r=Math.random();
+      var lvl=0;
+      if(d!==6&&r<0.12+recency*0.55)lvl=r<0.06+recency*0.16?3:(r<0.1+recency*0.3?2:1);
+      var mins=lvl?Math.round([0,25,70,155][lvl]*(0.7+Math.random()*0.6)):0;
+      var applied=lvl>1?Math.round(Math.random()*3)+ (lvl===3?1:0):(lvl?(Math.random()<0.35?1:0):0);
+      var interviews=lvl===3?(Math.random()<0.6?1:2):(lvl===2&&Math.random()<0.4?1:0);
+      var subs=lvl===3?(Math.random()<0.7?1:2):(lvl===2&&Math.random()<0.3?1:0);
+      var dt=new Date(start.getTime()+(w*7+d)*864e5);
+      data.push({d:dt.getDate()+' '+MON[dt.getMonth()]+' '+dt.getFullYear(),m:mins,a:applied,i:interviews,s:subs});
+      cells+='<i data-l="'+lvl+'" data-i="'+(idx++)+'"></i>';
+    }
+  }
+  gEl.innerHTML=cells;
+
+  function dur(m){return m<60?m+'m':Math.floor(m/60)+'h '+(m%60?(m%60)+'m':'');}
+  var tip=document.createElement('div');tip.className='act-tip';document.body.appendChild(tip);
+  function row(k,v){return '<div class="r"><span>'+k+'</span><span>'+v+'</span></div>';}
+  gEl.addEventListener('mousemove',function(e){
+    var c=e.target.closest('i[data-i]');
+    if(!c){tip.classList.remove('on');return;}
+    var v=data[+c.getAttribute('data-i')];
+    tip.innerHTML='<b>'+v.d+'</b>'+(v.m?row('Time on platform',dur(v.m))+row('Applied',v.a)+row('Submissions',v.s)+row('AI interviews',v.i):'<div class="r"><span>No activity</span></div>');
+    tip.classList.add('on');
+    var r2=c.getBoundingClientRect(),tw=tip.offsetWidth,th=tip.offsetHeight;
+    var x=Math.min(Math.max(8,r2.left+r2.width/2-tw/2),innerWidth-tw-8);
+    var y=r2.top-th-9;if(y<8)y=r2.bottom+9;
+    tip.style.left=x+'px';tip.style.top=y+'px';
+  });
+  gEl.addEventListener('mouseleave',function(){tip.classList.remove('on');});
+})();
+</script>
+<div class="rz-ov" id="rzOverlay">
+  <div class="rz-modal" role="dialog" aria-modal="true" aria-label="Resume">
+    <button class="rz-x" type="button" id="rzClose" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="rz">
+      <div class="rz-head">
+        <h2 class="rz-name">Marcus Vela</h2>
+        <p class="rz-role">Product Designer (UX/UI)</p>
+        <p class="rz-contact">Berlin, DE (CET) · marcus.vela@gmail.com · +49 151 224 8890</p>
+      </div>
+      <div class="rz-sec">
+        <h4>Professional summary</h4>
+        <p>Product designer with 7+ years shaping complex B2B and consumer products. Strongest on flows, information density and design systems. Works close to engineering and takes a problem from research through shipped UI.</p>
+      </div>
+      <div class="rz-sec">
+        <h4>Experience</h4>
+        <div class="rz-job">
+          <div class="rz-job-top"><span class="rz-title">Senior Product Designer</span><span class="rz-when">2021 — Present</span></div>
+          <span class="rz-org">Northwind Data</span>
+          <ul class="rz-bul"><li>Redesigned the core analytics workspace, cutting time-to-first-insight by 42%.</li><li>Built and maintained the design system used by 40+ engineers across 6 squads.</li><li>Ran discovery interviews and usability tests on a monthly cadence; mentored 2 designers.</li></ul>
+        </div>
+        <div class="rz-job">
+          <div class="rz-job-top"><span class="rz-title">Product Designer</span><span class="rz-when">2018 — 2021</span></div>
+          <span class="rz-org">Halden Group</span>
+          <ul class="rz-bul"><li>Owned the end-to-end checkout and billing flows for a 400k-user product.</li><li>Introduced a component library and design-to-code handoff process with engineering.</li></ul>
+        </div>
+      </div>
+      <div class="rz-sec">
+        <h4>Skills</h4>
+        <div class="rz-skills"><span>Figma</span><span>Interaction design</span><span>Design systems</span><span>User research</span><span>Prototyping</span></div>
+      </div>
+      <div class="rz-sec">
+        <h4>Education</h4>
+        <div class="rz-job-top"><span class="rz-title">B.A. Interaction Design</span><span class="rz-when">2014 — 2018</span></div>
+        <span class="rz-org">University of the Arts</span>
+      </div>
+      <div class="rz-foot"><button class="pf-export" type="button" onclick="window.print()">Download PDF</button></div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var ov=document.getElementById('rzOverlay');
+  document.querySelectorAll('.pf-export').forEach(function(b){if(b.closest('.rz-foot'))return;b.addEventListener('click',function(){ov.classList.add('on');});});
+  function close(){ov.classList.remove('on');}
+  document.getElementById('rzClose').addEventListener('click',close);
+  ov.addEventListener('click',function(e){if(e.target===ov)close();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+<script src="notifications.js"></script>
+<script src="chat.js"></script>
+<script>
+(function(){
+var WON=[
+ ['Bounty','Streaming ingest dedupe','Northwind Data · Mar 2026 · 1st of 84 entries','$2,400'],
+ ['Hiring','Platform reliability sprint','Aurora Systems · Nov 2025 · offer extended','Hired'],
+ ['Bounty','Latency budget audit','Kestrel · Jan 2026 · 1st of 51 entries','$1,800'],
+ ['Bounty','Terraform module refactor','Lumen · Sep 2025 · 2nd of 63 entries','$950'],
+ ['Bounty','Onboarding flow teardown','Arcadia · Aug 2025 · 1st of 72 entries','$1,600'],
+ ['Hiring','Design system audit','Brightline · Jun 2025 · offer declined','Finalist'],
+ ['Bounty','Search relevance rework','Trellis · Apr 2025 · 2nd of 44 entries','$700'],
+ ['Bounty','Billing edge cases','Cadence Pay · Feb 2025 · 1st of 38 entries','$1,200'],
+ ['Hiring','Mobile checkout sprint','Nimbus Retail · Dec 2024 · offer extended','Hired'],
+ ['Bounty','Accessibility sweep','Foundry Labs · Oct 2024 · 3rd of 57 entries','$450']
+];
+var PUR=[
+ ['Hiring','Observability pipeline rebuild','Meridian Health','Interview',4],
+ ['Hiring','Data platform migration','Halden Group','Challenge',3],
+ ['Bounty','Cost-aware autoscaler','Volt','Submission under review',-1],
+ ['Hiring','Internal tools redesign','Perigee','Screening',2],
+ ['Bounty','Dashboard performance budget','Vantage','Submission under review',-1],
+ ['Hiring','Payments UX overhaul','Cadence Pay','Challenge',3],
+ ['Bounty','Notification dedupe','Halo Comms','Submission under review',-1],
+ ['Hiring','Growth experiment platform','Orbit Labs','Interview',4],
+ ['Bounty','Report builder rewrite','Sundial','Submission under review',-1]
+];
+var RT=[
+ ['Northwind Data',5,'Mar 2026','Shipped the dedupe layer a week early and documented it well enough that the team picked it up without a handover call.'],
+ ['Aurora Systems',4,'Nov 2025','Strong on the reliability work and easy to review with. Took longer than expected to ask for help when blocked.'],
+ ['Kestrel',5,'Jan 2026','Found two latency regressions we had missed entirely and explained the tradeoffs without overselling the fix.'],
+ ['Lumen',4,'Sep 2025','Clean, reusable modules and clear commit history. Would work with again on infrastructure work.'],
+ ['Arcadia',5,'Aug 2025','Rebuilt the onboarding flow and backed every change with a reason. Handover was genuinely painless.'],
+ ['Brightline',4,'Jun 2025','Thorough audit and a sensible migration order. We wanted more opinion on what to cut.'],
+ ['Trellis',5,'Apr 2025','Took an ambiguous relevance problem and came back with something measurable in under a week.'],
+ ['Cadence Pay',4,'Feb 2025','Careful with edge cases and good with our support team. Comfortable working without much direction.'],
+ ['Nimbus Retail',5,'Dec 2024','Best checkout work we have had from a challenge. Joined the team on the back of it.'],
+ ['Foundry Labs',4,'Oct 2024','Fixed more than the brief asked for and flagged the rest rather than silently expanding scope.']
+];
+var HS=['Applied','Screening','Challenge','Review','Interview'];
+function esc(t){return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function star(on){return '<svg'+(on?' class="on"':'')+' viewBox="0 0 24 24"><path d="M12 2l3 6.5 7 .9-5.1 4.8 1.3 7-6.2-3.4L5.8 21l1.3-7L2 9.4l7-.9z"/></svg>';}
+function stars(n){var o='';for(var i=1;i<=5;i++){o+=(n>=i)?star(true):(n>i-1)?'<span class="half">'+star(false)+star(true)+'</span>':star(false);}return '<span class="stars">'+o+'</span>';}
+function wonRow(x,i){return '<div class="ar-row" data-ar="w'+i+'"><span class="ar-kind'+(x[0]==='Bounty'?' bounty':'')+'">'+x[0]+'</span><span class="ar-main"><span class="ar-t">'+esc(x[1])+'</span><span class="ar-m">'+esc(x[2])+'</span></span><span class="ar-prize">'+esc(x[3])+'</span></div>';}
+function purRow(x,i){var pips=x[4]<0?'<i class="on"></i><i></i>':HS.map(function(_,j){return '<i class="'+(j<=x[4]?'on':'')+'"></i>';}).join('');
+ return '<div class="ar-row" data-ar="p'+i+'"><span class="ar-kind'+(x[0]==='Bounty'?' bounty':'')+'">'+x[0]+'</span><span class="ar-main"><span class="ar-t">'+esc(x[1])+'</span><span class="ar-m">'+esc(x[2])+'</span></span><span class="ar-stage"><span class="ar-stage-t">'+esc(x[3])+'</span><span class="ar-pips">'+pips+'</span></span></div>';}
+function rtRow(x){return '<div class="rt-row"><div class="rt-hd"><span class="rt-co">'+esc(x[0])+'</span>'+stars(x[1])+'<span class="rt-when">'+esc(x[2])+'</span></div><p>'+esc(x[3])+'</p></div>';}
+var avg=(RT.reduce(function(a,x){return a+x[1];},0)/RT.length);
+document.getElementById('rtTop').innerHTML='<span class="rt-avg">'+avg.toFixed(1)+'<span>/5</span></span>'+stars(Math.round(avg*2)/2)+'<span class="rt-count">'+RT.length+' reviews from companies you worked with</span>';
+function page(listId,pgrId,data,row){
+ var el=document.getElementById(listId),pg=document.getElementById(pgrId),per=5,i=0,n=Math.ceil(data.length/per);
+ function draw(){el.innerHTML=data.slice(i*per,i*per+per).map(function(d,j){return row(d,i*per+j);}).join('');
+  pg.innerHTML=n<2?'':'<button type="button" aria-label="Previous"'+(i===0?' disabled':'')+'><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button><button type="button" aria-label="Next"'+(i>=n-1?' disabled':'')+'><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>';
+  var b=pg.querySelectorAll('button');if(b[0])b[0].onclick=function(){if(i>0){i--;draw();}};if(b[1])b[1].onclick=function(){if(i<n-1){i++;draw();}};}
+ draw();}
+var DET={
+ 'Streaming ingest dedupe':{eff:'6 hours',win:'9 days',br:'Design and prove a dedupe layer for a 40k events/sec ingest path without adding more than 20ms of latency.',goal:'Exactly-once semantics at the sink, demonstrated against a replayed production sample.',det:['The sample feed contains duplicate bursts from at-least-once producers and out-of-order arrivals up to 90 seconds apart.','Submissions were judged on correctness first, then added latency, then operational simplicity.'],sk:['Kafka','Go','Redis','Terraform'],out:'Won on correctness and the clearest failure-mode writeup of the 84 entries.'},
+ 'Platform reliability sprint':{eff:'8 hours',win:'2 weeks',br:'Cut alert noise on a 60-service estate and rewrite the on-call runbook that goes with it.',goal:'A defensible alert set with a documented rationale for every page-worthy signal.',det:['Two months of alert history was provided, including every page and its resolution note.','Deleting alerts was allowed, but every deletion needed a reason.'],sk:['Prometheus','Grafana','Python'],out:'Offer extended after the panel round.'},
+ 'Latency budget audit':{eff:'5 hours',win:'8 days',br:'Trace a checkout path across six services and produce a latency budget that holds under peak load.',goal:'Identify where the p99 is actually spent and propose fixes in priority order.',det:['Traces were supplied for a normal day and for a Black Friday replay.','Two regressions were hidden in the dataset and not mentioned in the brief.'],sk:['OpenTelemetry','Node.js','Postgres'],out:'Won for finding both hidden regressions and sizing the fixes honestly.'},
+ 'Terraform module refactor':{eff:'6 hours',win:'7 days',br:'Collapse eleven copy-pasted environment stacks into one reusable module set.',goal:'A single module tree that reproduces all eleven environments with no drift.',det:['A plan diff against every existing environment was required as evidence.','Naming and tagging conventions were fixed by the brief and could not be changed.'],sk:['Terraform','AWS','CI/CD'],out:'Second of 63. Lost on documentation depth, not on the code.'},
+ 'Onboarding flow teardown':{eff:'7 hours',win:'10 days',br:'Take a five-step signup with a 41% drop-off and rebuild it around the one job the user came to do.',goal:'A prototype plus the reasoning for every step kept, merged or cut.',det:['Funnel data and twelve support tickets were provided as the only research input.','Copy changes counted, but had to be justified against the tickets.'],sk:['Figma','Prototyping','Copywriting'],out:'Won on clarity of reasoning across 72 entries.'},
+ 'Design system audit':{eff:'8 hours',win:'2 weeks',br:'Audit a two-year-old component library and propose a migration order for the team.',goal:'A prioritised list of what to fix, merge or delete, with effort estimates.',det:['The library had 140 components and no usage telemetry.','Estimates had to assume a team of three working half-time.'],sk:['Design systems','Figma','React'],out:'Finalist. Offer declined for location reasons.'},
+ 'Search relevance rework':{eff:'6 hours',win:'9 days',br:'Improve relevance on a 2M-document catalogue search where users mostly type two words.',goal:'A measurable lift on the supplied judgement set without hand-tuning per query.',det:['A judgement set of 400 queries was provided; 80 were held back for scoring.','Any retrieval approach was allowed as long as it ran inside the latency budget.'],sk:['Elasticsearch','Python','ML'],out:'Second of 44. Strong offline lift, slower than the winner at query time.'},
+ 'Billing edge cases':{eff:'5 hours',win:'7 days',br:'Handle proration, mid-cycle plan changes and refunds in a subscription billing model.',goal:'A test suite that covers the twelve scenarios in the brief and any you find yourself.',det:['Three of the twelve scenarios had no correct answer in the current product and had to be flagged.','Money handling had to be exact; floating point was an automatic fail.'],sk:['TypeScript','Stripe','Postgres'],out:'Won for catching the three unanswerable cases rather than guessing.'},
+ 'Mobile checkout sprint':{eff:'7 hours',win:'12 days',br:'Rebuild a mobile checkout that loses a third of its users at the address step.',goal:'A working prototype with the address step redesigned around real input patterns.',det:['Session recordings for 200 abandoned checkouts were supplied.','The payment provider and its constraints were fixed.'],sk:['React Native','UX','Analytics'],out:'Hired off the back of this submission.'},
+ 'Accessibility sweep':{eff:'5 hours',win:'6 days',br:'Bring a marketing site and its booking flow to WCAG 2.2 AA.',goal:'A fixed booking flow plus a report on what could not be fixed without a rebuild.',det:['Automated tooling caught roughly half the issues; the rest needed manual testing.','Screen reader behaviour on the date picker was the hardest constraint.'],sk:['ARIA','CSS','Testing'],out:'Third of 57. Went beyond the brief on the booking flow.'},
+ 'Observability pipeline rebuild':{eff:'8 hours',win:'2 weeks',br:'Replace a self-hosted logging stack with a managed pipeline, keeping ingest cost flat while improving query latency.',goal:'A migration plan and a working proof of concept on one service.',det:['Current spend, retention rules and query patterns were provided.','The compliance team requires 13-month retention on audit logs.'],sk:['OpenSearch','Fluent Bit','Terraform'],out:'Interview scheduled with the platform team lead.'},
+ 'Data platform migration':{eff:'6 hours',win:'10 days',br:'Move a batch warehouse onto an incremental model layer and demonstrate parity on three critical reports.',goal:'Parity within 0.1% on all three reports, with the diff explained.',det:['Source data has late-arriving rows up to five days after the event.','The three reports are used in a board pack, so definitions cannot change.'],sk:['dbt','Snowflake','SQL'],out:'Challenge submitted; awaiting review.'},
+ 'Cost-aware autoscaler':{eff:'5 hours',win:'6 days',br:'Build an autoscaler that trades latency headroom against spot-instance pricing across three regions.',goal:'Hold p95 latency under target while cutting compute spend against the replay.',det:['A week of traffic and spot pricing history was provided for replay.','Interruption handling had to be demonstrated, not described.'],sk:['Kubernetes','Go','AWS'],out:'Submission under review.'},
+ 'Internal tools redesign':{eff:'6 hours',win:'9 days',br:'Redesign an operations console that four teams use daily and nobody likes.',goal:'One rebuilt workflow, chosen and justified from the usage data.',det:['Usage telemetry showed three of twenty screens carry 80% of the traffic.','Interviews with two operators were supplied as transcripts.'],sk:['React','UX','Design systems'],out:'Screening call completed.'},
+ 'Dashboard performance budget':{eff:'5 hours',win:'7 days',br:'A reporting dashboard takes 11 seconds to first paint on real data. Get it under two.',goal:'A performance budget and the changes that bring the dashboard inside it.',det:['The slowest tenant has 40x the data volume of the median tenant.','Removing charts was not allowed.'],sk:['React','Profiling','SQL'],out:'Submission under review.'},
+ 'Payments UX overhaul':{eff:'7 hours',win:'11 days',br:'Rework a payments flow that supports cards, bank debit and invoicing in one screen.',goal:'A flow that keeps the three paths distinct without tripling the screen count.',det:['Regulatory copy is fixed and must appear before confirmation.','Error states were the main source of support volume.'],sk:['Figma','UX','Copywriting'],out:'Challenge in progress.'},
+ 'Notification dedupe':{eff:'4 hours',win:'6 days',br:'Users receive up to nine notifications for one underlying event. Collapse them without losing signal.',goal:'A grouping model that survives the supplied event replay.',det:['Events arrive from four services with no shared correlation id.','Users must still be able to see the individual events on demand.'],sk:['Node.js','Redis','Product'],out:'Submission under review.'},
+ 'Growth experiment platform':{eff:'8 hours',win:'2 weeks',br:'Design the experiment platform a ten-person growth team needs to run 30 tests a quarter.',goal:'An architecture plus the guardrails that stop bad tests shipping.',det:['Traffic is 400k weekly users, so most tests are underpowered by default.','Existing analytics warehouse must remain the source of truth.'],sk:['Product','Analytics','Python'],out:'Interview stage with the growth lead.'},
+ 'Report builder rewrite':{eff:'6 hours',win:'8 days',br:'Rewrite a drag-and-drop report builder that produces incorrect totals on grouped data.',goal:'Correct aggregation semantics with the existing saved reports still working.',det:['Roughly 3,000 saved reports must continue to render unchanged.','The correctness bug is in the grouping layer, not the UI.'],sk:['TypeScript','SQL','Testing'],out:'Submission under review.'}
+};
+var CO={'Northwind Data':['Streaming data infrastructure','Data infrastructure','Berlin, DE','120 people'],'Aurora Systems':['Cloud reliability tooling','Developer tools','Remote (EU)','60 people'],'Kestrel':['Commerce performance','E-commerce','London, UK','200 people'],'Lumen':['Infrastructure automation','Cloud','Amsterdam, NL','85 people'],'Arcadia':['Consumer subscriptions','Consumer','Lisbon, PT','45 people'],'Brightline':['Healthcare software','Health tech','Dublin, IE','300 people'],'Trellis':['B2B catalogue search','SaaS','Remote','70 people'],'Cadence Pay':['Recurring payments','Fintech','Paris, FR','150 people'],'Nimbus Retail':['Omnichannel retail','Retail','Madrid, ES','900 people'],'Foundry Labs':['Design and build studio','Agency','Copenhagen, DK','30 people'],'Meridian Health':['Clinical data platforms','Health tech','Zurich, CH','400 people'],'Halden Group':['Industrial analytics','Manufacturing','Oslo, NO','1,100 people'],'Volt':['EV charging networks','Energy','Rotterdam, NL','95 people'],'Perigee':['Operations software','SaaS','Remote (EU)','55 people'],'Vantage':['Reporting and BI','SaaS','Manchester, UK','110 people'],'Halo Comms':['Messaging infrastructure','Communications','Tallinn, EE','40 people'],'Orbit Labs':['Growth experimentation','SaaS','Remote','65 people'],'Sundial':['Analytics for agencies','SaaS','Barcelona, ES','50 people']};
+var RULES=['Work solo \u2014 no collaborators, pair-programming, or outsourced help.','Any language or framework is allowed unless the challenge states otherwise.','AI assistants may be used, but you must be able to explain every line you submit.','Submissions after the deadline are not scored.'];
+function showArm(kind,i){
+ var won=kind==='w',x=won?WON[i]:PUR[i];if(!x)return;
+ var title=x[1],coName=x[2].split(' \u00b7 ')[0],d=DET[title];if(!d)return;
+ var c=CO[coName]||['','\u2014','\u2014','\u2014'];
+ var stageTxt=won?'':x[3];
+ var pips=won?'':(x[4]<0?'<span class="ar-pips"><i class="on"></i><i></i></span>':'<span class="ar-pips">'+HS.map(function(_,j){return '<i class="'+(j<=x[4]?'on':'')+'"></i>';}).join('')+'</span>');
+ var back=document.createElement('div');back.className='arm-back';
+ back.innerHTML='<div class="arm" role="dialog" aria-modal="true"><button class="arm-x" type="button" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>'
+  +'<div class="arm-hd"><span class="arm-co"><span class="arm-co-ic"><img src="assets/lg-1.png" alt=""></span><span class="arm-co-txt"><span class="arm-co-nm">'+esc(coName)+'</span><span class="arm-co-tag">'+esc(c[0])+'</span></span></span><span class="ar-kind'+(x[0]==='Bounty'?' bounty':'')+'" style="margin-left:auto">'+esc(x[0])+' challenge</span></div>'
+  +'<h3 class="arm-t">'+esc(title)+'</h3><p class="arm-sub">'+esc(won?x[2]:coName+' \u00b7 '+d.win+' window')+'</p>'
+  +'<div class="arm-chips"><div class="arm-chip"><span>Effort</span><b>'+esc(d.eff)+'</b></div><div class="arm-chip"><span>Timeline</span><b>'+esc(d.win)+'</b></div>'
+   +(won?'<div class="arm-chip win"><span>Reward</span><b>'+esc(x[3])+'</b></div>':'<div class="arm-chip"><span>Stage</span><b>'+esc(stageTxt)+'</b></div>')+'</div>'
+  +'<div class="arm-card">'
+   +'<div class="arm-sec"><h4>Overview</h4><p>'+esc(d.br)+'</p></div>'
+   +'<div class="arm-sec"><h4>Goal</h4><p>'+esc(d.goal)+'</p></div>'
+   +'<div class="arm-sec"><h4>Details</h4>'+d.det.map(function(p){return '<p>'+esc(p)+'</p>';}).join('')+'</div>'
+   +'<div class="arm-sec"><h4>Tech stack</h4><div class="arm-sk">'+d.sk.map(function(k){return '<span>'+esc(k)+'</span>';}).join('')+'</div></div>'
+   +'<div class="arm-sec"><h4>'+(won?'Outcome':'Progress')+'</h4>'+(won?'<p>'+esc(d.out)+'</p>':'<div class="arm-stage-row"><b>'+esc(stageTxt)+'</b>'+pips+'</div><p style="margin-top:8px">'+esc(d.out)+'</p>')+'</div>'
+   +'<div class="arm-sec"><h4>Company</h4><p>'+esc(c[1])+' \u00b7 '+esc(c[2])+' \u00b7 '+esc(c[3])+'</p></div>'
+   +'<div class="arm-sec"><h4>Rules</h4><ul>'+RULES.map(function(r){return '<li>'+esc(r)+'</li>';}).join('')+'</ul></div>'
+  +'</div></div>';
+ document.body.appendChild(back);requestAnimationFrame(function(){back.classList.add('on');});
+ function close(){back.classList.remove('on');document.removeEventListener('keydown',onKey);setTimeout(function(){back.remove();},220);}
+ function onKey(e){if(e.key==='Escape')close();}
+ back.addEventListener('click',function(e){if(e.target===back||e.target.closest('.arm-x'))close();});
+ document.addEventListener('keydown',onKey);
+}
+document.addEventListener('click',function(e){var r=e.target.closest('.ar-row[data-ar]');if(!r)return;var k=r.getAttribute('data-ar');showArm(k.charAt(0),+k.slice(1));});
+page('wonList','wonPgr',WON,wonRow);page('purList','purPgr',PUR,purRow);page('rtList','rtPgr',RT,rtRow);
+})();
+</script>
+<script src="candidate-complete.js"></script><script src="mobile.js"></script>
+<script>/*__goSettings*/document.querySelectorAll('[data-go="settings"]').forEach(function(el){el.addEventListener('click',function(){location.href='Candidate - Settings.html';});});</script>
+<script src="avatar-crop.js"></script>
+<script id="onb-sync-js">(function(){var COUNTRIES=[["🇦🇫","Afghanistan","+93"],["🇦🇱","Albania","+355"],["🇩🇿","Algeria","+213"],["🇦🇩","Andorra","+376"],["🇦🇴","Angola","+244"],["🇦🇷","Argentina","+54"],["🇦🇲","Armenia","+374"],["🇦🇺","Australia","+61"],["🇦🇹","Austria","+43"],["🇦🇿","Azerbaijan","+994"],["🇧🇭","Bahrain","+973"],["🇧🇩","Bangladesh","+880"],["🇧🇾","Belarus","+375"],["🇧🇪","Belgium","+32"],["🇧🇿","Belize","+501"],["🇧🇯","Benin","+229"],["🇧🇹","Bhutan","+975"],["🇧🇴","Bolivia","+591"],["🇧🇦","Bosnia & Herzegovina","+387"],["🇧🇼","Botswana","+267"],["🇧🇷","Brazil","+55"],["🇧🇳","Brunei","+673"],["🇧🇬","Bulgaria","+359"],["🇧🇫","Burkina Faso","+226"],["🇧🇮","Burundi","+257"],["🇰🇭","Cambodia","+855"],["🇨🇲","Cameroon","+237"],["🇨🇦","Canada","+1"],["🇨🇻","Cape Verde","+238"],["🇨🇫","Central African Rep.","+236"],["🇹🇩","Chad","+235"],["🇨🇱","Chile","+56"],["🇨🇳","China","+86"],["🇨🇴","Colombia","+57"],["🇰🇲","Comoros","+269"],["🇨🇬","Congo","+242"],["🇨🇩","Congo (DRC)","+243"],["🇨🇷","Costa Rica","+506"],["🇨🇮","Côte d'Ivoire","+225"],["🇭🇷","Croatia","+385"],["🇨🇺","Cuba","+53"],["🇨🇾","Cyprus","+357"],["🇨🇿","Czechia","+420"],["🇩🇰","Denmark","+45"],["🇩🇯","Djibouti","+253"],["🇩🇴","Dominican Rep.","+1"],["🇪🇨","Ecuador","+593"],["🇪🇬","Egypt","+20"],["🇸🇻","El Salvador","+503"],["🇬🇶","Equatorial Guinea","+240"],["🇪🇷","Eritrea","+291"],["🇪🇪","Estonia","+372"],["🇸🇿","Eswatini","+268"],["🇪🇹","Ethiopia","+251"],["🇫🇯","Fiji","+679"],["🇫🇮","Finland","+358"],["🇫🇷","France","+33"],["🇬🇦","Gabon","+241"],["🇬🇲","Gambia","+220"],["🇬🇪","Georgia","+995"],["🇩🇪","Germany","+49"],["🇬🇭","Ghana","+233"],["🇬🇷","Greece","+30"],["🇬🇹","Guatemala","+502"],["🇬🇳","Guinea","+224"],["🇬🇼","Guinea-Bissau","+245"],["🇬🇾","Guyana","+592"],["🇭🇹","Haiti","+509"],["🇭🇳","Honduras","+504"],["🇭🇰","Hong Kong","+852"],["🇭🇺","Hungary","+36"],["🇮🇸","Iceland","+354"],["🇮🇳","India","+91"],["🇮🇩","Indonesia","+62"],["🇮🇷","Iran","+98"],["🇮🇶","Iraq","+964"],["🇮🇪","Ireland","+353"],["🇮🇱","Israel","+972"],["🇮🇹","Italy","+39"],["🇯🇲","Jamaica","+1"],["🇯🇵","Japan","+81"],["🇯🇴","Jordan","+962"],["🇰🇿","Kazakhstan","+7"],["🇰🇪","Kenya","+254"],["🇰🇼","Kuwait","+965"],["🇰🇬","Kyrgyzstan","+996"],["🇱🇦","Laos","+856"],["🇱🇻","Latvia","+371"],["🇱🇧","Lebanon","+961"],["🇱🇸","Lesotho","+266"],["🇱🇷","Liberia","+231"],["🇱🇾","Libya","+218"],["🇱🇮","Liechtenstein","+423"],["🇱🇹","Lithuania","+370"],["🇱🇺","Luxembourg","+352"],["🇲🇴","Macau","+853"],["🇲🇬","Madagascar","+261"],["🇲🇼","Malawi","+265"],["🇲🇾","Malaysia","+60"],["🇲🇻","Maldives","+960"],["🇲🇱","Mali","+223"],["🇲🇹","Malta","+356"],["🇲🇷","Mauritania","+222"],["🇲🇺","Mauritius","+230"],["🇲🇽","Mexico","+52"],["🇲🇩","Moldova","+373"],["🇲🇨","Monaco","+377"],["🇲🇳","Mongolia","+976"],["🇲🇪","Montenegro","+382"],["🇲🇦","Morocco","+212"],["🇲🇿","Mozambique","+258"],["🇲🇲","Myanmar","+95"],["🇳🇦","Namibia","+264"],["🇳🇵","Nepal","+977"],["🇳🇱","Netherlands","+31"],["🇳🇿","New Zealand","+64"],["🇳🇮","Nicaragua","+505"],["🇳🇪","Niger","+227"],["🇳🇬","Nigeria","+234"],["🇰🇵","North Korea","+850"],["🇲🇰","North Macedonia","+389"],["🇳🇴","Norway","+47"],["🇴🇲","Oman","+968"],["🇵🇰","Pakistan","+92"],["🇵🇸","Palestine","+970"],["🇵🇦","Panama","+507"],["🇵🇬","Papua New Guinea","+675"],["🇵🇾","Paraguay","+595"],["🇵🇪","Peru","+51"],["🇵🇭","Philippines","+63"],["🇵🇱","Poland","+48"],["🇵🇹","Portugal","+351"],["🇶🇦","Qatar","+974"],["🇷🇴","Romania","+40"],["🇷🇺","Russia","+7"],["🇷🇼","Rwanda","+250"],["🇸🇦","Saudi Arabia","+966"],["🇸🇳","Senegal","+221"],["🇷🇸","Serbia","+381"],["🇸🇨","Seychelles","+248"],["🇸🇱","Sierra Leone","+232"],["🇸🇬","Singapore","+65"],["🇸🇰","Slovakia","+421"],["🇸🇮","Slovenia","+386"],["🇸🇧","Solomon Islands","+677"],["🇸🇴","Somalia","+252"],["🇿🇦","South Africa","+27"],["🇰🇷","South Korea","+82"],["🇸🇸","South Sudan","+211"],["🇪🇸","Spain","+34"],["🇱🇰","Sri Lanka","+94"],["🇸🇩","Sudan","+249"],["🇸🇷","Suriname","+597"],["🇸🇪","Sweden","+46"],["🇨🇭","Switzerland","+41"],["🇸🇾","Syria","+963"],["🇹🇼","Taiwan","+886"],["🇹🇯","Tajikistan","+992"],["🇹🇿","Tanzania","+255"],["🇹🇭","Thailand","+66"],["🇹🇬","Togo","+228"],["🇹🇴","Tonga","+676"],["🇹🇹","Trinidad & Tobago","+1"],["🇹🇳","Tunisia","+216"],["🇹🇷","Turkey","+90"],["🇹🇲","Turkmenistan","+993"],["🇺🇬","Uganda","+256"],["🇺🇦","Ukraine","+380"],["🇦🇪","United Arab Emirates","+971"],["🇬🇧","United Kingdom","+44"],["🇺🇸","United States","+1"],["🇺🇾","Uruguay","+598"],["🇺🇿","Uzbekistan","+998"],["🇻🇺","Vanuatu","+678"],["🇻🇪","Venezuela","+58"],["🇻🇳","Vietnam","+84"],["🇾🇪","Yemen","+967"],["🇿🇲","Zambia","+260"],["🇿🇼","Zimbabwe","+263"]];
+function iso(flag){var cp=[].concat.apply([],[...flag].map(function(c){return c.codePointAt(0);}));return String.fromCharCode(cp[0]-127397)+String.fromCharCode(cp[1]-127397);}
+  function flagUrl(flag){return 'https://flagcdn.com/w40/'+iso(flag).toLowerCase()+'.png';}
+  
+var YEARS=['Less than 2 years','2–4 years','5–8 years','9+ years'];
+  function initDD(pick,opts,searchable,sel){
+    var btn=pick.querySelector('.ccode'),list=pick.querySelector('.cclist'),search=pick.querySelector('.ccsearch');
+    var val=pick.querySelector('.dd-v'),img=pick.querySelector('.ccflag');
+    function close(){pick.classList.remove('open');}
+    function draw(q){
+      list.innerHTML='';
+      opts.forEach(function(o){
+        if(q&&o.l.toLowerCase().indexOf(q)<0)return;
+        var d=document.createElement('div');d.className='ccopt'+(o.l===sel?' on':'');
+        d.innerHTML=(o.f?'<img class="fl" src="'+flagUrl(o.f)+'" alt="" loading="lazy" />':'')+'<span class="nm">'+o.l+'</span>';
+        d.onclick=function(){sel=o.l;val.textContent=o.l;if(img&&o.f)img.src=flagUrl(o.f);close();};
+        list.appendChild(d);
+      });
+    }
+    btn.onclick=function(e){e.stopPropagation();var was=pick.classList.contains('open');document.querySelectorAll('.ccpick.open').forEach(function(p){p.classList.remove('open');});if(!was){pick.classList.add('open');draw('');if(search){search.value='';search.focus();}var on=list.querySelector('.ccopt.on');if(on)list.scrollTop=Math.max(0,on.offsetTop-90);}};
+    if(search)search.oninput=function(){draw(search.value.trim().toLowerCase());};
+    document.addEventListener('click',function(e){if(!pick.contains(e.target))close();});
+    val.textContent=sel;
+  }
+  document.querySelectorAll('.sel-dd[data-dd="years"]').forEach(function(p){initDD(p,YEARS.map(function(y){return{l:y};}),false,'5–8 years');});
+  document.querySelectorAll('.sel-dd[data-dd="country"]').forEach(function(p){initDD(p,COUNTRIES.map(function(c){return{l:c[1],f:c[0]};}),true,'United States');});
+  
+document.querySelectorAll('.qz-up input[type=file]').forEach(function(inp){inp.addEventListener('change',function(){var w=inp.closest('.qz-up'),s=w.querySelector('.qz-up-s'),f=inp.files||[];if(f.length){s.textContent=f.length>1?f.length+' files selected':f[0].name;w.classList.add('has');}else{s.textContent=s.getAttribute('data-def');w.classList.remove('has');}});});
+})();</script><script>document.querySelectorAll('.qz-file input[type=file]').forEach(function(inp){inp.addEventListener('change',function(){var w=inp.closest('.qz-file'),t=w.querySelector('.qz-file-txt');if(inp.files&&inp.files[0]){t.textContent=inp.files[0].name;w.classList.add('has');}else{t.textContent='Upload PDF or DOC';w.classList.remove('has');}});});</script><script>document.querySelectorAll('.qz-links .qz-file input[type=file]').forEach(function(inp){inp.addEventListener('change',function(){if(inp.files&&inp.files[0])inp.closest('.qz-file').querySelector('.qz-file-txt').textContent=inp.files[0].name;});});</script></body>
+</html>

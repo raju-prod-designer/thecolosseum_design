@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>theColosseum</title>
+<link rel="stylesheet" href="colosseum.css" />
+<style>
+:root{--blue:#678DC6;--field:#f4f4f3;--line:#e6e4df;--ink2:#1c1d1c}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:#fff;color:var(--ink2);font-family:'Inter',system-ui,sans-serif;display:flex;align-items:center;justify-content:center;padding:32px}
+a{text-decoration:none}
+.entry{display:flex;flex-direction:column;align-items:center;text-align:center}
+.entry-logo{font-weight:800;font-size:40px;letter-spacing:-0.03em;color:var(--ink2);line-height:1}
+.entry-logo .the{font-weight:400;color:inherit}
+.entry-sub{font-size:15px;color:var(--t-body);margin:16px 0 46px;text-wrap:pretty}
+.entry-actions{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+.entry-btn{font-family:inherit;font-size:15px;font-weight:700;padding:15px 44px;border-radius:var(--r-pill);cursor:pointer;transition:background .15s,color .15s,border-color .15s,transform .1s;border:1px solid transparent}
+.entry-btn:active{transform:translateY(1px)}
+.entry-btn.company{background:var(--ink2);color:#fff}
+.entry-btn.company:hover{background:var(--blue)}
+.entry-btn.candidate{background:#fff;color:var(--ink2);border-color:var(--line)}
+.entry-btn.candidate:hover{border-color:var(--ink2);color:var(--blue)}
+</style>
+<style id="tc-mark-css">.tc-mark{display:inline-flex;align-items:center;flex:none;margin-right:.5em;vertical-align:-.12em;line-height:0}.tc-mark svg{width:1em;height:1.08em;display:block}</style></head>
+<body>
+<div class="entry">
+<div class="entry-logo"><span class="tc-mark"><svg viewBox="0 0 40 42" aria-hidden="true"><path fill="#648dc6" d="M1 1H16V8H8V34H16V41H1ZM39 1H24V8H32V34H24V41H39Z"></path></svg></span><span class="the">the</span>Colosseum</div>
+<p class="entry-sub">Choose how you want to enter the arena.</p>
+<div class="entry-actions">
+<a class="entry-btn company" href="Company - Sign up.html">Company</a>
+<a class="entry-btn candidate" href="Candidate - Sign up copy.html">Candidate</a>
+</div>
+</div>
+<script src="mobile.js"></script>
+</body>
+</html>

@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>theColosseum — User Journey &amp; Flow</title>
+<link rel="stylesheet" href="colosseum.css" />
+<style>
+:root{--blue:#678DC6;--field:#f4f4f3;--line:#e6e4df;--ink2:#1c1d1c;--co:#678DC6;--ca:#c9a24a}
+html,body{margin:0;background:#eceae5}
+body{font-family:"Inter",system-ui,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+
+.map{width:1600px;margin:0 auto;background:var(--paper);padding:64px 72px 80px;position:relative}
+
+/* ---------- masthead ---------- */
+.mast{display:flex;align-items:flex-end;justify-content:space-between;gap:40px;padding-bottom:30px;border-bottom:1px solid var(--hair);margin-bottom:8px}
+.mast .lede{max-width:760px}
+.brand{font-weight:800;font-size:30px;letter-spacing:-0.03em;color:var(--ink);line-height:1;margin-bottom:20px}
+.brand .the{font-weight:400;color:var(--t-mute)}
+.eyebrow{font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:var(--t-faint);font-weight:600;margin:0 0 12px}
+.mast h1{font-family:"P22Mackinac",serif;font-weight:400;font-size:52px;line-height:1.0;letter-spacing:-0.03em;margin:0;color:var(--ink)}
+.mast p{margin:16px 0 0;font-size:15.5px;line-height:1.6;color:var(--t-body);max-width:640px;text-wrap:pretty}
+.mast .legend{flex:none;display:flex;flex-direction:column;gap:12px;padding-bottom:4px}
+.leg{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--t-body);font-weight:500}
+.leg .sw{width:26px;height:10px;border-radius:3px}
+.leg .sw.co{background:var(--co)}
+.leg .sw.ca{background:var(--ca)}
+.leg .sw.ai{background:var(--wash),var(--white);border:1px solid var(--hair-ink)}
+
+/* ---------- journey band ---------- */
+.journey{margin-top:56px}
+.jhead{display:flex;align-items:center;gap:18px;margin-bottom:26px}
+.jhead .tab{display:inline-flex;align-items:center;gap:11px;padding:9px 18px 9px 14px;border-radius:var(--r-pill);font-size:13px;font-weight:700;letter-spacing:0.04em;color:#fff}
+.jhead .tab .n{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:12px;background:rgba(255,255,255,0.22)}
+.journey.co .tab{background:var(--co)}
+.journey.ca .tab{background:var(--ca)}
+.jhead h2{font-family:"P22Mackinac",serif;font-weight:400;font-size:30px;letter-spacing:-0.02em;margin:0;color:var(--ink)}
+.jhead .sub{font-size:14px;color:var(--t-mute);margin-left:2px}
+.jhead .spine{flex:1;height:1px;background:var(--hair)}
+
+/* phase row */
+.phases{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative}
+.phase{position:relative;padding:0 26px}
+.phase:first-child{padding-left:0}
+.phase:last-child{padding-right:0}
+.phase+.phase::before{content:'';position:absolute;left:-8px;top:54px;width:16px;height:16px;border-top:2px solid var(--arrow);border-right:2px solid var(--arrow);transform:rotate(45deg)}
+.journey.co{--arrow:#b7c6dd}
+.journey.ca{--arrow:#e0cf9f}
+.ph-lbl{display:flex;align-items:baseline;gap:10px;margin-bottom:18px}
+.ph-lbl .idx{font-family:"P22Mackinac",serif;font-size:15px;color:var(--dark-accent)}
+.journey.co .ph-lbl .idx{color:var(--co)}
+.journey.ca .ph-lbl .idx{color:#a9833a}
+.ph-lbl .t{font-size:12px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--t-strong)}
+.ph-stack{display:flex;flex-direction:column;gap:14px}
+
+/* node card */
+.node{background:var(--white);border:1px solid var(--hair);border-radius:var(--r-card);padding:16px 18px;box-shadow:var(--shadow-card);position:relative}
+.node .step-no{position:absolute;top:-9px;left:16px;font-size:10.5px;font-weight:700;letter-spacing:0.06em;color:var(--t-faint);background:var(--paper);padding:0 7px;border-radius:6px}
+.node h4{font-family:"P22Mackinac",serif;font-weight:500;font-size:16px;letter-spacing:-0.01em;color:var(--ink);margin:2px 0 6px;line-height:1.2}
+.node p{margin:0;font-size:12.8px;line-height:1.5;color:var(--t-body);text-wrap:pretty}
+.node .kv{margin:9px 0 0;display:flex;flex-direction:column;gap:5px}
+.node .kv li{list-style:none;font-size:11.8px;color:var(--t-mute);display:flex;gap:7px;align-items:flex-start;line-height:1.4}
+.node .kv li::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--co);margin-top:6px;flex:none}
+.journey.ca .node .kv li::before{background:var(--ca)}
+.node .chips{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px}
+.node .c{font-size:11px;font-weight:600;padding:3px 9px;border-radius:var(--r-pill);background:var(--field);color:var(--t-body);border:1px solid var(--line)}
+.journey.co .node .c.hl{background:var(--accent-soft);color:var(--accent-press);border-color:transparent}
+.journey.ca .node .c.hl{background:rgba(201,162,74,0.15);color:#9c7d2c;border-color:transparent}
+
+/* AI node treatment */
+.node.ai-node{background:var(--wash-soft),var(--white);border-color:var(--hair-ink)}
+.ai-tag{display:inline-flex;align-items:center;gap:5px;font-size:9.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent-press);margin-bottom:8px}
+.ai-tag .sp{color:var(--accent);font-size:12px}
+
+/* down connector between stacked nodes */
+.drop{height:14px;display:grid;place-items:center;margin:-2px 0}
+.drop::after{content:'';width:2px;height:14px;background:var(--arrow)}
+
+/* mini step badge inside onboarding node */
+.substeps{margin-top:11px;display:flex;flex-direction:column;gap:8px}
+.sub{display:flex;gap:10px;align-items:flex-start}
+.sub .sn{width:20px;height:20px;border-radius:6px;background:var(--co);color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center;flex:none}
+.journey.ca .sub .sn{background:var(--ca)}
+.sub .sc b{display:block;font-size:12.5px;color:var(--ink);font-weight:600;margin-bottom:2px}
+.sub .sc span{font-size:11.5px;color:var(--t-mute);line-height:1.4}
+
+/* ---------- arena layer ---------- */
+.arena{margin-top:64px;background:var(--ink);color:var(--on-dark);border-radius:var(--r-lg);padding:38px 44px;position:relative;overflow:hidden}
+.arena::after{content:'';position:absolute;inset:0;background:var(--wash);opacity:0.5;pointer-events:none}
+.arena .in{position:relative;z-index:1}
+.arena .a-head{display:flex;align-items:center;gap:14px;margin-bottom:8px}
+.arena .a-head .eyebrow{color:var(--on-dark-soft);margin:0}
+.arena h3{font-family:"P22Mackinac",serif;font-weight:400;font-size:28px;letter-spacing:-0.02em;margin:0 0 6px}
+.arena>.in>p{margin:0 0 26px;font-size:14px;line-height:1.6;color:var(--on-dark-dim);max-width:720px}
+.arena .grid{display:grid;grid-template-columns:1.15fr 1fr;gap:40px;align-items:center}
+.tiers{display:flex;align-items:flex-end;gap:16px}
+.tier{flex:1;background:rgba(246,243,238,0.06);border:1px solid rgba(246,243,238,0.14);border-radius:var(--r-card);padding:18px 18px 20px;text-align:center}
+.tier .med{width:44px;height:44px;border-radius:50%;margin:0 auto 12px;display:grid;place-items:center;font-weight:800;font-size:15px;color:var(--ink)}
+.tier.b .med{background:#c48a5a}.tier.g .med{background:var(--gold)}.tier.d .med{background:#bfe0e6}
+.tier b{display:block;font-size:15px;font-weight:700;color:var(--on-dark);margin-bottom:4px}
+.tier span{font-size:11.5px;color:var(--on-dark-soft);line-height:1.4}
+.tier.b{margin-bottom:0}.tier.g{margin-bottom:14px}.tier.d{margin-bottom:28px}
+.a-notes{display:flex;flex-direction:column;gap:16px}
+.a-note{display:flex;gap:13px}
+.a-note .an-ic{width:30px;height:30px;border-radius:8px;background:rgba(246,243,238,0.1);display:grid;place-items:center;flex:none;color:var(--accent)}
+.a-note .an-ic svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8}
+.a-note b{display:block;font-size:13.5px;color:var(--on-dark);margin-bottom:3px}
+.a-note span{font-size:12.5px;color:var(--on-dark-dim);line-height:1.5}
+
+/* ---------- end state ---------- */
+.ends{margin-top:60px}
+.ends-head{text-align:center;margin-bottom:34px}
+.ends-head .eyebrow{margin-bottom:10px}
+.ends-head h3{font-family:"P22Mackinac",serif;font-weight:400;font-size:32px;letter-spacing:-0.02em;margin:0;color:var(--ink)}
+.ends-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.end{background:var(--white);border:1px solid var(--hair);border-radius:var(--r-lg);padding:30px 34px;box-shadow:var(--shadow-card)}
+.end .e-top{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.end .e-top .dot{width:12px;height:12px;border-radius:3px}
+.end.co .e-top .dot{background:var(--co)}.end.ca .e-top .dot{background:var(--ca)}
+.end .e-top h4{font-family:"P22Mackinac",serif;font-weight:500;font-size:20px;letter-spacing:-0.01em;margin:0;color:var(--ink)}
+.flowline{list-style:none;margin:0;padding:0;counter-reset:fl}
+.flowline li{position:relative;padding:0 0 20px 40px;counter-increment:fl}
+.flowline li::before{content:counter(fl);position:absolute;left:0;top:0;width:26px;height:26px;border-radius:50%;font-size:12px;font-weight:700;display:grid;place-items:center;color:#fff}
+.end.co .flowline li::before{background:var(--co)}.end.ca .flowline li::before{background:var(--ca)}
+.flowline li::after{content:'';position:absolute;left:12px;top:28px;bottom:2px;width:2px;background:var(--hair)}
+.flowline li:last-child{padding-bottom:0}
+.flowline li:last-child::after{display:none}
+.flowline li b{display:block;font-size:14px;color:var(--ink);font-weight:600;margin-bottom:2px}
+.flowline li span{font-size:12.8px;color:var(--t-mute);line-height:1.5}
+
+.foot{margin-top:56px;padding-top:22px;border-top:1px solid var(--hair);display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--t-faint)}
+.foot .r{display:flex;gap:22px}
+</style>
+</head>
+<body>
+<div class="map">
+
+  <!-- masthead -->
+  <div class="mast">
+    <div class="lede">
+      <div class="brand"><span class="the">the</span>Colosseum</div>
+      <p class="eyebrow">Product structure · user journey &amp; flow</p>
+      <h1>Two connected arenas,<br/>one AI-native hiring loop</h1>
+      <p>Colosseum runs as two linked products. The company side is a web app for control over JDs, funnel visibility, candidate quality and evaluation. The candidate side is an AI-assisted flow for profile, screening, challenge-taking and matching. Both share one principle — infer first, ask only for what's missing.</p>
+    </div>
+    <div class="legend">
+      <div class="leg"><span class="sw co"></span> Company side</div>
+      <div class="leg"><span class="sw ca"></span> Candidate side</div>
+      <div class="leg"><span class="sw ai"></span> AI works in background</div>
+    </div>
+  </div>
+
+  <!-- ============ COMPANY JOURNEY ============ -->
+  <section class="journey co">
+    <div class="jhead">
+      <span class="tab"><span class="n">1</span> Company</span>
+      <h2>From a website URL to a live arena</h2>
+      <span class="sub">infer context → confirm → activate challenges → operate the funnel</span>
+      <span class="spine"></span>
+    </div>
+
+    <div class="phases">
+      <!-- PHASE A -->
+      <div class="phase">
+        <div class="ph-lbl"><span class="idx">A</span><span class="t">Enter</span></div>
+        <div class="ph-stack">
+          <div class="node">
+            <span class="step-no">STEP 2</span>
+            <h4>Website URL as the entry point</h4>
+            <p>One input to start. Instead of a long form, Colosseum takes the company URL and linked socials as the seed for everything it infers.</p>
+          </div>
+          <div class="drop"></div>
+          <div class="node ai-node">
+            <span class="step-no">STEP 3</span>
+            <div class="ai-tag"><span class="sp">✦</span> Working in background</div>
+            <h4>Background intelligence during signup</h4>
+            <p>The moment an account is created, Colosseum extracts context and shows a “working” loading state so the AI feels present immediately.</p>
+            <ul class="kv">
+              <li>Value proposition &amp; stage</li>
+              <li>Team size &amp; hiring context</li>
+              <li>Socials &amp; likely hiring needs</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHASE B -->
+      <div class="phase">
+        <div class="ph-lbl"><span class="idx">B</span><span class="t">Onboard</span></div>
+        <div class="ph-stack">
+          <div class="node ai-node">
+            <span class="step-no">STEP 4–7</span>
+            <div class="ai-tag"><span class="sp">✦</span> Inferred, then confirmed</div>
+            <h4>3 fixed steps, dynamic fields</h4>
+            <p>Sections are fixed per company; the fields inside adapt to what was inferred. Each answer is proposed first, not asked blank.</p>
+            <div class="substeps">
+              <div class="sub"><span class="sn">1</span><span class="sc"><b>Your Company</b><span>Confirm inferred USP · pre-set stage &amp; team size · request LinkedIn / X / GitHub only if not found</span></span></div>
+              <div class="sub"><span class="sn">2</span><span class="sc"><b>Hiring Needs</b><span>Roles, seniority &amp; planned hires pre-filled as chips — editable since job data may be stale</span></span></div>
+              <div class="sub"><span class="sn">3</span><span class="sc"><b>Problems</b><span>“Is this the core business problem?” · what matters in a strong hire · urgency</span></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHASE C -->
+      <div class="phase">
+        <div class="ph-lbl"><span class="idx">C</span><span class="t">Activate</span></div>
+        <div class="ph-stack">
+          <div class="node ai-node">
+            <span class="step-no">STEP 8</span>
+            <div class="ai-tag"><span class="sp">✦</span> Turning data into value</div>
+            <h4>“Preparing your Arena”</h4>
+            <p>A transition screen converts onboarding into visible value before any dashboard.</p>
+            <ul class="kv">
+              <li>Company-specific challenges identified</li>
+              <li>Suggested challenge framing</li>
+              <li>e.g. “417 targeted candidates”</li>
+            </ul>
+          </div>
+          <div class="drop"></div>
+          <div class="node">
+            <span class="step-no">STEP 9–13</span>
+            <h4>Challenge screen, not a dashboard</h4>
+            <p>The first web-app screen centers on 3 proposed challenges — each with title, description, effort level and targeted candidate count.</p>
+            <div class="chips">
+              <span class="c hl">Inline edit on hover</span>
+              <span class="c">Floating AI assistant</span>
+              <span class="c">Attach a JD</span>
+              <span class="c hl">Candidate count teased</span>
+              <span class="c">Live shuffle motion</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHASE D -->
+      <div class="phase">
+        <div class="ph-lbl"><span class="idx">D</span><span class="t">Operate</span></div>
+        <div class="ph-stack">
+          <div class="node">
+            <span class="step-no">STEP 14</span>
+            <h4>The full control layer</h4>
+            <p>The next step opens into the broader web app — the funnel-management surface the company operates day to day.</p>
+            <ul class="kv">
+              <li>Publish JDs &amp; challenges</li>
+              <li>Track positions</li>
+              <li>View candidates</li>
+              <li>Evaluate candidate quality</li>
+              <li>Manage the funnel</li>
+            </ul>
+          </div>
+          <div class="drop"></div>
+          <div class="node ai-node">
+            <div class="ai-tag"><span class="sp">✦</span> AI tooling</div>
+            <h4>Screen &amp; interview with AI</h4>
+            <p>AI tools assist screening and interviewing as candidates move through the funnel.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CANDIDATE JOURNEY ============ -->
+  <section class="journey ca">
+    <div class="jhead">
+      <span class="tab"><span class="n">2</span> Candidate</span>
+      <h2>From linked evidence to surfacing in results</h2>
+      <span class="sub">extract → build a real profile → evaluate → surface by fit &amp; performance</span>
+      <span class="spine"></span>
+    </div>
+
+    <div class="phases">
+      <!-- PHASE A -->
+      <div class="phase">
+        <div class="ph-lbl"><span class="idx">A</span><span class="t">Enter</span></div>
+        <div class="ph-stack">
+          <div class="node">
+            <span class="step-no">STEP 15</span>
+            <h4>Entry split by evidence type</h4>
+            <p>Two tracks, because the sources of evidence differ by candidate.</p>
+            <div class="chips">
+              <span class="c hl">Technical → LinkedIn + GitHub</span>
+              <span class="c hl">Creative → LinkedIn + Website</span>
+            </div>
+          </div>
+          <div class="drop"></div>
+          <div class="node ai-node">
+            <span class="step-no">STEP 16–17</span>
+            <div class="ai-tag"><span class="sp">✦</span> Extract first, ask for the rest</div>
+            <h4>Context pulled, prompts for gaps</h4>
+            <p>Same principle as the company side — account creation, then extraction from the connected sources, then dynamic prompts only for what's missing. Skills are pre-selected where confidence is high.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHASE B -->
+      <div class="phase">
+        <div class="ph-lbl"><span class="idx">B</span><span class="t">Build profile</span></div>
+        <div class="ph-stack">
+          <div class="node">
+            <span class="step-no">STEP 18</span>
+            <h4>Information captured</h4>
+            <ul class="kv">
+              <li>Strongest skills</li>
+              <li>Work preference</li>
+              <li>Availability / notice period</li>
+              <li>Resume upload</li>
+              <li>What matters most in the next role</li>
+              <li>Compensation — blank, user-entered, annual basis clear</li>
+              <li>Anything companies should know</li>
+            </ul>
+          </div>
+          <div class="drop"></div>
+          <div class="node">
+            <span class="step-no">STEP 20–21</span>
+            <h4>A real, linked profile → 0–100%</h4>
+            <p>The profile is a system for collecting linked evidence plus human context. Completeness drives visibility.</p>
+            <div class="chips">
+              <span class="c">CV upload / creation</span>
+              <span class="c">Profile picture</span>
+              <span class="c">Connected socials</span>
+              <span class="c">Work evidence</span>
+              <span class="c hl">Social / feed layer</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHASE C -->
+      <div class="phase">
+        <div class="ph-lbl"><span class="idx">C</span><span class="t">Evaluate</span></div>
+        <div class="ph-stack">
+          <div class="node ai-node">
+            <span class="step-no">STEP 22</span>
+            <div class="ai-tag"><span class="sp">✦</span> Rubric derived from the JD</div>
+            <h4>Soft-skill &amp; psychometric, in 2 layers</h4>
+            <div class="substeps">
+              <div class="sub"><span class="sn">1</span><span class="sc"><b>Baseline</b><span>Generic psychometric / soft-skill test during onboarding</span></span></div>
+              <div class="sub"><span class="sn">2</span><span class="sc"><b>Role-specific</b><span>JD-specific test on apply — AI derives the rubric from the JD &amp; company scoring</span></span></div>
+            </div>
+          </div>
+          <div class="drop"></div>
+          <div class="node">
+            <span class="step-no">STEP 23</span>
+            <h4>Assessment &amp; challenge path</h4>
+            <p>One possible sequence — reframed toward a broader candidate product, not a single screen.</p>
+            <ul class="kv">
+              <li>AI test / first-level interview</li>
+              <li>Hard + soft skill evaluation</li>
+              <li>Challenge</li>
+              <li>Deeper AI interview later</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHASE D -->
+      <div class="phase">
+        <div class="ph-lbl"><span class="idx">D</span><span class="t">Surface</span></div>
+        <div class="ph-stack">
+          <div class="node">
+            <span class="step-no">STEP 19</span>
+            <h4>Landing that builds momentum</h4>
+            <p>After onboarding, the landing screen shows that profile completion unlocks real opportunities.</p>
+            <ul class="kv">
+              <li>Company logos</li>
+              <li>Challenge rewards</li>
+              <li>“% reaching final round”</li>
+              <li>Live hiring companies that fit</li>
+            </ul>
+          </div>
+          <div class="drop"></div>
+          <div class="node ai-node">
+            <div class="ai-tag"><span class="sp">✦</span> Fit &amp; performance</div>
+            <h4>Surface into company results</h4>
+            <p>Candidates appear in the company feed / results ranked on completeness, fit and challenge performance.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ARENA LAYER ============ -->
+  <section class="arena">
+    <div class="in">
+      <div class="a-head"><p class="eyebrow">Cross-cutting layer</p></div>
+      <h3>The Arena — a gamified progression spine</h3>
+      <p>Running underneath the candidate journey: a tier system that turns flat forms into a landscape the candidate climbs. Three.js was referenced as inspiration for making the flow feel immersive rather than sequential.</p>
+      <div class="grid">
+        <div class="tiers">
+          <div class="tier b"><div class="med">B</div><b>Bronze</b><span>Auto-assigned tier on signup</span></div>
+          <div class="tier g"><div class="med">G</div><b>Gold</b><span>Unlocked by completing challenges</span></div>
+          <div class="tier d"><div class="med">D</div><b>Diamond</b><span>Top tier · highest visibility</span></div>
+        </div>
+        <div class="a-notes">
+          <div class="a-note"><span class="an-ic"><svg viewBox="0 0 24 24"><path d="M12 3l2.6 5.3 5.9.9-4.2 4.1 1 5.8-5.3-2.8-5.3 2.8 1-5.8L3.5 9.2l5.9-.9z"/></svg></span><span><b>Tier on signup</b><span>Every candidate is placed on a tier immediately, giving the journey a starting rung.</span></span></div>
+          <div class="a-note"><span class="an-ic"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span><span><b>Challenges surface by tier</b><span>Relevant challenges appear based on the current tier; clearing them unlocks the next.</span></span></div>
+          <div class="a-note"><span class="an-ic"><svg viewBox="0 0 24 24"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg></span><span><b>An arena, not a form</b><span>Progress is felt as levels in a landscape — momentum instead of a linear checklist.</span></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ END STATE ============ -->
+  <section class="ends">
+    <div class="ends-head">
+      <p class="eyebrow">Don's end-state framing</p>
+      <h3>Where each side lands</h3>
+    </div>
+    <div class="ends-grid">
+      <div class="end co">
+        <div class="e-top"><span class="dot"></span><h4>Company perspective</h4></div>
+        <ol class="flowline">
+          <li><b>Enter company context</b><span>A website URL seeds everything.</span></li>
+          <li><b>AI-inferred onboarding</b><span>Confirm and edit what Colosseum already knows.</span></li>
+          <li><b>First JD / challenge, fast</b><span>Created quickly out of the onboarding data.</span></li>
+          <li><b>Move into the web app</b><span>From arena screen into the full control layer.</span></li>
+          <li><b>Track JDs, positions &amp; funnel</b><span>Candidates and evaluation quality in one place.</span></li>
+          <li><b>Screen &amp; interview with AI</b><span>AI tooling assists the whole funnel.</span></li>
+        </ol>
+      </div>
+      <div class="end ca">
+        <div class="e-top"><span class="dot"></span><h4>Candidate perspective</h4></div>
+        <ol class="flowline">
+          <li><b>Build a real profile</b><span>Verified evidence plus social context.</span></li>
+          <li><b>Complete toward 100%</b><span>Completeness raises feed visibility.</span></li>
+          <li><b>Baseline evaluation</b><span>Psychometric / soft-skill assessment.</span></li>
+          <li><b>Discover relevant challenges</b><span>Opportunities matched to the profile.</span></li>
+          <li><b>Take challenges &amp; assessments</b><span>Role-specific tests derived from the JD.</span></li>
+          <li><b>Surface into results</b><span>Ranked by completeness, fit and performance.</span></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <div class="foot">
+    <span>theColosseum · AI-native hiring arena</span>
+    <span class="r"><span>User journey &amp; flow</span><span>v0.6</span></span>
+  </div>
+
+</div>
+</body>
+</html>

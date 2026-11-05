@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="en" class="app-shell">
+<head><style id="tc-fouc">html{visibility:hidden}</style><script>setTimeout(function(){var e=document.getElementById("tc-fouc");e&&e.remove();},1500);</script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>theColosseum — Leaderboard</title>
+<link rel="stylesheet" href="colosseum.css" />
+<style>
+:root{--blue:#678DC6;--field:#f4f4f3;--line:#e6e4df;--ink2:#1c1d1c}
+html,body{height:auto}
+html{scrollbar-width:none}
+html::-webkit-scrollbar{display:none}
+body{background:#fff;color:var(--ink2);margin:0}
+a{color:var(--ink2);text-decoration:none;font-weight:600}
+a:hover{color:var(--blue)}
+.back-link:hover,.back-link:hover span{color:var(--ink2)}
+.app{min-height:100vh;height:auto;overflow:visible;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;padding:30px 32px 60px;zoom:0.9}
+.app-top{width:100%;position:relative;display:flex;align-items:center;justify-content:center;margin-bottom:32px}
+.app-logo{flex:none;font-weight:800;font-size:26px;letter-spacing:-0.03em;color:var(--ink2);line-height:1}
+.app-logo .the{font-weight:400}
+.app-user{position:absolute;right:0;top:50%;transform:translateY(-50%);flex:none}
+.app-user.open{z-index:200}
+.app-user-btn{width:26px;height:26px;border-radius:50%;overflow:hidden;border:1px solid var(--line);background:#fff;padding:0;cursor:pointer;display:block;transition:border-color .18s,box-shadow .18s}
+.app-user-btn img{width:100%;height:100%;object-fit:cover;display:block}
+.app-user-btn:hover{border-color:var(--ink2)}
+.app-user.open .app-user-btn{border-color:var(--blue);box-shadow:0 0 0 3px rgba(103,141,198,.16)}
+.app-user-menu{position:absolute;top:calc(100% + 10px);right:0;z-index:200;min-width:176px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 16px 40px rgba(31,33,32,.16);padding:6px;display:none}
+.app-user.open .app-user-menu{display:block}
+.app-user-opt{display:flex;align-items:center;gap:11px;padding:9px 11px;border-radius:10px;cursor:pointer;font-size:13px;font-weight:600;color:var(--ink2)}
+.app-user-opt+.app-user-opt{margin-top:2px}
+.app-user-opt:hover{background:var(--field)}
+.app-user-opt svg{width:17px;height:17px;stroke:var(--ink2);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.app-user-sep{border-top:1px solid var(--line);margin:5px 4px}
+.app-user-opt.danger{color:oklch(0.6 0.13 25)}
+.app-user-opt.danger svg{stroke:oklch(0.6 0.13 25)}
+.app-user-opt.danger:hover{background:oklch(0.6 0.13 25 / 0.08)}
+.lb{width:100%;max-width:1080px;animation:rise .5s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.lb-bar{position:relative;display:flex;align-items:center;justify-content:center;gap:12px;margin:0 0 26px}
+.chal-filter{min-width:0}
+.chal-filter .filter-btn{height:36px;padding:8px 18px;font-size:13.5px;max-width:520px}
+.chal-filter .filter-btn .lbl{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chal-filter .filter-menu{left:50%;transform:translateX(-50%);min-width:460px;max-height:330px;overflow-y:auto;scrollbar-width:none}
+.chal-filter .filter-menu::-webkit-scrollbar{display:none}
+.chal-filter .filter-opt{font-weight:500;line-height:1.4;text-wrap:pretty}
+.chal-filter .filter-opt.sel{font-weight:700}
+.chal-grp{font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:#b8b9b6;padding:12px 11px 6px}
+.back-link{position:absolute;left:0;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:7px;height:32px;box-sizing:border-box;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 14px;font:inherit;font-size:13px;font-weight:600;color:var(--ink2);cursor:pointer;transition:border-color .15s,color .15s}
+.back-link:hover{border-color:var(--ink2)}
+.back-link svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.apps-btn{position:absolute;right:0;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:7px;height:32px;box-sizing:border-box;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 14px;font:inherit;font-size:13px;font-weight:600;color:var(--ink2);cursor:pointer;transition:border-color .15s,color .15s}
+.apps-btn:hover{border-color:var(--ink2);color:var(--ink2)}
+.apps-btn>svg{width:14px;height:14px;stroke:var(--t-mute);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.lb-head{max-width:660px;margin:0 auto 26px;text-align:center}
+.lb-h1{font-family:"P22Mackinac",serif;font-weight:500;font-size:32px;letter-spacing:-0.015em;margin:0}
+.lb-sub{font-size:14.5px;line-height:1.6;color:var(--t-body);margin:10px 0 0;text-wrap:pretty}
+.lb-filterbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 14px}
+.lb-filterbar .lb-stats,.lb-filterbar .filters{margin:0}
+.lb-filterbar{justify-content:center}
+.lb-filterbar .filters{margin-left:26px}
+.lb-filterbar .lb-search{margin:0}
+.lb-stats{display:flex;gap:10px;flex-wrap:wrap}
+.lb-stat{display:flex;align-items:center;gap:10px;height:38px;box-sizing:border-box;font:inherit;line-height:1;background:#fff;border:1px solid var(--line);border-radius:999px;padding:0 18px 0 12px;cursor:pointer;transition:border-color .15s,background .15s,opacity .15s}
+.lb-stat:hover{border-color:var(--ink2)}
+.lb-stat.off{opacity:.4;background:var(--field);border-color:transparent}
+.lb-stat.off:hover{opacity:.65}
+.medal{width:22px;height:22px;border-radius:50%;flex:none;display:block}
+.medal.bronze{background:linear-gradient(135deg,#cd7f32,#a9691f)}
+.medal.gold{background:linear-gradient(135deg,#e6c200,#b8901a)}
+.medal.platinum{background:linear-gradient(135deg,#dfe3e8,#a7adba)}
+.lb-stat b{font-size:15px;font-weight:700;line-height:1}
+.lb-stat span{font-size:13.5px;color:var(--t-body);font-weight:500;line-height:1}
+.lb-search{display:flex;align-items:center;gap:8px;height:38px;box-sizing:border-box;width:190px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:0 16px;transition:border-color .18s,box-shadow .18s}
+.lb-search:focus-within{border-color:var(--blue);box-shadow:0 0 0 3px rgba(103,141,198,.16)}
+.lb-search svg{width:15px;height:15px;stroke:var(--t-mute);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.lb-search input{flex:1;min-width:0;border:0;outline:0;background:transparent;font:inherit;font-size:13.5px;line-height:1;color:var(--ink2)}
+.lb-search input::placeholder{color:var(--t-faint)}
+.filter{position:relative}
+.filters{display:flex;gap:10px;margin:0 0 6px}
+.filter-btn{display:flex;align-items:center;gap:9px;height:38px;box-sizing:border-box;line-height:1;box-sizing:border-box;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 14px;font:inherit;font-size:13px;font-weight:600;color:var(--ink2);cursor:pointer;white-space:nowrap;transition:border-color .18s,box-shadow .18s}
+.filter-btn:hover{border-color:var(--ink2)}
+.filter-btn>svg{width:13px;height:13px;stroke:var(--t-mute);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .18s;flex:none}
+.filter.open .filter-btn{border-color:var(--blue);box-shadow:0 0 0 3px rgba(103,141,198,.16)}
+.filter.open .filter-btn>svg{transform:rotate(180deg)}
+.filter-menu{position:absolute;top:calc(100% + 8px);left:0;z-index:60;min-width:220px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 16px 40px rgba(31,33,32,.16);padding:8px;display:none}
+.filter.open .filter-menu{display:block}
+.filter-opt{display:flex;align-items:center;gap:11px;padding:8px 11px;border-radius:9px;cursor:pointer;font-size:13px;font-weight:600;color:var(--ink2)}
+.filter-opt:hover{background:var(--field)}
+.filter-opt.sel{color:var(--blue)}
+.rank-table{width:100%;border-collapse:collapse;margin-top:16px}
+.rank-table th{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:#b8b9b6;text-align:left;padding:0 14px 12px;border-bottom:1px solid var(--line)}
+.rank-table th.num,.rank-table td.num{text-align:right}
+.rank-table td{padding:12px 14px;border-bottom:1px solid var(--hair-soft,#f0efea);font-size:13.5px;color:var(--t-body);vertical-align:middle}
+.rank-table tbody tr{transition:background .15s}
+.rank-table tbody tr:hover{background:var(--field)}
+.rk{font-size:14px;font-weight:700;color:var(--ink2);width:78px;white-space:nowrap}
+.rk-move{font-size:11px;font-weight:700;margin-left:7px}
+.rk-move.up{color:#2a9d6e}
+.rk-move.down{color:#c0605a}
+.rk-move.flat{color:var(--t-faint)}
+.u{display:flex;align-items:center;gap:12px}
+.u-av{width:34px;height:34px;border-radius:50%;object-fit:cover;flex:none;border:1.5px solid var(--line)}
+.u-tx{display:flex;flex-direction:column;gap:2px;min-width:0}
+.u-name{font-size:14px;font-weight:700;color:var(--ink2);white-space:nowrap}
+.u-role{font-size:12px;color:var(--t-mute);white-space:nowrap}
+.bdgs{display:flex;align-items:center;gap:7px}
+.bdg-hex{position:relative;width:28px;height:31px;flex:none;display:grid;place-items:center;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:var(--field)}
+.bdg-hex svg{width:14px;height:14px;stroke:var(--t-mute);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.bdg-hex.earned{background:rgba(103,141,198,.14)}
+.bdg-hex.earned svg{stroke:var(--blue)}
+.bdg-hex.gold{background:rgba(201,162,74,.16)}
+.bdg-hex.gold svg{stroke:#a7842f}
+.bdg-more{font-size:11.5px;font-weight:700;color:var(--t-mute)}
+.pts{font-size:14px;font-weight:700;color:var(--ink2)}
+.rank-table tr.me{background:rgba(103,141,198,.07)}
+.rank-table tr.me:hover{background:rgba(103,141,198,.12)}
+.me-tag{font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);border:1px solid rgba(103,141,198,.4);border-radius:999px;padding:2px 7px;margin-left:9px}
+.lb-more{display:flex;justify-content:center;margin-top:26px}
+.you{display:grid;grid-template-columns:minmax(260px,.85fr) 1.15fr;gap:0;background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow-card);overflow:hidden;margin:0 0 26px}
+.you-l{padding:24px 26px;display:flex;flex-direction:column;gap:16px}
+.you-lbl{font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;font-weight:700;color:#b8b9b6}
+.you-id{display:flex;align-items:center;gap:14px}
+.you-av{width:46px;height:46px;border-radius:50%;object-fit:cover;border:1.5px solid var(--line);flex:none}
+.you-rk{display:flex;align-items:baseline;gap:9px}
+.you-rk b{font-family:"P22Mackinac",serif;font-weight:500;font-size:34px;letter-spacing:-0.02em;line-height:1}
+.you-rk span{font-size:12.5px;color:var(--t-mute);font-weight:600}
+.you-nm{font-size:13.5px;font-weight:700;margin-top:4px}
+.you-facts{display:flex;gap:26px;flex-wrap:wrap;padding-top:16px;border-top:1px solid var(--line)}
+.you-fact{display:flex;flex-direction:column;gap:3px}
+.you-fact .k{font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;font-weight:700;color:#b8b9b6}
+.you-fact .v{font-size:14.5px;font-weight:700;color:var(--ink2)}
+.you-fact .v.up{color:#2a9d6e}
+.you-r{padding:24px 26px;background:#fff;border-left:1px solid var(--line);display:flex;flex-direction:column;gap:14px}
+.you-ai-h{display:flex;align-items:center;gap:8px;font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;font-weight:700;color:#5876b3}
+.you-ai-h svg{width:13px;height:13px;stroke:var(--blue);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.you-gaps{display:flex;gap:10px;flex-wrap:wrap}
+.gap-pill{display:flex;align-items:baseline;gap:7px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:12.5px;color:var(--t-body);font-weight:600}
+.gap-pill b{font-size:13px;color:var(--ink2)}
+.you-tips{display:flex;flex-direction:column;gap:11px;margin:2px 0 0}
+.tip{display:flex;gap:11px;font-size:13.5px;line-height:1.55;color:var(--t-body);text-wrap:pretty}
+.tip i{flex:none;color:var(--ink2);font-style:normal;font-size:13.5px;font-weight:700;line-height:1.55}
+.tip b{color:var(--ink2);font-weight:700}
+@media(max-width:900px){.you{grid-template-columns:1fr}.you-r{border-left:0;border-top:1px solid var(--line)}}
+.more-btn{font:inherit;font-size:13px;font-weight:700;color:var(--ink2);background:#fff;border:1px solid var(--line);border-radius:999px;padding:11px 26px;cursor:pointer;transition:border-color .15s,color .15s}
+.more-btn:hover{border-color:var(--ink2);color:var(--blue)}
+.hide{display:none}
+.cm-back{position:fixed;inset:0;z-index:400;background:rgba(28,29,28,.42);backdrop-filter:blur(2px);display:none;align-items:flex-start;justify-content:center;padding:44px 24px;overflow-y:auto}
+.cm-back.open{display:flex;animation:cmFade .18s ease}
+@keyframes cmFade{from{opacity:0}to{opacity:1}}
+@keyframes cmRise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.cm{position:relative;width:100%;max-width:860px;background:#fff;border:1px solid var(--line);border-radius:22px;box-shadow:0 30px 70px rgba(31,33,32,.24);padding:30px 34px 34px;animation:cmRise .22s ease;margin:auto}
+.cm-x{position:absolute;top:18px;right:18px;width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:#fff;display:grid;place-items:center;cursor:pointer;padding:0;transition:border-color .15s,background .15s}
+.cm-x:hover{border-color:var(--ink2);background:var(--field)}
+.cm-x svg{width:14px;height:14px;stroke:var(--ink2);fill:none;stroke-width:2.2;stroke-linecap:round}
+.cm-head{display:flex;align-items:flex-start;gap:20px;padding:0 40px 22px 0;border-bottom:1px solid var(--line)}
+.cm-av{width:78px;height:78px;border-radius:50%;overflow:hidden;border:1px solid var(--line);flex:none}
+.cm-av img{width:100%;height:100%;object-fit:cover;display:block}
+.cm-id{flex:1;min-width:0}
+.cm-name{font-family:"P22Mackinac",serif;font-weight:500;font-size:28px;letter-spacing:-0.02em;line-height:1.1;margin:0 0 5px}
+.cm-role{font-size:14px;color:var(--t-body);margin:0 0 11px}
+.cm-chips{display:flex;flex-wrap:wrap;gap:7px}
+.cm-chip{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;color:var(--t-body);background:var(--field);border:1px solid var(--line);border-radius:999px;padding:5px 11px}
+.cm-chip svg{width:12px;height:12px;stroke:var(--t-mute);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.cm-chip.tier{color:var(--ink2);background:rgba(201,162,74,.13);border-color:rgba(201,162,74,.3)}
+.cm-chip.tier.platinum{background:rgba(120,132,148,.14);border-color:rgba(120,132,148,.3)}
+.cm-chip.tier.bronze{background:rgba(168,116,74,.13);border-color:rgba(168,116,74,.3)}
+.cm-chip.score{color:var(--blue);background:rgba(103,141,198,.12);border-color:rgba(103,141,198,.25)}
+.cm-rank{flex:none;text-align:right}
+.cm-rank .k{display:block;font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;font-weight:700;color:#b8b9b6;margin:0 0 4px}
+.cm-rank .v{font-family:"P22Mackinac",serif;font-weight:500;font-size:30px;line-height:1;letter-spacing:-0.02em}
+.cm-rank .p{display:block;font-size:12px;font-weight:600;color:var(--t-mute);margin-top:5px}
+.cm-body{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:38px;padding:24px 0 0;align-items:start}
+.cm-sec+.cm-sec{margin-top:28px}
+.cm-h{font-family:"P22Mackinac",serif;font-weight:500;font-size:17px;letter-spacing:-0.01em;margin:0 0 12px}
+.cm-lede{font-size:14px;line-height:1.7;color:var(--t-body);margin:0;text-wrap:pretty}
+.cm-list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.cm-list li{display:flex;gap:10px;font-size:14px;line-height:1.6;color:var(--t-body)}
+.cm-list li::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--blue);flex:none;margin-top:8px}
+.cm-pills{display:flex;flex-wrap:wrap;gap:7px}
+.cm-pill{font-size:12.5px;font-weight:600;color:var(--ink2);background:var(--field);border:1px solid var(--line);border-radius:999px;padding:6px 13px}
+.cm-card{background:var(--field);border:1px solid var(--line);border-radius:16px;padding:16px 18px}
+.cm-card-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.cm-card-lbl{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t-mute)}
+.cm-card-num{font-family:"P22Mackinac",serif;font-weight:500;font-size:32px;line-height:1;letter-spacing:-0.03em}
+.cm-card-num span{font-size:15px;color:var(--t-mute)}
+.cm-dims{display:grid;gap:13px;padding:14px 0 0}
+.cm-dim{display:grid;grid-template-columns:1fr auto;gap:5px 12px;align-items:center}
+.cm-dim-n{font-size:13px;font-weight:600;text-transform:capitalize}
+.cm-dim-s{font-size:12px;color:var(--t-mute);font-variant-numeric:tabular-nums}
+.cm-bar{grid-column:1/-1;height:5px;border-radius:99px;background:var(--line);overflow:hidden}
+.cm-bar i{display:block;height:100%;border-radius:99px;background:var(--ink2)}
+.cm-dim.best .cm-bar i{background:var(--blue)}
+.cm-rail-sec+.cm-rail-sec{margin-top:26px;padding-top:22px;border-top:1px solid var(--line)}
+.cm-rail-h{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--t-faint);margin:0 0 12px}
+.cm-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cm-stat .k{display:block;font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;font-weight:700;color:#b8b9b6;margin:0 0 3px}
+.cm-stat .v{font-size:15px;font-weight:700;color:var(--ink2)}
+.cm-links{display:grid;gap:10px}
+.cm-link{display:flex;align-items:center;gap:10px;font-size:13.5px;font-weight:600;color:var(--ink2);word-break:break-all}
+.cm-link svg{width:16px;height:16px;fill:var(--t-mute);flex:none}
+.cm-link span{text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--line)}
+.cm-link:hover span{text-decoration-color:var(--blue)}
+.cm-bdgs{display:flex;flex-wrap:wrap;gap:14px}
+.cm-bdg{width:66px;text-align:center}
+.cm-bdg .hx{position:relative;width:54px;height:60px;margin:0 auto 7px;display:grid;place-items:center;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:var(--field)}
+.cm-bdg .hx svg{width:21px;height:21px;stroke:var(--t-mute);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.cm-bdg.earned .hx{background:rgba(103,141,198,.14)}
+.cm-bdg.earned .hx svg{stroke:var(--blue)}
+.cm-bdg.gold .hx{background:rgba(201,162,74,.16)}
+.cm-bdg.gold .hx svg{stroke:#a7842f}
+.cm-bdg-n{font-size:10.5px;font-weight:600;color:var(--t-body);line-height:1.35}
+.rank-table tbody tr{cursor:pointer}
+@media(max-width:820px){.cm-body{grid-template-columns:1fr;gap:26px}.cm{padding:26px 22px 28px}}
+@media(max-width:640px){.lb-bar{flex-wrap:wrap;justify-content:space-between;gap:10px;margin-bottom:22px}.lb-bar .back-link,.lb-bar .apps-btn{position:static!important;transform:none!important;margin:0!important}.lb-bar .chal-filter{order:3;flex-basis:100%;display:flex;justify-content:center}.lb-bar .chal-filter .filter-btn{width:100%;justify-content:center}.lb-bar .chal-filter .filter-menu{left:0;right:0}.lb-h1{font-size:28px}.lb-sub{font-size:13.5px}.you-l,.you-r{padding:18px}.you-facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.you-fact .v{font-size:14px}.lb-filterbar{gap:8px}.lb-filterbar .filters{margin-left:0}.lb-stat{padding:0 12px 0 10px;gap:8px}.lb-search{width:100%}.rank-table th:nth-child(4),.rank-table td:nth-child(4),.rank-table th:nth-child(5),.rank-table td:nth-child(5){display:none}.rank-table th,.rank-table td{padding-left:8px!important;padding-right:8px!important}}
+</style>
+<style id="tc-mark-css">.tc-mark{display:inline-flex;align-items:center;flex:none;margin-right:.5em;vertical-align:-.12em;line-height:0}.tc-mark svg{width:1em;height:1.08em;display:block}</style><link rel="stylesheet" href="app-shell.css" />
+</head>
+<body>
+<div class="app">
+  <div class="app-top">
+    <div class="app-logo"><span class="tc-mark"><svg viewBox="0 0 40 42" aria-hidden="true"><path fill="#648dc6" d="M1 1H16V8H8V34H16V41H1ZM39 1H24V8H32V34H24V41H39Z"></path></svg></span><span class="the">the</span>Colosseum</div>
+    <nav class="tw-nav" aria-label="Main"><a href="Candidate - Webapp copy.html"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"/><line x1="13" y1="19" x2="19" y2="13"/><line x1="16" y1="16" x2="20" y2="20"/><line x1="19" y1="21" x2="21" y2="19"/><polyline points="14.5 6.5 18 3 21 3 21 6 17.5 9.5"/><line x1="5" y1="14" x2="9" y2="18"/><line x1="7" y1="17" x2="4" y2="20"/><line x1="3" y1="19" x2="5" y2="21"/></svg>Challenges &amp; Jobs</a><span class="sep"></span><a href="Candidate - My applications.html"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="7" width="17" height="13" rx="2"/><path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7"/></svg>My applications</a><span class="sep"></span><a href="Candidate - Leaderboard.html" class="on" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><line x1="4" y1="20" x2="20" y2="20"/><rect x="5" y="12" width="4" height="8"/><rect x="10" y="7" width="4" height="13"/><rect x="15" y="10" width="4" height="10"/></svg>Leaderboard</a></nav>
+    <div class="app-user">
+      <button class="app-user-btn" type="button" aria-label="Account menu"><img src="assets/candidate-profile.png" alt="Your profile" /></button>
+      <div class="app-user-menu">
+        <div class="app-user-opt" data-go="profile"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/></svg><span>Profile</span></div>
+        <div class="app-user-opt" data-go="settings"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Settings</span></div>
+        <div class="app-user-sep"></div>
+        <div class="app-user-opt danger"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>Log out</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="lb">
+    <div class="lb-bar">
+      <a class="back-link" href="Candidate - Webapp copy.html"><svg viewBox="0 0 24 24" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg><span>Browse</span></a>
+      <div class="filter chal-filter" data-filter="chal">
+        <button class="filter-btn" type="button"><span class="lbl">All challenges</span><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="filter-menu" id="chalMenu"></div>
+      </div>
+      <a class="apps-btn" href="Candidate - My applications.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h11"/><path d="M4 12h11"/><path d="M4 18h7"/><polyline points="17 16 19 18 22 14"/></svg><span>My applications</span></a>
+    </div>
+
+    <section class="view-rankings">
+      <div class="lb-head">
+        <h1 class="lb-h1">Rankings</h1>
+        <p class="lb-sub">Live standing across every challenge run in the arena. Points come from placement, difficulty tier and review score. Ranks recalculate every night.</p>
+      </div>
+      <div class="you">
+        <div class="you-l">
+          <div class="you-lbl">Your standing</div>
+          <div class="you-id">
+            <img class="you-av" src="assets/candidate-profile.png" alt="" />
+            <div>
+              <div class="you-rk"><b>#13</b><span>of 7,749 ranked</span></div>
+              <div class="you-nm">Marcus Vela · Bronze tier</div>
+            </div>
+          </div>
+          <div class="you-facts">
+            <div class="you-fact"><span class="k">Points</span><span class="v">71,465</span></div>
+            <div class="you-fact"><span class="k">This week</span><span class="v up">▲ 3</span></div>
+            <div class="you-fact"><span class="k">Challenges</span><span class="v">11</span></div>
+            <div class="you-fact"><span class="k">Badges</span><span class="v">4</span></div>
+          </div>
+        </div>
+        <div class="you-r">
+          <div class="you-ai-h"><span>Suggestions</span></div>
+          <div class="you-gaps">
+            <span class="gap-pill">Top 10 <b id="gap10"></b></span>
+            <span class="gap-pill">Top 3 <b id="gap3"></b></span>
+          </div>
+          <div class="you-tips">
+            <div class="tip"><i>1</i><span>Two wins on gold-tier briefs clear the gap to <b>#10</b>. Your last three gold submissions all scored above 90, so the tier is within reach.</span></div>
+            <div class="tip"><i>2</i><span>You submit at a median of <b>82% of the time limit</b>. Landing under 50% adds a speed multiplier and unlocks the Fast submit streak.</span></div>
+            <div class="tip"><i>3</i><span>No platinum attempts yet. A single top-three finish there is worth more than six bronze wins — the fastest route into the <b>top 3</b>.</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="lb-filterbar">
+        <div class="lb-stats">
+          <button class="lb-stat" type="button" data-tier="platinum" aria-pressed="true"><span class="medal platinum"></span><b>128</b><span>Platinum</span></button>
+          <button class="lb-stat" type="button" data-tier="gold" aria-pressed="true"><span class="medal gold"></span><b>1,204</b><span>Gold</span></button>
+          <button class="lb-stat" type="button" data-tier="bronze" aria-pressed="true"><span class="medal bronze"></span><b>6,417</b><span>Bronze</span></button>
+        </div>
+          <div class="filters">
+          <div class="filter" data-filter="stack">
+            <button class="filter-btn" type="button"><span class="lbl">Tech stack</span><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="filter-menu">
+              <div class="filter-opt sel" data-val="all">All stacks</div>
+              <div class="filter-opt" data-val="Backend">Backend</div>
+              <div class="filter-opt" data-val="Frontend">Frontend</div>
+              <div class="filter-opt" data-val="Data / ML">Data / ML</div>
+              <div class="filter-opt" data-val="Infra">Infra</div>
+            </div>
+          </div>
+          <div class="filter" data-filter="region">
+            <button class="filter-btn" type="button"><span class="lbl">Region</span><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="filter-menu">
+              <div class="filter-opt sel" data-val="all">All regions</div>
+              <div class="filter-opt" data-val="UAE">UAE</div>
+              <div class="filter-opt" data-val="India">India</div>
+              <div class="filter-opt" data-val="Europe">Europe</div>
+              <div class="filter-opt" data-val="Americas">Americas</div>
+            </div>
+          </div>
+        </div>
+        <div class="lb-search">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="20" y1="20" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="rankSearch" placeholder="Search" />
+        </div>
+      </div>
+      <table class="rank-table">
+        <thead><tr><th>Rank</th><th>Tier</th><th>Engineer</th><th>Joined</th><th>Badges</th><th class="num">Points</th></tr></thead>
+        <tbody id="rankBody"></tbody>
+      </table>
+      <div class="lb-more"><button class="more-btn" type="button">Show more</button></div>
+    </section>
+
+  </div>
+</div>
+<div class="cm-back" id="cmBack"><div class="cm" id="cmBox" role="dialog" aria-modal="true"></div></div>
+<script>
+(function(){
+  var user=document.querySelector('.app-user');
+  document.querySelector('.app-user-btn').addEventListener('click',function(e){e.stopPropagation();user.classList.toggle('open');});
+  document.addEventListener('click',function(){user.classList.remove('open');document.querySelectorAll('.filter.open').forEach(function(f){f.classList.remove('open');});});
+  var goProfile=document.querySelector('[data-go="profile"]');
+  if(goProfile)goProfile.addEventListener('click',function(){location.href='Candidate - Profile.html';});
+
+  function av(n){return 'https://i.pravatar.cc/160?u=colosseum-'+n.toLowerCase().replace(/[^a-z]+/g,'-');}
+  var NAMES=['Yusuf Rahman','Dieter Brandt','Priya Nair','Nikita Babych','Eduardo Rocha','Mei Chen','Tarek Saleh','Anya Volkova','Samuel Okoye','Laura Bianchi','Hiro Tanaka','Fatima Zahra','Marcus Vela','Ravi Menon','Chloe Dubois','Omar Haddad'];
+  var ROLES=['Backend','Data / ML','Frontend','Infra','Backend','Frontend','Data / ML','Infra'];
+  var REGIONS=['UAE','Europe','India','Europe','Americas','Americas','UAE','Europe','Africa','Europe','APAC','UAE','Europe','India','Europe','UAE'];
+  var TIERS=['platinum','platinum','platinum','gold','gold','gold','gold','gold','bronze','bronze','bronze','bronze','bronze','bronze','bronze','bronze'];
+  var PTS=[133085,124482,111113,105498,93473,93203,92559,88140,84902,81336,78214,74980,71465,68702,65310,61988];
+  var JOINED=['3 years ago','5 years ago','2 years ago','4 years ago','5 years ago','1 year ago','3 years ago','2 years ago','4 years ago','1 year ago','2 years ago','3 years ago','5 years ago','1 year ago','2 years ago','4 years ago'];
+  var MOVE=['up 2','flat 0','up 1','down 3','up 4','flat 0','down 1','up 6','up 2','down 2','flat 0','up 3','up 3','up 1','up 5','down 1'];
+  var ME=12;
+  var CHALS=[
+    {g:'Distributed systems & reliability',t:['Design a fault-tolerant job queue with at-least-once delivery','Build a write-ahead log with crash-safe recovery','Build a leader-election protocol that survives network partitions','Design a distributed rate limiter with a shared token budget']},
+    {g:'High-throughput backend & scale',t:['Scale a WebSocket gateway to 1M concurrent connections','Shard a write-heavy Postgres table without downtime','Cut p99 latency on a fan-out service by half','Design a caching layer that holds a 95% hit rate under churn']},
+    {g:'Systems thinking under constraints',t:['Model failure modes for a payment retry flow','Design an API that degrades gracefully under partial outage','Trace and fix a race condition in a concurrent scheduler','Debug a memory leak in a long-running Go service']}
+  ];
+  var CHLIST=[];CHALS.forEach(function(c){c.t.forEach(function(t){CHLIST.push(t);});});
+  var BADGES={
+    win:{k:'gold',n:'First win',ic:'<path d="M8 21h8"/><path d="M12 17v4"/><path d="M6 4h12v5a6 6 0 0 1-12 0z"/><path d="M6 5H4a2 2 0 0 0 2 4"/><path d="M18 5h2a2 2 0 0 1-2 4"/>'},
+    ten:{k:'earned',n:'10 challenges',ic:'<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>'},
+    fast:{k:'earned',n:'Fast submit',ic:'<circle cx="12" cy="13" r="8"/><polyline points="12 9 12 13 15 15"/>'},
+    top:{k:'gold',n:'Top 5%',ic:'<path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z"/>'},
+    bounty:{k:'earned',n:'Bounty hunter',ic:'<path d="M12 3v18"/><path d="M5 8h14"/><circle cx="12" cy="14" r="5"/>'},
+    streak:{k:'earned',n:'Streak keeper',ic:'<path d="M12 3c3 4 6 6 6 10a6 6 0 0 1-12 0c0-2 1-3.5 2-5"/>'}
+  };
+  var BSETS=[['win','top','ten','fast','bounty'],['win','top','ten','streak'],['win','ten','fast','top'],['top','ten','bounty'],['win','ten','fast'],['ten','fast','streak'],['win','ten','fast'],['ten','bounty'],['ten','fast'],['ten','streak'],['fast','bounty'],['ten'],['win','ten','fast','top'],['ten'],['streak'],['fast']];
+
+  var rows=NAMES.map(function(n,i){
+    var mv=MOVE[i].split(' '),ch=[];
+    for(var c=0;c<CHLIST.length;c++){if((i*5+c*3)%4!==0)ch.push(CHLIST[c]);}
+    return{r:i+1,n:n,av:i===ME?'assets/candidate-profile.png':av(n),role:ROLES[i%ROLES.length],region:REGIONS[i],tier:TIERS[i],pts:PTS[i],joined:JOINED[i],b:BSETS[i],ch:ch,dir:mv[0],delta:mv[1],me:i===ME};
+  });
+  var shown=10,f={stack:'all',region:'all',chal:'all'},q='';
+  var tierSel=['platinum','gold','bronze'];
+  function tiersAll(){return tierSel.length===3;}
+  function match(r){
+    if(tierSel.indexOf(r.tier)<0)return false;
+    if(f.stack!=='all'&&r.role!==f.stack)return false;
+    if(f.region!=='all'&&r.region!==f.region)return false;
+    if(f.chal!=='all'&&r.ch.indexOf(f.chal)<0)return false;
+    if(q&&r.n.toLowerCase().indexOf(q)<0)return false;
+    return true;
+  }
+  function renderRanks(){
+    var list=rows.filter(match).slice(0,shown);
+    list.forEach(function(r,i){r.rr=i+1;});
+    document.getElementById('rankBody').innerHTML=list.map(function(r){
+      var arrow=r.dir==='up'?'▲ ':r.dir==='down'?'▼ ':'– ';
+      var mv=r.dir==='flat'?'<span class="rk-move flat">–</span>':'<span class="rk-move '+r.dir+'">'+arrow+r.delta+'</span>';
+      return '<tr'+(r.me?' class="me"':'')+'><td class="rk">'+(f.chal==='all'&&tiersAll()&&f.stack==='all'&&f.region==='all'&&!q?r.r:r.rr)+mv+'</td>'+
+      '<td><span class="medal '+r.tier+'" title="'+r.tier+'"></span></td>'+
+      '<td><div class="u"><img class="u-av" src="'+r.av+'" alt="" /><div class="u-tx"><span class="u-name">'+r.n+(r.me?'<span class="me-tag">You</span>':'')+'</span><span class="u-role">'+r.role+' · '+r.region+'</span></div></div></td>'+
+      '<td>'+r.joined+'</td>'+
+      '<td><div class="bdgs">'+r.b.slice(0,4).map(function(k){var b=BADGES[k];return '<span class="bdg-hex '+b.k+'" title="'+b.n+'"><svg viewBox="0 0 24 24" aria-hidden="true">'+b.ic+'</svg></span>';}).join('')+(r.b.length>4?'<span class="bdg-more">+'+(r.b.length-4)+'</span>':'')+'</div></td>'+
+      '<td class="num"><span class="pts">'+r.pts.toLocaleString()+'</span></td></tr>';
+    }).join('')||'<tr><td colspan="6" style="padding:34px 14px;text-align:center;color:var(--t-mute)">No engineers match these filters.</td></tr>';
+    var more=document.querySelector('.more-btn');
+    more.style.display=rows.filter(match).length>shown?'':'none';
+  }
+  document.querySelectorAll('.lb-stat').forEach(function(chip){
+    chip.addEventListener('click',function(){
+      var t=chip.getAttribute('data-tier'),i=tierSel.indexOf(t);
+      if(i<0)tierSel.push(t);
+      else if(tierSel.length>1)tierSel.splice(i,1);
+      else tierSel=['platinum','gold','bronze'];
+      document.querySelectorAll('.lb-stat').forEach(function(c){
+        var on=tierSel.indexOf(c.getAttribute('data-tier'))>=0;
+        c.classList.toggle('off',!on);c.setAttribute('aria-pressed',on?'true':'false');
+      });
+      shown=10;renderRanks();
+    });
+  });
+  document.querySelector('.more-btn').addEventListener('click',function(){shown+=6;renderRanks();});
+  document.getElementById('rankSearch').addEventListener('input',function(){q=this.value.trim().toLowerCase();shown=10;renderRanks();});
+  document.querySelectorAll('.filter:not(.chal-filter)').forEach(function(fl){
+    fl.querySelector('.filter-btn').addEventListener('click',function(e){
+      e.stopPropagation();var open=fl.classList.contains('open');
+      document.querySelectorAll('.filter.open').forEach(function(o){o.classList.remove('open');});
+      if(!open)fl.classList.add('open');
+    });
+    fl.querySelectorAll('.filter-opt').forEach(function(op){
+      op.addEventListener('click',function(){
+        fl.querySelectorAll('.filter-opt').forEach(function(o){o.classList.remove('sel');});
+        op.classList.add('sel');
+        f[fl.getAttribute('data-filter')]=op.getAttribute('data-val');
+        fl.querySelector('.lbl').textContent=op.textContent;
+        fl.classList.remove('open');shown=10;renderRanks();
+      });
+    });
+  });
+  var chalFl=document.querySelector('.chal-filter'),chalMenu=document.getElementById('chalMenu');
+  chalMenu.innerHTML='<div class="filter-opt sel" data-val="all">All challenges</div>'+CHALS.map(function(c){
+    return '<div class="chal-grp">'+c.g+'</div>'+c.t.map(function(t){return '<div class="filter-opt" data-val="'+t+'">'+t+'</div>';}).join('');
+  }).join('');
+  chalFl.querySelector('.filter-btn').addEventListener('click',function(e){
+    e.stopPropagation();var open=chalFl.classList.contains('open');
+    document.querySelectorAll('.filter.open').forEach(function(o){o.classList.remove('open');});
+    if(!open)chalFl.classList.add('open');
+  });
+  chalMenu.addEventListener('click',function(e){
+    var op=e.target.closest('.filter-opt');if(!op)return;
+    chalMenu.querySelectorAll('.filter-opt').forEach(function(o){o.classList.remove('sel');});
+    op.classList.add('sel');f.chal=op.getAttribute('data-val');
+    chalFl.querySelector('.lbl').textContent=op.textContent;
+    chalFl.classList.remove('open');shown=10;renderRanks();
+  });
+  var me=rows[ME];
+  document.getElementById('gap10').textContent=(rows[9].pts-me.pts).toLocaleString()+' pts away';
+  document.getElementById('gap3').textContent=(rows[2].pts-me.pts).toLocaleString()+' pts away';
+  // ---- candidate profile modal ----
+  var ABOUT=[
+    'Backend engineer working on distributed systems and data platforms. Comfortable owning services end to end, from design through on-call.',
+    'Machine learning engineer focused on training infrastructure and evaluation pipelines. Works close to the data, ships models to production.',
+    'Frontend engineer building design systems and complex interfaces. Cares about performance budgets and accessibility as much as visual polish.',
+    'Infrastructure engineer with a platform background. Spends most days on Kubernetes, build systems and making deploys boring.'
+  ];
+  var ACHV=[
+    ['Led migration that cut API latency by 40%','Open-source maintainer with 2k+ GitHub stars','Mentored 6 junior engineers to promotion'],
+    ['Cut model training cost by 55% on the same hardware','Built the feature store used by four product teams','Published two papers on retrieval evaluation'],
+    ['Rebuilt the design system used across 30+ surfaces','Brought first-load JS under 90kb on the main app','Ran the accessibility audit that closed 120 issues'],
+    ['Moved 400 services onto a single deploy pipeline','Reduced cloud spend by $1.2M annually','On-call rotation redesign that halved pages']
+  ];
+  var SKILLS=[
+    ['Go','Distributed systems','System design','Postgres','Kafka','gRPC'],
+    ['Python','PyTorch','Ray','Feature stores','Airflow','Evaluation'],
+    ['TypeScript','React','Design systems','Performance','Accessibility','CSS'],
+    ['Kubernetes','Terraform','Rust','Observability','CI/CD','Networking']
+  ];
+  var IDEAL=[
+    'A product-led company with a strong engineering culture, where reliability is valued and engineers own their systems end to end.',
+    'A team where research and production sit close together, and model quality is measured against something real.',
+    'A company that treats the interface as the product, with designers and engineers working in the same room.',
+    'An engineering org that invests in platform work rather than treating it as overhead.'
+  ];
+  var VALUES=[['Hard technical problems','Growth & learning'],['Autonomy','Research depth'],['Craft & polish','Close collaboration'],['Impact at scale','Clear ownership']];
+  var DIMS=['communication','collaboration','ownership','resilience','learning'];
+  var NOTES=[
+    'Clear and direct, but answers stayed general.',
+    'Gave a real situation with the team lead and what they did about it.',
+    'Described how they usually operate more than something they actually did.',
+    'Handled the pressure well; left the outcome open.',
+    'Named the skill they were building and how they practiced it.'
+  ];
+  var AVAIL=['Available now','Available within 2 weeks','Available within a month','Open to conversations'];
+  var YRS=['3–5 years','5–8 years','8+ years','2–4 years'];
+  var WORK=['Remote','Hybrid','On-site','Remote (EU)'];
+  var COMP=['$140,000','$150,000','$165,000','$185,000'];
+  var LI={gh:'<path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.36 1.09 2.94.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2z"/>',
+    'in':'<path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-.95 1.83-1.95 3.76-1.95 4.02 0 4.76 2.5 4.76 5.76V21h-4v-5.6c0-1.34-.03-3.07-1.9-3.07-1.9 0-2.2 1.46-2.2 2.97V21H9z"/>',
+    web:'<path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm6.9 6h-2.5a15.6 15.6 0 0 0-1.4-3.5A8 8 0 0 1 18.9 8zM12 4c.8 1.1 1.4 2.4 1.8 4h-3.6c.4-1.6 1-2.9 1.8-4zM4.3 14a8 8 0 0 1 0-4h2.9a17.6 17.6 0 0 0 0 4zm.8 2h2.5c.3 1.3.8 2.5 1.4 3.5A8 8 0 0 1 5.1 16zm2.5-8H5.1a8 8 0 0 1 3.9-3.5A15.6 15.6 0 0 0 7.6 8zM12 20c-.8-1.1-1.4-2.4-1.8-4h3.6c-.4 1.6-1 2.9-1.8 4zm2.2-6H9.8a15.4 15.4 0 0 1 0-4h4.4a15.4 15.4 0 0 1 0 4zm.6 5.5c.6-1 1.1-2.2 1.4-3.5h2.5a8 8 0 0 1-3.9 3.5zM16.8 14a17.6 17.6 0 0 0 0-4h2.9a8 8 0 0 1 0 4z"/>'};
+  function handle(n){return n.toLowerCase().replace(/[^a-z]+/g,'');}
+  var back=document.getElementById('cmBack'),box=document.getElementById('cmBox');
+  function openCard(r){
+    var i=r.r-1,v=i%4;
+    var score=Math.max(62,Math.min(97,97-Math.round(i*1.9)));
+    var dims=DIMS.map(function(d,k){return Math.max(58,Math.min(99,score+((i*7+k*13)%13)-6));});
+    var best=dims.indexOf(Math.max.apply(null,dims));
+    var wins=Math.max(1,14-i),subs=r.ch.length+i%5;
+    var allB=['win','top','ten','fast','bounty','streak'];
+    box.innerHTML='<button class="cm-x" type="button" aria-label="Close"><svg viewBox="0 0 24 24"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></button>'+
+      '<div class="cm-head"><span class="cm-av"><img src="'+r.av+'" alt="" /></span>'+
+      '<div class="cm-id"><h2 class="cm-name">'+r.n+'</h2>'+
+      '<p class="cm-role">'+r.role+' engineer · '+YRS[v]+' · '+r.region+'</p>'+
+      '<div class="cm-chips"><span class="cm-chip tier '+r.tier+'">'+r.tier.charAt(0).toUpperCase()+r.tier.slice(1)+' tier</span>'+
+      '<span class="cm-chip score">Assessment '+score+'%</span>'+
+      '<span class="cm-chip"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><polyline points="12 9 12 13 15 15"/></svg>'+AVAIL[v]+'</span>'+
+      '<span class="cm-chip">Joined '+r.joined+'</span></div></div>'+
+      '<div class="cm-rank"><span class="k">Rank</span><span class="v">#'+r.r+'</span><span class="p">'+r.pts.toLocaleString()+' pts</span></div></div>'+
+      '<div class="cm-body"><div style="min-width:0">'+
+      '<div class="cm-sec"><h3 class="cm-h">About</h3><p class="cm-lede">'+ABOUT[v]+'</p></div>'+
+      '<div class="cm-sec"><h3 class="cm-h">Achievements</h3><ul class="cm-list">'+ACHV[v].map(function(a){return '<li>'+a+'</li>';}).join('')+'</ul></div>'+
+      '</div>'+
+      '<div><div class="cm-rail-sec"><h4 class="cm-rail-h">Arena</h4><div class="cm-stats">'+
+      '<div class="cm-stat"><span class="k">Challenges</span><span class="v">'+subs+'</span></div>'+
+      '<div class="cm-stat"><span class="k">Wins</span><span class="v">'+wins+'</span></div>'+
+      '<div class="cm-stat"><span class="k">This week</span><span class="v">'+(r.dir==='flat'?'–':(r.dir==='up'?'▲ ':'▼ ')+r.delta)+'</span></div>'+
+      '<div class="cm-stat"><span class="k">Badges</span><span class="v">'+r.b.length+'</span></div></div></div>'+
+      '<div class="cm-rail-sec"><h4 class="cm-rail-h">Links</h4><div class="cm-links">'+
+      '<a class="cm-link" href="#"><svg viewBox="0 0 24 24">'+LI.gh+'</svg><span>'+handle(r.n)+'</span></a>'+
+      '<a class="cm-link" href="#"><svg viewBox="0 0 24 24">'+LI['in']+'</svg><span>in/'+handle(r.n)+'</span></a>'+
+      '<a class="cm-link" href="#"><svg viewBox="0 0 24 24">'+LI.web+'</svg><span>'+handle(r.n)+'.dev</span></a></div></div>'+
+      '<div class="cm-rail-sec"><h4 class="cm-rail-h">Badges</h4><div class="cm-bdgs">'+allB.map(function(k){
+        var b=BADGES[k],has=r.b.indexOf(k)>=0;
+        return '<div class="cm-bdg '+(has?b.k:'locked')+'"'+(has?'':' style="opacity:.42"')+'><span class="hx"><svg viewBox="0 0 24 24">'+b.ic+'</svg></span><span class="cm-bdg-n">'+b.n+'</span></div>';
+      }).join('')+'</div></div></div></div>';
+    back.classList.add('open');
+    box.scrollTop=0;
+    back.scrollTop=0;
+  }
+  function closeCard(){back.classList.remove('open');}
+  document.getElementById('rankBody').addEventListener('click',function(e){
+    var tr=e.target.closest('tr');if(!tr||!tr.querySelector('.u-name'))return;
+    var name=tr.querySelector('.u-name').childNodes[0].textContent.trim();
+    var r=rows.filter(function(x){return x.n===name;})[0];
+    if(r)openCard(r);
+  });
+  back.addEventListener('click',function(e){if(e.target===back)closeCard();});
+  box.addEventListener('click',function(e){if(e.target.closest('.cm-x'))closeCard();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')closeCard();});
+
+  renderRanks();
+
+})();
+</script>
+<script src="notifications.js"></script>
+<script src="chat.js"></script>
+<script src="candidate-complete.js"></script><script src="mobile.js"></script>
+<script>/*__goSettings*/document.querySelectorAll('[data-go="settings"]').forEach(function(el){el.addEventListener('click',function(){location.href='Candidate - Settings.html';});});</script>
+<script>requestAnimationFrame(function(){var e=document.getElementById("tc-fouc");e&&e.remove();});</script>
+</body>
+</html>

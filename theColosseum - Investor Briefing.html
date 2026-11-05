@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>theColosseum — Work as Evidence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:'P22Mackinac';src:url('fonts/P22MackinacPro-Book.otf') format('opentype');font-weight:400}
+@font-face{font-family:'P22Mackinac';src:url('fonts/P22MackinacPro-Medium.otf') format('opentype');font-weight:500}
+*{box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+doc-page:not(:defined){visibility:hidden}
+doc-page{--ink:#323432;--body:#5a5c5a;--mute:#7a7c7a;--faint:#9a9c9a;--accent:#678DC6;--accent-deep:#4f6fa6;--accent-soft:#eaf0f8;--hair:#e6e4df;--cream:#fefaf5;--pos:#2a9d6e;font-family:"Inter",system-ui,sans-serif;color:var(--ink);font-size:12pt;line-height:1.55}
+a,a:hover{color:var(--accent-deep);text-decoration:none}
+.page{display:flex;flex-direction:column;padding:.5in .8in .42in;background:#fff}
+.page.wash{background:linear-gradient(135deg,rgba(190,210,240,.45) 0%,rgba(255,230,210,.45) 100%),#fff}
+.eb{font-size:8.5pt;letter-spacing:.24em;text-transform:uppercase;font-weight:600;color:var(--accent-deep);margin:0 0 14px}
+.eb.m{color:var(--mute)}
+h1,h2,.serif{font-family:"P22Mackinac",Georgia,serif;font-weight:400;letter-spacing:-.02em;margin:0}
+h1{font-size:50pt;line-height:1.02}
+h2{font-size:30pt;line-height:1.1;max-width:10in}
+.lede{font-size:13.5pt;line-height:1.5;color:var(--body);max-width:9in;margin:14px 0 0;text-wrap:pretty}
+.body{flex:1;display:flex;flex-direction:column;justify-content:center;gap:20px;padding:12px 0}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.card{background:#fff;border:1px solid var(--hair);border-radius:14px;padding:18px 20px;box-shadow:0 1px 2px rgba(50,52,50,.04),0 12px 30px -20px rgba(50,52,50,.25)}
+.card.soft{background:var(--cream)}
+.card.acc{background:var(--accent-soft);border-color:#d6e1f1}
+.card .k{font-size:8pt;letter-spacing:.2em;text-transform:uppercase;font-weight:600;color:var(--mute);margin:0 0 8px}
+.card h3{font-family:"P22Mackinac",Georgia,serif;font-weight:500;font-size:16pt;line-height:1.2;letter-spacing:-.01em;margin:0 0 8px}
+.card p{margin:0;color:var(--body);font-size:11.5pt;line-height:1.5;text-wrap:pretty}
+.step .n{font-family:"P22Mackinac",Georgia,serif;font-size:26pt;color:var(--accent);line-height:1;margin-bottom:12px}
+.arrowrow{position:relative}
+.rule{border-top:1px solid var(--hair);padding-top:14px;display:flex;gap:18px;align-items:baseline}
+.rule .k{font-size:8pt;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:var(--accent-deep);flex:none}
+.rule p{margin:0;font-family:"P22Mackinac",Georgia,serif;font-size:15pt;line-height:1.35;color:var(--ink)}
+.foot{display:flex;justify-content:space-between;font-size:7.5pt;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);font-weight:500}
+.logo{font-weight:700;letter-spacing:-.03em;font-size:15pt}.logo span{font-weight:400;color:var(--mute)}
+ul.ls{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px}
+ul.ls li{display:block;font-size:11.5pt;color:var(--body);line-height:1.45;padding-bottom:9px;border-bottom:1px solid var(--hair)}
+ul.ls li:last-child{border-bottom:0;padding-bottom:0}
+ul.ls li b{color:var(--ink);font-weight:600}ul.ls li:not(:has(.mk)) b{margin-right:.35em}ul.ls li:has(.mk){display:flex;gap:12px;align-items:baseline}
+.mk{flex:none;width:18px;height:18px;border-radius:50%;display:grid;place-items:center;font-size:9pt;font-weight:700;transform:translateY(3px)}
+.mk.y{background:#e3f3ec;color:var(--pos)}.mk.o{border:1.5px solid var(--faint);color:transparent}
+.colhd,.card .colhd{font-size:8pt;letter-spacing:.2em;text-transform:uppercase;font-weight:600;color:var(--mute);margin:0 0 12px}
+.pill{display:inline-flex;font-size:8pt;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--accent-deep);background:#fff;border:1px solid #d6e1f1;border-radius:999px;padding:3px 10px;margin-top:12px}
+.mid{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:stretch}
+.hub{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;width:2.1in;border-radius:14px;background:var(--ink);color:#f6f3ee;padding:18px}
+.hub .serif{font-size:17pt}.hub p{margin:8px 0 0;font-size:10.5pt;color:rgba(246,243,238,.72);line-height:1.45}
+.stat .big{font-family:"P22Mackinac",Georgia,serif;font-size:34pt;line-height:1;letter-spacing:-.02em;color:var(--ink);margin:4px 0 10px}
+.mid-n{font-family:"P22Mackinac",Georgia,serif;font-size:20pt;line-height:1.1;color:var(--ink);margin:2px 0 6px}
+.card p b{color:var(--ink);font-weight:600}
+.card .src{display:block;margin-top:10px;font-size:7.5pt;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+.stat.sm{padding:14px 18px}.stat.sm p:not(.k){font-size:10.5pt}
+.merc{display:grid;grid-template-columns:1fr 1fr 1.3fr;gap:24px;align-items:start}
+.merc .big{font-family:"P22Mackinac",Georgia,serif;font-size:34pt;line-height:1;color:var(--ink);margin:4px 0 8px}
+.merc .caveat{border-left:1px solid #d6e1f1;padding-left:20px}.merc .caveat p:not(.src){font-size:10.5pt}
+.acq{padding:14px 18px}.acq h3{margin:0 0 4px}.acq p:not(.k){font-size:10.5pt}
+.note{margin:0;font-size:9pt;color:var(--mute)}
+</style>
+</head>
+<body>
+<doc-page width="13.333in" height="7.5in">
+<section class="page wash" data-screen-label="01 Closing">
+<div class="logo"><span>the</span>Colosseum</div>
+<div class="body" style="justify-content:center">
+<h1 style="font-size:44pt;max-width:8.6in">A résumé is a claim.<br>Solved work is the proof.</h1>
+<p class="lede" style="font-size:14pt">Each challenge completed on theColosseum adds to a record that belongs to the person who did the work, and to a marketplace that gets more useful with every result.</p>
+</div>
+<div class="foot"><span>theColosseum · by Audena</span><span>01</span></div>
+</section>
+
+<section class="page wash" data-screen-label="02 Cover">
+<div class="logo"><span>the</span>Colosseum</div>
+<div class="body" style="justify-content:flex-end;padding-bottom:40px">
+<p class="eb m">Investor briefing · Product direction · September 2026</p>
+<h1>Work as Evidence</h1>
+<p class="lede" style="font-size:16pt;max-width:7.8in">Why a cumulative record of solved problems, not the résumé, is the asset we are building.</p>
+<p class="lede" style="max-width:7in;margin-top:26px">Companies should be able to hire or engage people based on proven work. Talent should be able to prove capability by solving real problems and getting paid for the result.</p>
+</div>
+<div class="foot"><span>theColosseum · by Audena</span><span>Confidential</span></div>
+</section>
+
+<section class="page" data-screen-label="03 Two signals">
+<p class="eb">01 · Two signals</p>
+<h2>What hiring measures today, and what it could measure</h2>
+<div class="body">
+<div class="grid g2">
+<div class="card soft"><p class="k">Credentials</p><h3>A claim about ability</h3><p>Titles, years of experience, schools, keywords. Cheap to produce, hard to verify, and filtered before anyone looks at what the person can actually do.</p></div>
+<div class="card acc"><p class="k">Evidence</p><h3>A record of work performed</h3><p>A real problem from a real company, a stated effort cap, a public rubric, a scored result and a paid outcome. Verifiable by anyone who reads it.</p></div>
+</div>
+<div class="rule"><span class="k">The premise</span><p>Credentials describe what someone says they did. Evidence shows what they did, against a brief someone else wrote.</p></div>
+</div>
+<div class="foot"><span>theColosseum · Work as Evidence</span><span>03</span></div>
+</section>
+
+<section class="page" data-screen-label="04 Failure modes">
+<p class="eb">02 · Where the current process breaks</p>
+<h2>Better screening alone does not fix hiring</h2>
+<p class="lede">The problem sits in the unit being evaluated. Three failures follow from evaluating the proxy.</p>
+<div class="body">
+<div class="grid g3">
+<div class="card"><p class="k">Proxy</p><h3>The wrong people are filtered out</h3><p>Résumé filters reject capable people who describe themselves poorly and pass people who describe themselves well.</p></div>
+<div class="card"><p class="k">Unpaid</p><h3>Take-homes are a hidden tax</h3><p>Candidates do hours of unpaid work into silence. The best ones are the least willing to do it.</p></div>
+<div class="card"><p class="k">One-sided</p><h3>Only one party is accountable</h3><p>Companies rate candidates. Candidates have no public record of vague briefs, moving scope or slow reviews.</p></div>
+</div>
+</div>
+<div class="foot"><span>theColosseum · Work as Evidence</span><span>04</span></div>
+</section>
+
+<section class="page" data-screen-label="05 The loop">
+<p class="eb">03 · The central concept</p>
+<h2>The asset is the reputation loop</h2>
+<p class="lede">Every completed challenge adds to a talent's standing. Standing decides which opportunities they see and what those opportunities pay.</p>
+<div class="body">
+<div class="grid g4">
+<div class="card step"><div class="n">1</div><h3>Real problem</h3><p>A company posts a funded challenge. The reward is held in escrow before work starts.</p></div>
+<div class="card step"><div class="n">2</div><h3>Work delivered</h3><p>Talent solves it inside a stated effort cap and submission window.</p></div>
+<div class="card step"><div class="n">3</div><h3>Scored with reasons</h3><p>Rubric scores, quoted evidence, company feedback and a released payment.</p></div>
+<div class="card step acc"><div class="n">4</div><h3>Standing updated</h3><p>Rank, tier and reward multipliers move. Higher tiers unlock larger prizes.</p></div>
+</div>
+<div class="rule"><span class="k">The principle</span><p>A résumé can be rewritten in an afternoon. A record of paid, reviewed work can only be earned.</p></div>
+</div>
+<div class="foot"><span>theColosseum · Work as Evidence</span><span>05</span></div>
+</section>
+
+<section class="page" data-screen-label="06 Marketplace">
+<p class="eb">04 · The shape of the market</p>
+<h2>Hiring and freelance work, one marketplace</h2>
+<p class="lede">The direction is broader than recruiting. Companies bring roles or discrete problems; talent chooses jobs, engagements or bounties. theColosseum sits in the middle.</p>
+<div class="body">
+<div class="mid">
+<div class="card soft"><p class="k">Companies post</p><ul class="ls"><li><b>Long-term roles</b>through a hiring challenge or job</li><li><b>Discrete problems</b>as paid bounties, small tasks to large technical work</li><li><b>Engagements</b>with people who have already proven themselves</li></ul></div>
+<div class="hub"><div class="serif">theColosseum</div><p>Matches, holds funds in escrow, scores the work, releases payment. Collects a fee on the transaction.</p></div>
+<div class="card soft"><p class="k">Talent pursues</p><ul class="ls"><li><b>Jobs</b>won through demonstrated work</li><li><b>Freelance</b>engagements with repeat companies</li><li><b>Bounties</b>that pay whether or not a role follows</li></ul></div>
+</div>
+</div>
+<div class="foot"><span>theColosseum · Work as Evidence</span><span>06</span></div>
+</section>
+
+<section class="page" data-screen-label="07 Reputation">
+<p class="eb">05 · Compounding</p>
+<h2>Reputation is cumulative and visible</h2>
+<div class="body">
+<div class="grid g4">
+<div class="card"><p class="k">Input</p><h3>Completed challenges</h3><p>Each finished brief is a public, scored entry on the profile.</p></div>
+<div class="card"><p class="k">Input</p><h3>Earned payments</h3><p>Money released by a company is the hardest signal to fake.</p></div>
+<div class="card"><p class="k">Input</p><h3>Company feedback</h3><p>Ratings and reviews from the teams the work was done for.</p></div>
+<div class="card"><p class="k">Input</p><h3>Contribution</h3><p>How the problem was solved, shared and referenced by others.</p></div>
+</div>
+<div class="grid g2">
+<div class="card acc"><h3>Quality outranks volume</h3><p>Higher-quality results move ranking further than more submissions. Standing is weighted toward the best work, not the most.</p></div>
+<div class="card acc"><h3>Accountability runs both ways</h3><p>Companies carry an Employer score and public ratings on brief clarity, review speed and payment behaviour.</p></div>
+</div>
+</div>
+<div class="foot"><span>theColosseum · Work as Evidence</span><span>07</span></div>
+</section>
+
+<section class="page" data-screen-label="08 Social layer">
+<p class="eb">06 · The social layer</p>
+<h2>Work that people can see, discuss and learn from</h2>
+<p class="lede">The product should stay simple and social. Solved problems become something to share, which brings skilled people in and keeps them returning.</p>
+<div class="body">
+<div class="grid g4">
+<div class="card"><h3>Feed</h3><p>How a problem was solved, posted by the person who solved it.</p></div>
+<div class="card"><h3>Badges</h3><p>Recognition for placements, streaks and difficult challenges.</p></div>
+<div class="card"><h3>Comments</h3><p>Discussion on approach, from peers and from the posting company.</p></div>
+<div class="card"><h3>Collaborative challenges</h3><p>Larger problems solved by small teams, with shared credit.</p></div>
+</div>
+<div class="rule"><span class="k">Status</span><p>Under exploration. These elements are candidates, to be tested once the core loop has live users.</p></div>
+</div>
+<div class="foot"><span>theColosseum · Work as Evidence</span><span>08</span></div>
+</section>
+
+<section class="page" data-screen-label="09 AI-first">
+<p class="eb">07 · AI as the core experience</p>
+<h2>AI-first on both sides of the market</h2>
+<div class="body">
+<div class="grid g2">
+<div class="card"><p class="colhd">For companies · finding people, solving problems</p><ul class="ls"><li><b>Drafts challenges</b>from the company's website and product context</li><li><b>Screens submissions</b>against hard gates and weighted criteria, with quotes</li><li><b>Runs interviews</b>covering hard and soft skills, scored and transcribed</li><li><b>Flags gaming</b>and sends it to human review</li></ul></div>
+<div class="card"><p class="colhd">For talent · finding work, completing it</p><ul class="ls"><li><b>Builds the profile</b>from GitHub, LinkedIn or portfolio links</li><li><b>Matches opportunities</b>to skills, tier and preferences</li><li><b>Explains outcomes</b>with the stage, the bar and the evidence</li><li><b>Supports the work</b>itself, as a possible next step</li></ul></div>
+</div>
+<div class="rule"><span class="k">The constraint</span><p>AI shows its reasoning, its evidence and its unknowns at every step. A verdict without reasons is not accepted from it.</p></div>
+</div>
+<div class="foot"><span>theColosseum · Work as Evidence</span><span>09</span></div>
+</section>
+
+<section class="page" data-screen-label="10 Customer zero">
+<p class="eb">08 · Customer zero</p>
+<h2>Audena posts first</h2>
+<p class="lede">Audena will post its own hiring needs and paid challenges on theColosseum. This tests the full product with real incentives and real outcomes before any external company is asked to.</p>
+<div class="body">
+<div class="grid g3">
+<div class="card soft"><p class="k">Small</p><h3>Scoped tasks</h3><p>Short, well-defined problems that exercise posting, submission, scoring and payout end to end.</p></div>
+<div class="card soft"><p class="k">Large</p><h3>Technical problems</h3><p>Substantial engineering work, such as observability, where the result matters to Audena's own product.</p></div>
+<div class="card soft"><p class="k">Roles</p><h3>Real hiring needs</h3><p>Open positions filled through hiring challenges, tested against Audena's own bar.</p></div>
+</div>
+<div class="rule"><span class="k">Why</span><p>If the loop does not produce useful work and good hires for its own builders, it will not for anyone else.</p></div>
+</div>
+<div class="foot"><span>theColosseum · Work as Evidence</span><span>10</span></div>
+</section>
+
+<section class="page" data-screen-label="11 Launch">
+<p class="eb">09 · Launch</p>
+<h2>Launch lean on X, validate in market</h2>
+<p class="lede">The priority is real users and real payments flowing. The product then iterates on what the market shows it needs, not on polished secondary integrations.</p>
+<div class="body">
+<div class="grid g3">
+<div class="card acc"><p class="k">Now</p><h3>X / Twitter</h3><p>Where builders already share their work publicly. Challenges and results travel as posts.</p></div>
+<div class="card"><p class="k">Measure</p><h3>Users and payments</h3><p>Challenges posted, submissions made, rewards released, hires made.</p></div>
+<div class="card"><p class="k">Later</p><h3>LinkedIn</h3><p>Added once the core loop is proven. It is a distribution channel, not a prerequisite.</p></div>
+</div>
+</div>
+<div class="foot"><span>theColosseum · Work as Evidence</span><span>11</span></div>
+</section>
+
+<section class="page" data-screen-label="12 80/20">
+<p class="eb">10 · Operating principle</p>
+<h2>Outcomes over complexity</h2>
+<p class="lede">An 80/20 approach: keep infrastructure and operations lean, test what produces results, and defer anything that is decoration until the product has market proof.</p>
+<div class="body">
+<div class="grid g2">
+<div class="card acc"><p class="colhd">Build now</p><ul class="ls"><li><b>Post, fund, publish</b>for challenges, bounties and jobs</li><li><b>Escrow and payout</b>that actually moves money</li><li><b>Scoring with reasons</b>and a visible rank</li><li><b>One launch channel</b></li></ul></div>
+<div class="card soft"><p class="colhd">Defer until proven</p><ul class="ls"><li><b>Secondary integrations</b>including LinkedIn</li><li><b>Full social layer</b>beyond what drives return visits</li><li><b>Team challenges</b>and shared credit</li><li><b>AI work assistance</b>for talent</li></ul></div>
+</div>
+</div>
+<div class="foot"><span>theColosseum · Work as Evidence</span><span>12</span></div>
+</section>
+
+<section class="page" data-screen-label="13 Execution">
+<p class="eb">11 · Execution</p>
+<h2>What exists, and what is left to close</h2>
+<div class="body">
+<div class="grid g2">
+<div><p class="colhd">Built · product surfaces</p><ul class="ls">
+<li><span class="mk y">✓</span><span><b>AI challenge drafting</b> with three publish modes: bounty, hiring challenge, job</span></li>
+<li><span class="mk y">✓</span><span><b>Funds and escrow</b>: held, awaiting release, released</span></li>
+<li><span class="mk y">✓</span><span><b>Screening report</b> with gates, weights, quotes and concerns</span></li>
+<li><span class="mk y">✓</span><span><b>AI interview</b>, leaderboard and tiered reward multipliers</span></li>
+<li><span class="mk y">✓</span><span><b>Two-way ratings</b> and an application tracker that explains decisions</span></li>
+</ul></div>
+<div><p class="colhd">Gaps · to close</p><ul class="ls">
+<li><span class="mk o">·</span><span><b>Launch on X</b> with the first live users</span></li>
+<li><span class="mk o">·</span><span><b>Live payments</b> flowing through escrow</span></li>
+<li><span class="mk o">·</span><span><b>Audena challenges</b> posted and paid out</span></li>
+<li><span class="mk o">·</span><span><b>Marketplace fee</b> and freelance engagements beyond bounties</span></li>
+<li><span class="mk o">·</span><span><b>Social layer</b> tested, then LinkedIn</span></li>
+</ul></div>
+</div>
+</div>
+<div class="foot"><span>theColosseum · Work as Evidence</span><span>13</span></div>
+</section>
+
+
+
+<section class="page" data-screen-label="14 Market size">
+<p class="eb">12 · Market size</p>
+<h2>The category depends on the definition</h2>
+<div class="body">
+<div class="grid g3">
+<div class="card stat acc"><p class="k">AI in recruitment · broad</p><div class="big">$8.16B</div><p>2025, projected <b>$15.24B</b> by 2030 at <b>24.8% CAGR</b></p><span class="src">Grand View Research</span></div>
+<div class="card stat"><p class="k">Technical assessment · closest category</p><div class="big">~$2B</div><p>2025, projected <b>~$6B</b> by 2033 at <b>15% CAGR</b>. HackerRank, HackerEarth, Codility, CodeSignal, Coderbyte, DevSkiller</p><span class="src">Data Insights Market · Verified Market Research</span></div>
+<div class="card stat"><p class="k">Freelance platforms</p><div class="big">$7.65B</div><p>2025, projected <b>$21.97B</b> by 2031 at <b>16.3% CAGR</b>. IT and development is the largest segment; North America holds over 35%</p><span class="src">Mordor Intelligence · Market Mind Partners</span></div>
+</div>
+<div class="grid g3">
+<div class="card soft stat sm"><p class="k">AI recruiting software · narrow</p><div class="mid-n">$596–707M</div><p>2025, sourcing, screening and outreach, growing ~7% a year</p></div>
+<div class="card soft stat sm"><p class="k">APAC</p><div class="mid-n">~19% CAGR</div><p>Fastest-growing region through 2031, relevant for an India launch</p></div>
+<div class="card soft stat sm"><p class="k">Talent acquisition software · widest</p><div class="mid-n">~$200B</div><p>Per year. Treat loosely: not from a primary research firm</p></div>
+</div>
+</div>
+<div class="foot"><span>theColosseum · Work as Evidence</span><span>14</span></div>
+</section>
+
+<section class="page" data-screen-label="15 Signals and precedents">
+<p class="eb">13 · Signals and precedents</p>
+<h2>Vetted talent and work communities carry value</h2>
+<div class="body">
+<div class="card acc merc"><div><p class="k">Mercor · AI talent marketplace</p><div class="big">$2B</div><p>Annualized gross revenue by June 2026, up from <b>$760M</b> four months earlier, at a ~<b>35%</b> take</p></div><div><p class="k">Valuation</p><div class="big">$20B</div><p>In talks to raise <b>$500M</b>, up from a <b>$10B</b> Series C in October 2025</p></div><div class="caveat"><p>Started as AI hiring, pivoted to supplying AI labs with domain experts. Revenue is marketplace volume, concentrated in a few frontier-lab customers.</p><span class="src">Value Add VC · Forbes · Sacra</span></div></div>
+<div class="grid g4">
+<div class="card acq"><p class="k">Google · 2017</p><h3>Kaggle</h3><div class="mid-n">~0.5M</div><p>data scientists. Terms undisclosed; seen as buying community and a talent pipeline</p></div>
+<div class="card acq"><p class="k">Wipro · 2016</p><h3>Topcoder</h3><div class="mid-n">$500M</div><p>for Appirio, with Topcoder's 1M+ designers, developers and data scientists</p></div>
+<div class="card acq"><p class="k">Adobe · 2012</p><h3>Behance</h3><div class="mid-n">~$150M</div><p>cash and stock ($111.1M in filings). 1M+ members, folded into Creative Cloud</p></div>
+<div class="card acq"><p class="k">Vista · 2020*</p><h3>99designs</h3><div class="mid-n">$400M+</div><p>paid out to its community through design contests. Closest analog to a prize-pool model</p></div>
+</div>
+<p class="note">* Acquisition year not verified.</p>
+</div>
+<div class="foot"><span>theColosseum · Work as Evidence</span><span>15</span></div>
+</section>
+
+<section class="page wash" data-screen-label="16 Thank you">
+<div class="body" style="align-items:center;text-align:center">
+<h1>Thank you</h1>
+</div>
+<div class="foot"><span>theColosseum · by Audena</span><span>16</span></div>
+</section>
+</doc-page>
+<script src="doc-page.js"></script>
+<script>customElements.whenDefined('doc-page').then(()=>{const m=()=>document.querySelectorAll('doc-page').forEach(d=>d._measure&&d._measure());m();setTimeout(m,300)})</script>
+</body>
+</html>

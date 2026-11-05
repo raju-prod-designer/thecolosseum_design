@@ -1,0 +1,1043 @@
+<!doctype html>
+<html lang="en" class="app-shell">
+<head><style id="tc-fouc">html{visibility:hidden}</style><script>setTimeout(function(){var e=document.getElementById("tc-fouc");e&&e.remove();},1500);</script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>candidate-webapp</title>
+<link rel="stylesheet" href="colosseum.css" />
+<style>
+:root{--blue:#678DC6;--field:#f4f4f3;--line:#e6e4df;--ink2:#1c1d1c}
+html,body{height:auto}
+html{scrollbar-width:none}
+html::-webkit-scrollbar{display:none}
+body{background:#fff;color:var(--ink2);margin:0}
+a{color:var(--ink2);text-decoration:none;font-weight:600}
+a:hover{color:var(--blue)}
+.app{min-height:100vh;height:auto;overflow:visible;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;padding:30px 32px 26px;zoom:0.9}
+.app-top{width:100%;position:relative;display:flex;align-items:center;justify-content:center;margin-bottom:32px}
+.app-logo{flex:none;display:flex;justify-content:center;font-weight:800;font-size:26px;letter-spacing:-0.03em;color:var(--ink2);line-height:1}
+.app-user.open{z-index:200}
+.app-user{position:absolute;right:0;top:50%;transform:translateY(-50%);flex:none}
+.app-user-btn{width:26px;height:26px;border-radius:50%;overflow:hidden;border:1px solid var(--line);background:#fff;padding:0;cursor:pointer;display:block;transition:border-color .18s,box-shadow .18s}
+.app-user-btn img{width:100%;height:100%;object-fit:cover;display:block}
+.app-user-btn:hover{border-color:var(--ink2)}
+.app-user.open .app-user-btn{border-color:var(--blue);box-shadow:0 0 0 3px rgba(103,141,198,.16)}
+.app-user-menu{position:absolute;top:calc(100% + 10px);right:0;z-index:200;min-width:176px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 16px 40px rgba(31,33,32,.16);padding:6px;display:none}
+.app-user.open .app-user-menu{display:block}
+.app-user-opt{display:flex;align-items:center;gap:11px;padding:9px 11px;border-radius:10px;cursor:pointer;font-size:13px;font-weight:600;color:var(--ink2)}
+.app-user-opt+.app-user-opt{margin-top:2px}
+.app-user-opt:hover{background:var(--field)}
+.app-user-opt svg{width:17px;height:17px;stroke:var(--ink2);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.app-user-sep{border-top:1px solid var(--line);margin:5px 4px}
+.app-user-opt.danger{color:oklch(0.6 0.13 25)}
+.app-user-opt.danger svg{stroke:oklch(0.6 0.13 25)}
+.app-user-opt.danger:hover{background:oklch(0.6 0.13 25 / 0.08)}
+.app-logo .the{font-weight:400;color:inherit}
+.browse{width:100%;max-width:none;text-align:left;display:flex;flex-direction:column;animation:rise .5s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.browse-cat{display:flex;flex-direction:column;margin-bottom:0}
+.browse-cats{display:flex;flex-direction:column;gap:28px}
+.browse-cat-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 0 12px}
+.browse-cat-head h3{font-family:"P22Mackinac",serif;font-weight:500;font-size:22px;letter-spacing:-0.01em;color:var(--ink2);margin:0}
+.browse-nav{display:flex;gap:8px;flex:none}
+.browse-arrow{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:#fff;display:grid;place-items:center;cursor:pointer;color:var(--ink2);transition:border-color .2s ease,color .2s ease}
+.browse-arrow:hover{border-color:var(--ink2)}
+.browse-arrow svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.browse-track{display:flex;align-items:stretch;gap:16px;overflow-x:auto;scroll-behavior:smooth;padding:4px 2px;scrollbar-width:none}
+.browse-track::-webkit-scrollbar{display:none}
+.browse-cardm{flex:none;width:264px;height:210px;box-sizing:border-box;border:1px solid var(--line);border-radius:14px;background:#fff;padding:20px 22px;display:flex;flex-direction:column;gap:16px;transition:border-color .2s ease,box-shadow .2s ease;cursor:pointer}
+.browse-cardm:hover{border-color:var(--blue);box-shadow:var(--shadow-card)}
+.browse-cardm h4{font-family:"P22Mackinac",serif;font-weight:500;font-size:16.5px;line-height:1.34;letter-spacing:-0.01em;color:var(--ink2);margin:0}
+.card-stack{display:flex;flex-wrap:wrap;gap:7px;margin-top:auto}
+.stack-ic{width:28px;height:28px;border-radius:8px;border:1px solid var(--line);display:grid;place-items:center;background:#fff;flex:none}
+.stack-ic img{width:15px;height:15px;object-fit:contain}
+.res-top{display:flex;align-items:center;justify-content:space-between;gap:13px}
+.res-ic{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;flex:none;overflow:hidden;background:#fff}
+.res-ic img{width:100%;height:100%;object-fit:cover}
+.res-prize{flex:none;font-size:13px;font-weight:700;color:var(--blue);background:rgba(103,141,198,.12);border-radius:var(--r-pill);padding:5px 12px;white-space:nowrap}
+.res-right{display:flex;align-items:center;gap:7px;flex:none}
+.res-kind{font-size:11.5px;font-weight:700;letter-spacing:.02em;border-radius:var(--r-pill);padding:5px 11px;white-space:nowrap;border:1px solid transparent}
+.res-kind.bounty{color:#9a5b12;background:rgba(199,124,32,.11);border-color:rgba(199,124,32,.22)}
+.res-kind.hiring{color:#2f6b4f;background:rgba(47,107,79,.1);border-color:rgba(47,107,79,.2)}
+.res-kind.job{color:#3f63a0;background:rgba(103,141,198,.12);border-color:rgba(103,141,198,.26)}
+.tl-kindline{font-size:12.5px;font-weight:500;line-height:1.5;color:var(--t-mute);margin:-4px 0 0}
+.browse-filters{position:relative;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:12px;margin:0 0 20px;padding:0 270px}
+.ctype-menu{min-width:200px}.ctype-menu .filter-opt{font-weight:600}.ctype-menu .filter-opt.sel{background:var(--field);font-weight:700}
+.browse-filters2{position:relative;z-index:20;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:12px;margin:4px 0 10px}
+.browse-acts{position:absolute;right:0;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:8px}
+.browse-filters{min-height:32px}
+@media (max-width:1180px){.browse-filters{padding:0}.browse-acts{position:static;transform:none;margin-left:auto}}
+.leaderboard-btn{display:flex;align-items:center;gap:7px;height:32px;box-sizing:border-box;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 14px;font:inherit;font-size:13px;font-weight:600;color:var(--ink2);cursor:pointer;transition:border-color .15s,color .15s}
+.leaderboard-btn:hover{border-color:var(--ink2);color:var(--ink2)}
+.leaderboard-btn>svg{width:14px;height:14px;stroke:var(--t-mute);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.browse-switch{display:flex;align-items:stretch;gap:2px;background:var(--field);border:1px solid var(--line);border-radius:999px;padding:3px;height:32px;box-sizing:border-box}
+.bsw-opt{display:flex;align-items:center;font:inherit;font-size:13px;font-weight:600;color:var(--t-mute);background:transparent;border:0;border-radius:999px;padding:0 16px;cursor:pointer;transition:background .16s,color .16s,box-shadow .16s}
+.bsw-opt:hover{color:var(--ink2)}
+.bsw-opt.sel{background:#fff;color:var(--ink2);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.browse.jobs .res-prize{display:none}
+.res-jobtype{flex:none;font-size:12px;font-weight:600;color:var(--t-mute);background:var(--field);border:1px solid var(--line);border-radius:var(--r-pill);padding:4px 11px;white-space:nowrap}
+.cd.jobs .cd-upload-card,.cd.jobs .cd-describe-card,.cd.jobs .cd-submit-rules,.cd.jobs .cd-rules-sec{display:none}
+.cd.jobs .cd-reward{cursor:default}
+.cd.jobs .cd-reward .cd-rchev,.cd.jobs .cd-reward .cd-split{display:none}
+.filter{position:relative}
+.bsearch{display:flex;align-items:center;height:32px;box-sizing:border-box;width:32px;background:#fff;border:1px solid var(--line);border-radius:999px;overflow:hidden;transition:width .28s cubic-bezier(.3,.7,.3,1),border-color .18s,box-shadow .18s}.bsearch:hover{border-color:var(--ink2)}.bsearch.open{width:336px}.bsearch.open:focus-within{border-color:var(--blue);box-shadow:0 0 0 3px rgba(103,141,198,.16)}.bsearch-btn{flex:none;width:30px;height:30px;display:grid;place-items:center;background:none;border:0;padding:0;cursor:pointer}.bsearch-btn svg{width:14px;height:14px;stroke:var(--ink2);fill:none;stroke-width:2;stroke-linecap:round}.bsearch-in{flex:1;min-width:0;border:0;outline:0;background:none;font:inherit;font-size:13px;color:var(--ink2);padding:0 12px 0 0;opacity:0;transition:opacity .18s}.bsearch.open .bsearch-in{opacity:1}.bsearch-in::-webkit-search-cancel-button{display:none}
+.filter-btn{display:flex;align-items:center;gap:9px;height:32px;box-sizing:border-box;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 14px;font:inherit;font-size:13px;font-weight:600;color:var(--ink2);cursor:pointer;white-space:nowrap;transition:border-color .18s,box-shadow .18s}
+.filter-btn:hover{border-color:var(--ink2)}
+.filter-btn .cnt{font-size:11px;font-weight:700;color:#fff;background:var(--ink2);border-radius:999px;padding:1px 7px;line-height:1.5}
+.filter-btn>svg{width:14px;height:14px;stroke:var(--t-mute);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .18s}
+.filter.open .filter-btn{border-color:var(--blue);box-shadow:0 0 0 3px rgba(103,141,198,.16)}
+.filter-menu{position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);z-index:60;min-width:240px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 16px 40px rgba(31,33,32,.16);padding:8px;display:none;max-height:320px;overflow-y:auto;scrollbar-width:none}
+.filter-menu::-webkit-scrollbar{display:none}
+.filter.open .filter-menu{display:block}
+.filter-opt{display:flex;align-items:center;gap:11px;padding:7px 11px;border-radius:9px;cursor:pointer;font-size:13px;color:var(--ink2)}
+.filter-opt:hover{background:var(--field)}
+.filter-toggle-all{display:flex;align-items:center;justify-content:center;padding:7px 11px;margin:0 0 4px;border-bottom:1px solid var(--line);border-radius:0;cursor:pointer;font-size:12px;font-weight:700;letter-spacing:.02em;color:var(--ink2)}
+.filter-toggle-all:hover{color:var(--blue)}
+.filter-menu:has(.filter-toggle-all){grid-template-columns:repeat(2,minmax(0,1fr));column-gap:4px;min-width:400px;max-height:380px}
+.filter.open .filter-menu:has(.filter-toggle-all){display:grid}
+.filter-menu:has(.filter-toggle-all) .filter-toggle-all{grid-column:1/-1}
+.filter-menu:has(.filter-toggle-all) .filter-opt span:last-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (max-width:600px){.filter-menu:has(.filter-toggle-all){min-width:300px}}
+.filter-opt .fchk{width:18px;height:18px;border:1.5px solid var(--line);border-radius:6px;display:grid;place-items:center;flex:none;transition:all .15s}
+.filter-opt .fchk svg{width:11px;height:11px;stroke:#fff;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;opacity:0}
+.filter-opt.sel .fchk{background:var(--ink2);border-color:var(--ink2)}
+.filter-opt.sel .fchk svg{opacity:1}
+.filter-opt .fico{width:19px;height:19px;object-fit:contain;flex:none}
+.tier-btn .tier-dot{width:9px;height:9px;border-radius:50%;background:linear-gradient(135deg,#cd7f32,#a9691f);flex:none}
+.tier-menu{min-width:288px;padding:6px}
+.tier-opt{display:flex;align-items:center;gap:11px;padding:9px 11px;border-radius:10px;cursor:pointer}
+.tier-opt:hover{background:var(--field)}
+.tier-menu{min-width:303px}
+.tier-btn .tier-dot{display:none}
+.tier-opt+.tier-opt{margin-top:2px}
+.tier-opt.locked{opacity:1}
+.tier-medal{width:28px;height:28px;border-radius:50%;flex:none;display:grid;place-items:center}
+.tier-medal.bronze{background:linear-gradient(135deg,#cd7f32,#a9691f)}
+.tier-medal.gold{background:linear-gradient(135deg,#e6c200,#b8901a)}
+.tier-medal.platinum{background:linear-gradient(135deg,#dfe3e8,#a7adba)}
+.tier-medal.all{background:linear-gradient(135deg,#cfcfca,#a6a6a0)}
+.tier-tx{display:flex;flex-direction:column;gap:1px;flex:1;text-align:left}
+.tier-name{font-size:12.5px;font-weight:700;color:var(--ink2)}
+.tier-sub{font-size:11.5px;color:#5f5f5b}
+.tier-state svg{width:16px;height:16px;stroke:var(--ink2);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;opacity:0}
+.tier-opt.sel .tier-state svg{opacity:1;stroke:var(--ink2)}
+.tier-all .tier-tx{text-align:center;align-items:center}
+.tier-state svg.tier-lock{opacity:1;stroke:var(--t-mute)}
+.browse-divider{flex:none;border:0;border-top:1px solid var(--line);margin:0 0 20px}
+.browse-cardm{position:relative}
+/* challenge detail (read-only) */
+.cd{position:fixed;inset:0;z-index:300;background:#fff;overflow-y:auto;scrollbar-width:none;display:none;zoom:0.9}
+.cd::-webkit-scrollbar{display:none}
+.cd.show{display:block}
+.cd-inner{max-width:680px;margin:0 auto;padding:36px 32px 120px;display:flex;flex-direction:column}
+.cd-inner .app-logo{align-self:center;margin-bottom:44px}
+.cd-back{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;background:none;border:0;font:inherit;font-size:13px;font-weight:600;color:var(--t-mute);cursor:pointer;padding:6px 2px;margin:0 0 26px;transition:color .15s}
+.cd-body{display:flex;flex-direction:column;animation:rise .4s ease both}
+.cd-back:hover{color:var(--ink2)}
+.cd-back svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.cd-top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 0 18px}
+.cd-ic{width:46px;height:46px;border-radius:50%;overflow:hidden;flex:none;background:#fff;display:grid;place-items:center;border:1px solid var(--line)}
+.cd-co{display:flex;align-items:center;gap:13px;min-width:0;cursor:pointer;border-radius:12px;padding:4px 8px 4px 4px;margin:-4px -8px -4px -4px;transition:background .15s}
+.cd-co:hover{background:var(--field)}
+.cd-co:hover .cd-co-name{color:var(--blue)}
+.cd-co-name{font-family:"P22Mackinac",serif;font-weight:500;font-size:19px;letter-spacing:-0.01em;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cop{position:fixed;inset:0;z-index:400;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(31,33,32,.4);backdrop-filter:blur(3px)}
+.cop.show{display:flex}
+.cop-card{width:100%;max-width:820px;background:#fff;border-radius:20px;box-shadow:0 24px 60px rgba(31,33,32,.28);padding:28px;position:relative;animation:rise .3s ease both}
+.cop-close{position:absolute;top:16px;right:16px;width:30px;height:30px;border-radius:50%;border:0;background:var(--field);cursor:pointer;display:grid;place-items:center;transition:background .15s}
+.cop-close:hover{background:var(--line)}
+.cop-close svg{width:15px;height:15px;stroke:var(--ink2);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.cop-head{display:flex;align-items:center;gap:14px;margin-bottom:6px;padding-right:46px}
+.cop-head .cop-links{margin:0 0 0 auto;flex:none}
+.cop-ic{width:52px;height:52px;border-radius:50%;overflow:hidden;flex:none;background:#fff;display:grid;place-items:center;border:1px solid var(--line)}
+.cop-ic img{width:100%;height:100%;object-fit:cover}
+.cop-name{font-family:"P22Mackinac",serif;font-weight:500;font-size:23px;letter-spacing:-0.01em;color:var(--ink2)}
+.cop-nm{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.cop-nm .pl-fol{margin-left:0}
+.cop-tag{font-size:13.5px;color:var(--t-mute);margin-top:2px}
+.cop-badges{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 0}
+.cop-card{max-height:88vh;overflow:auto;scrollbar-width:none;-ms-overflow-style:none}
+.cop-card::-webkit-scrollbar{width:0;height:0;display:none}
+.cop-cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:26px;align-items:start;margin-top:18px}
+.cop-cols .cop-sec:first-child{margin-top:0;padding-top:0;border-top:0}
+.cop-cols>div{min-width:0}
+@media(max-width:720px){.cop-cols{grid-template-columns:minmax(0,1fr);gap:0}}
+.cop-sec{margin-top:22px;padding-top:18px;border-top:1px solid var(--line)}
+.cop-h{font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:#b8b9b6;margin:0 0 14px}
+.cop-bdgs{display:flex;flex-wrap:wrap;gap:16px}
+.cop-bdg{width:70px;text-align:center}
+.cop-bdg-hex{width:56px;height:62px;margin:0 auto 7px;display:grid;place-items:center;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:var(--field)}
+.cop-bdg-hex svg{width:22px;height:22px;stroke:var(--t-mute);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.cop-bdg.earned .cop-bdg-hex{background:rgba(103,141,198,.14)}
+.cop-bdg.earned .cop-bdg-hex svg{stroke:var(--blue)}
+.cop-bdg.gold .cop-bdg-hex{background:rgba(201,162,74,.16)}
+.cop-bdg.gold .cop-bdg-hex svg{stroke:#a7842f}
+.cop-bdg-n{font-size:10.5px;font-weight:600;color:var(--t-body);line-height:1.35}
+.cop-open{display:grid;gap:8px}
+.cop-empty{font-size:13px;color:var(--t-mute);margin:0}
+.pgr{display:flex;align-items:center;justify-content:flex-end;gap:8px;margin-top:12px}
+.pgr button{width:30px;height:30px;border:1px solid var(--line);background:#fff;border-radius:50%;display:grid;place-items:center;cursor:pointer;transition:border-color .15s}
+.pgr button:hover:not([disabled]){border-color:var(--ink2)}
+.pgr button[disabled]{opacity:.35;cursor:default}
+.pgr svg{width:14px;height:14px;stroke:var(--ink2);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.rt-top{display:flex;align-items:baseline;gap:12px;margin:0 0 14px}
+.rt-avg{font-family:"P22Mackinac",serif;font-weight:500;font-size:30px;letter-spacing:-.02em;line-height:1}
+.rt-avg span{font-size:15px;color:var(--t-mute)}
+.rt-count{font-size:12.5px;color:var(--t-faint,var(--t-mute));font-weight:600}
+.stars{display:inline-flex;gap:2px}
+.stars svg{width:14px;height:14px;fill:var(--line);stroke:none}
+.stars svg.on{fill:#c9a24a}
+.stars .half{position:relative;display:inline-flex}
+.stars .half svg:last-child{position:absolute;inset:0;clip-path:inset(0 50% 0 0)}
+.rt-list{display:flex;flex-direction:column;gap:8px}
+.rt-row{border:1px solid var(--line);border-radius:12px;padding:13px 15px;background:#fff}
+.rt-hd{display:flex;align-items:center;gap:10px;margin:0 0 6px}
+.rt-co{font-size:13px;font-weight:700;color:var(--ink2)}
+.rt-when{font-size:11.5px;color:var(--t-faint,var(--t-mute));font-weight:600;margin-left:auto}
+.rt-row p{margin:0;font-size:13px;line-height:1.6;color:var(--t-body);text-wrap:pretty}
+.cop-row{cursor:pointer;transition:border-color .15s,box-shadow .15s;display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid var(--line);border-radius:12px;padding:11px 13px}
+.cop-row:hover{border-color:var(--blue);box-shadow:var(--shadow-card)}
+.cop-row-t{font-size:13.5px;font-weight:600;color:var(--ink2);min-width:0}
+.cop-row-t em{display:block;font-style:normal;font-size:11.5px;font-weight:400;color:var(--t-mute);margin-top:3px}
+.cop-row-k{flex:none;font-size:10.5px;font-weight:700;letter-spacing:.04em;border-radius:var(--r-pill);padding:4px 9px;white-space:nowrap;border:1px solid transparent}
+.cop-row-k.bounty{color:#9a5b12;background:rgba(199,124,32,.11);border-color:rgba(199,124,32,.22)}
+.cop-row-k.hiring{color:#2f6b4f;background:rgba(47,107,79,.1);border-color:rgba(47,107,79,.2)}
+.cop-row-k.job{color:var(--t-body);background:var(--field);border-color:var(--line)}
+.cop-chip{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;color:var(--t-body);background:var(--field);border:1px solid var(--line);border-radius:999px;padding:5px 11px}
+.cop-chip svg{width:13px;height:13px;stroke:var(--t-mute);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.cop-chip.verified{color:#8a6a1f;background:rgba(199,164,32,.12);border-color:rgba(199,164,32,.28)}
+.cop-chip.verified svg{stroke:#8a6a1f}
+.cop-chip.score{color:#2f6b4f;background:rgba(47,107,79,.1);border-color:rgba(47,107,79,.2)}
+.cop-chip.score svg{stroke:#2f6b4f}
+.cop-facts{display:flex;flex-wrap:wrap;gap:26px;margin:18px 0 0;padding:0 0 18px;border-bottom:1px solid var(--line)}
+.cop-fact{display:flex;flex-direction:column;gap:3px;min-width:110px}
+.cop-fact .lbl{font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:#b8b9b6}
+.cop-fact .val{font-size:13.5px;color:var(--ink2);font-weight:600}
+.cop-about{font-size:14px;line-height:1.6;color:var(--ink2);text-wrap:pretty}
+.cop-links{display:flex;gap:10px;margin-top:20px}
+.cop-link{display:inline-flex;align-items:center;gap:8px;padding:9px 15px;border:1px solid var(--line);border-radius:999px;font-size:12.5px;font-weight:600;color:var(--ink2);cursor:pointer;transition:background .15s,border-color .15s}
+.cop-link:hover{background:var(--field);border-color:var(--ink2)}
+.cop-link svg{width:15px;height:15px;flex:none}
+.cop-link.site svg{stroke:var(--ink2);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.cop-link.li svg{fill:#0a66c2}
+.cop-link.tw svg{fill:var(--ink2)}
+.cd-ic img{width:100%;height:100%;object-fit:cover}
+.cd-stack{display:flex;flex-wrap:wrap;gap:7px;justify-content:flex-end}
+.cd-topright{display:flex;align-items:center;gap:10px;flex:none;margin-left:auto}
+.cd-kind{font-size:11.5px;font-weight:700;letter-spacing:.02em;border-radius:var(--r-pill);padding:5px 11px;white-space:nowrap;border:1px solid transparent}
+.cd-kind.bounty{color:#9a5b12;background:rgba(199,124,32,.11);border-color:rgba(199,124,32,.22)}
+.cd-kind.hiring{color:#2f6b4f;background:rgba(47,107,79,.1);border-color:rgba(47,107,79,.2)}
+.cd-kind:empty{display:none}
+.cd-split-sub{margin:-3px 10px 6px 45px;font-size:11.5px;font-weight:500;color:var(--t-mute)}
+.cd-title{font-family:"P22Mackinac",serif;font-weight:500;font-size:29px;line-height:1.28;letter-spacing:-0.01em;color:var(--ink2);margin:0 0 20px;text-wrap:pretty}
+.cd-apply-bar{position:fixed;left:0;right:0;bottom:0;z-index:320;background:linear-gradient(to top,#fff 62%,rgba(255,255,255,0));padding:20px 32px 24px;display:flex;justify-content:center;pointer-events:none}
+.cd-apply{pointer-events:auto;background:var(--ink2);color:#fff;border:0;font-family:inherit;font-size:15px;font-weight:700;padding:14px 48px;border-radius:var(--r-pill);cursor:pointer;box-shadow:0 10px 30px rgba(31,33,32,.18);transition:background .15s,transform .1s}
+.cd-apply:hover{background:var(--blue)}
+.cd-apply:active{transform:translateY(1px)}
+.cd .ch-meta-chips{display:flex;justify-content:flex-start;flex-wrap:wrap;gap:12px;margin:0 0 20px}
+.cd .ch-meta-chip{display:flex;align-items:center;gap:9px;padding:5px 18px;border:1px solid var(--line);border-radius:999px;background:#fff;box-shadow:var(--shadow-card)}
+.cd .ch-meta-chip[hidden]{display:none}.cd .ch-meta-chip .lbl{font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:#b8b9b6}
+.cd .ch-meta-chip .val{font-size:13.5px;color:var(--ink2);font-weight:600}
+.cd-reward{position:relative;cursor:default}
+.cd-rchev{width:13px;height:13px;stroke:var(--t-mute);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;margin-left:1px;transition:transform .18s}
+.cd-reward:hover .cd-rchev{transform:rotate(180deg)}
+.cd-split{position:absolute;top:calc(100% + 8px);left:0;z-index:80;min-width:275px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 16px 40px rgba(31,33,32,.16);padding:7px;opacity:0;visibility:hidden;transform:translateY(-4px);transition:opacity .16s,transform .16s,visibility .16s}
+.cd-reward:hover .cd-split{opacity:1;visibility:visible;transform:translateY(0)}
+.cd-split-row{display:flex;align-items:center;gap:11px;padding:8px 10px;border-radius:9px}
+.cd-split-row+.cd-split-row{margin-top:1px}
+.cd-split-medal{width:24px;height:24px;flex:none;display:grid;place-items:center}
+.cd-split-medal svg{width:22px;height:22px;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.cd-split-medal.g1 svg,.cd-split-medal.g2 svg,.cd-split-medal.g3 svg{stroke:var(--t-mute);fill:none}
+.browse-cardm.locked{cursor:default}
+.card-lock{position:absolute;inset:0;border-radius:14px;background:rgba(255,255,255,.9);backdrop-filter:blur(3px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;text-align:center;padding:18px;opacity:0;visibility:hidden;transition:opacity .18s,visibility .18s;cursor:default}
+.browse-cardm.locked:hover .card-lock{opacity:1;visibility:visible}
+.card-lock .tier-medal{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;flex:none}
+.card-lock .tier-medal svg{width:17px;height:17px;stroke:#fff;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.card-lock .tier-medal.gold{background:linear-gradient(135deg,#e6c200,#b8901a)}
+.card-lock .tier-medal.platinum{background:linear-gradient(135deg,#dfe3e8,#a7adba)}
+.card-lock-name{font-size:13px;font-weight:700;color:var(--ink2)}
+.card-lock-sub{font-size:12px;color:#5f5f5b;line-height:1.4;text-wrap:pretty}
+.cd-split-lock{display:flex;align-items:center;gap:11px;padding:8px 9px}
+.cd-split-lock .tier-medal{width:28px;height:28px;border-radius:50%;flex:none}
+.cd-lock-tx{display:flex;flex-direction:column;gap:2px}
+.cd-lock-name{font-size:12.5px;font-weight:700;color:var(--ink2)}
+.cd-lock-sub{font-size:11.5px;color:#5f5f5b}
+.cd-split-pl{flex:1;font-size:12.5px;font-weight:600;color:var(--t-body)}
+.cd-split-amt{font-size:13px;font-weight:700;color:var(--ink2)}
+.cd-split-div{border:0;border-top:1px solid var(--line);margin:7px 3px}
+.cd-split-note{display:flex;gap:9px;padding:4px 10px 6px;font-size:11.5px;line-height:1.45;color:var(--t-body);text-wrap:pretty}
+.cd-split-note svg{width:15px;height:15px;flex:none;margin-top:1px;stroke:var(--blue);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.cd .ch-card{border:1px solid var(--line);border-radius:16px;background:#fff;box-shadow:var(--shadow-card);padding:28px 32px;display:flex;flex-direction:column;gap:22px}
+.cd .ch-sec{display:flex;flex-direction:column;gap:8px}
+.cd .ch-sec+.ch-sec{border-top:1px solid var(--line);padding-top:22px}
+.cd .ch-sec h4{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:#b8b9b6;margin:0}
+.cd .ch-sec p{font-size:14.5px;line-height:1.6;color:var(--t-body);margin:0}
+.cd .ch-scroll{display:flex;flex-direction:column;gap:13px}
+.cd .ch-scroll p{font-size:14.5px;line-height:1.6;color:var(--t-body);margin:0}
+.cd-rules{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:11px}
+.cd-rules li{position:relative;padding-left:22px;font-size:14.5px;line-height:1.55;color:var(--t-body);text-wrap:pretty}
+.cd-rules li::before{content:"";position:absolute;left:4px;top:9px;width:6px;height:6px;border-radius:50%;background:var(--t-mute)}
+.cd .cd-upload-card,.cd .cd-describe-card,.cd .cd-submit-rules,.cd .cd-success{display:none}
+.cd.applying .cd-read-card{display:none}
+.cd.applying .cd-upload-card,.cd.applying .cd-describe-card{display:flex}
+.cd.applying .cd-submit-rules{display:block}
+.cd.submitted .cd-read-card,.cd.submitted .cd-upload-card,.cd.submitted .cd-describe-card,.cd.submitted .cd-submit-rules{display:none}
+.cd.submitted .cd-success{display:flex}
+.cd.submitted .cd-apply-bar{display:none}
+.cd-apply[disabled]{background:var(--field);color:var(--t-mute);box-shadow:none;cursor:default;transform:none}
+.cd-dz{position:relative;border:1.5px dashed var(--line);border-radius:14px;padding:40px 24px;display:flex;flex-direction:column;align-items:center;gap:9px;text-align:center;cursor:pointer;transition:border-color .15s,background .15s}
+.cd-dz:hover,.cd-dz.drag{border-color:var(--blue);background:var(--field)}
+.cd-dz svg{width:34px;height:34px;stroke:var(--t-mute);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.cd-dz.drag svg{stroke:var(--blue)}
+.cd-dz-title{font-size:15px;font-weight:700;color:var(--ink2)}
+.cd-dz-sub{font-size:13px;color:var(--t-mute)}
+.cd-files{display:flex;flex-direction:column;gap:8px}
+.cd-files:empty{display:none}
+.cd-describe-card{margin-top:16px}
+.cd-describe{width:100%;box-sizing:border-box;resize:vertical;min-height:110px;border:1px solid var(--line);border-radius:12px;padding:13px 15px;font:inherit;font-size:14px;line-height:1.55;color:var(--ink2);background:#fff;transition:border-color .15s}
+.cd-describe:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(103,141,198,.14)}
+.cd-describe::placeholder{color:var(--t-mute)}
+.cd-file{display:flex;align-items:center;gap:11px;padding:11px 14px;border:1px solid var(--line);border-radius:10px;font-size:13.5px;color:var(--ink2);animation:rise .2s ease both}
+.cd-file .fico{width:17px;height:17px;flex:none;stroke:var(--t-mute);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.cd-file .fname{flex:1;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cd-file .fsize{font-size:12px;color:var(--t-mute);flex:none}
+.cd-file .fx{border:0;background:none;cursor:pointer;padding:2px;flex:none;color:var(--t-mute);display:grid;place-items:center}
+.cd-file .fx:hover{color:var(--ink2)}
+.cd-file .fx svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.cd-submit-rules{margin-top:24px;padding:0 4px}
+.cd-submit-rules h4{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:#b8b9b6;margin:0 0 14px}
+.cd-success{flex-direction:column;align-items:center;text-align:center;padding:56px 24px;gap:14px;animation:rise .4s ease both}
+.cd-success-ic{width:60px;height:60px;border-radius:50%;background:var(--field);display:grid;place-items:center}
+.cd-success-ic svg{width:28px;height:28px;stroke:var(--blue);fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.cd-success-title{font-family:"P22Mackinac",serif;font-weight:500;font-size:26px;letter-spacing:-0.01em;color:var(--ink2)}
+.cd-success-sub{font-size:14.5px;line-height:1.6;color:var(--t-body);max-width:400px;margin:0;text-wrap:pretty}
+.cd-success-btn{margin-top:8px;background:var(--ink2);color:#fff;border:0;font-family:inherit;font-size:14px;font-weight:700;padding:12px 32px;border-radius:var(--r-pill);cursor:pointer;transition:background .15s}
+.cd-success-btn:hover{background:var(--blue)}
+/* challenge grid */
+.browse .tl{display:none}
+.browse.layout-tl .browse-cats{display:none}
+.browse.layout-tl .tl{display:block;position:relative;animation:rise .45s ease both}
+.tl-nav,.tl-list,.tl-drop,.tl-side,.tl-nav-chip,.tl-count,.tl-kindline{display:none!important}
+.tl-head{position:relative;z-index:5;text-align:center;padding:0 0 14px}
+.tl-chips{position:relative;display:flex;justify-content:center;align-items:center;gap:6px}
+.tl-chip{font-family:inherit;line-height:1.3;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border:1px solid transparent;background:none}
+.tl-chip.tl-left,.tl-chip.tl-right,.tl-chip.tl-hidden{display:none}
+.tl-chip.tl-center{flex:none;font-family:"P22Mackinac",serif;font-weight:500;font-size:26px;line-height:1.28;letter-spacing:-0.01em;color:var(--ink2);padding:0;max-width:640px;white-space:normal;cursor:default}
+.tl-cat{font-family:"P22Mackinac",serif;font-weight:500;font-size:26px;letter-spacing:-0.01em;color:var(--ink2);margin:0}
+.tl-scroll{position:relative;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:max-content;gap:18px;align-content:start;padding:12px 2px 40px;box-sizing:border-box;-webkit-mask-image:linear-gradient(#000 88%,rgba(0,0,0,0) 100%);mask-image:linear-gradient(#000 88%,rgba(0,0,0,0) 100%)}
+.tl-scroll::-webkit-scrollbar{display:none}
+html:has(.browse.layout-tl:not(.pulse)),html:has(.browse.layout-tl:not(.pulse)) body{overflow:hidden;height:100%}
+.tl-slide{display:flex;align-items:stretch;min-width:0}
+.tl-slide[style*="none"]{display:none!important}
+.tl-card{position:relative;flex:1;min-width:0;height:468px;box-sizing:border-box;border:1px solid var(--line);border-radius:18px;background:#fff;box-shadow:var(--shadow-card);padding:22px 22px 20px;display:flex;flex-direction:column;gap:14px;cursor:pointer;transition:border-color .2s ease}
+.tl-card>*:not(.card-lock){flex-shrink:0}
+.tl-card:not(.locked):hover{border-color:var(--blue)}
+.tl-card.locked{cursor:default}
+.tl-title{font-family:"P22Mackinac",serif;font-weight:500;font-size:19px;line-height:1.3;letter-spacing:-0.01em;color:var(--ink2);margin:0;text-wrap:pretty;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;min-height:2.6em}
+.tl-meta{display:flex;flex-wrap:wrap;gap:10px}.tl-meta .tl-chip{display:flex;flex:none;min-width:0;flex-direction:row;align-items:center;gap:9px;padding:5px 16px;border:1px solid var(--line);border-radius:999px;background:#fff;box-shadow:var(--shadow-card);cursor:default}.tl-meta .tl-chip .lbl{font-size:10px}.tl-meta .tl-chip .val{display:inline-flex;align-items:center;gap:7px;font-size:13.5px}.loc-flag{width:18px;height:auto;border-radius:2px;flex:none}
+.tl-chip .lbl{font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:#b8b9b6}
+.tl-chip .val{font-size:14px;color:var(--ink2);font-weight:600}
+.tl-ov{font-size:13.5px;line-height:1.55;color:var(--t-body);margin:0;text-wrap:pretty;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;max-height:6.2em}
+.tl-card .card-stack{margin-top:auto}
+.tl-tags{display:flex;flex-wrap:nowrap;gap:7px;margin-top:14px;min-width:0}
+.tl-tag{font-size:11.5px;font-weight:600;color:var(--t-mute);background:var(--field);border:1px solid var(--line);border-radius:var(--r-pill);padding:4px 11px;white-space:nowrap;min-width:0;overflow:hidden;text-overflow:ellipsis}
+.tl-tag:nth-child(n+4){display:none}
+.tl-cta{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:700;color:var(--blue);margin-top:0}
+.tl-cta svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tl-card .card-lock{border-radius:16px}
+.tl-card.locked:hover .card-lock{opacity:1;visibility:visible}
+.tl-scroll{grid-template-columns:repeat(auto-fill,minmax(max(300px,calc((100% - 54px)/4)),1fr))}
+.browse:not(.pd-closed) .tl-scroll{grid-template-columns:repeat(auto-fill,minmax(max(300px,calc((100% - 36px)/3)),1fr))}
+@media (max-width:600px){.tl-scroll,.browse:not(.pd-closed) .tl-scroll{grid-template-columns:minmax(0,1fr)}}
+</style>
+<style id="tc-mark-css">.tc-mark{display:inline-flex;align-items:center;flex:none;margin-right:.5em;vertical-align:-.12em;line-height:0}.tc-mark svg{width:1em;height:1.08em;display:block}</style><style id="gsm-css">
+.gsm{width:fit-content;max-width:100%;box-sizing:border-box;display:flex;align-items:center;gap:16px;margin:-8px auto 28px;padding:14px 14px 14px 16px;border:1px solid var(--line);border-radius:16px;background:#fff;animation:rise .5s ease both}
+.gsm[hidden]{display:none}
+.gsm-ic{flex:none;width:36px;height:36px;border-radius:10px;background:var(--field);display:grid;place-items:center;color:var(--blue)}
+.gsm-ic svg{width:18px;height:18px}
+.gsm-tx{flex:0 1 auto;max-width:440px;min-width:0;display:flex;flex-direction:column;gap:3px}
+.gsm-k{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#8a8a85}
+.gsm-k i{font-style:normal;letter-spacing:0;text-transform:none;font-weight:500}
+.gsm-t{font-size:15px;font-weight:700;color:var(--ink2)}
+.gsm-d{font-size:13px;line-height:1.45;color:#5b5f66;text-wrap:pretty}
+.gsm-act{flex:none;display:flex;align-items:center;gap:6px}
+.gsm-in{display:none;height:38px;width:240px;max-width:40vw;box-sizing:border-box;border:1px solid transparent;border-radius:999px;background:var(--field);padding:0 16px;font:inherit;font-size:16px;color:var(--ink2);outline:none}
+.gsm-in:focus{border-color:var(--blue);background:#fff}
+.gsm.editing .gsm-in{display:block}
+.gsm-btn{height:38px;padding:0 18px;border:0;border-radius:999px;background:var(--ink2);color:#fff;font:inherit;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;transition:background .15s}
+.gsm-btn:hover{background:var(--blue)}
+.gsm-x{width:32px;height:32px;border:0;border-radius:50%;background:none;color:#8a8a85;font-size:20px;line-height:1;cursor:pointer;display:grid;place-items:center}
+.gsm-x:hover{background:var(--field);color:var(--ink2)}
+@media (max-width:720px){.gsm{width:100%;flex-wrap:wrap;align-items:flex-start;padding:14px 14px 14px 16px;gap:12px}.gsm-ic{display:none}.gsm-tx{flex:1 1 calc(100% - 44px);max-width:none}.gsm-act{order:3;flex:1 1 100%}.gsm-in{flex:1;width:auto;max-width:none}.gsm-x{order:2;margin:-6px -4px 0 0}}
+</style><link rel="stylesheet" href="app-shell.css" /><link rel="stylesheet" href="pulse-dock.css" />
+</head>
+<body>
+<div class="app">
+  <div class="app-top">
+    <div class="app-logo"><span class="tc-mark"><svg viewBox="0 0 40 42" aria-hidden="true"><path fill="#648dc6" d="M1 1H16V8H8V34H16V41H1ZM39 1H24V8H32V34H24V41H39Z"></path></svg></span><span class="the">the</span>Colosseum</div>
+    <nav class="tw-nav" aria-label="Main"><a href="Candidate - Webapp copy.html" class="on" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"/><line x1="13" y1="19" x2="19" y2="13"/><line x1="16" y1="16" x2="20" y2="20"/><line x1="19" y1="21" x2="21" y2="19"/><polyline points="14.5 6.5 18 3 21 3 21 6 17.5 9.5"/><line x1="5" y1="14" x2="9" y2="18"/><line x1="7" y1="17" x2="4" y2="20"/><line x1="3" y1="19" x2="5" y2="21"/></svg>Challenges &amp; Jobs</a><span class="sep"></span><a href="Candidate - My applications.html"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="7" width="17" height="13" rx="2"/><path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7"/></svg>My applications</a><span class="sep"></span><a href="Candidate - Leaderboard.html"><svg viewBox="0 0 24 24" aria-hidden="true"><line x1="4" y1="20" x2="20" y2="20"/><rect x="5" y="12" width="4" height="8"/><rect x="10" y="7" width="4" height="13"/><rect x="15" y="10" width="4" height="10"/></svg>Leaderboard</a></nav>
+    <div class="app-user">
+      <button class="app-user-btn" type="button" aria-label="Account menu"><img src="assets/candidate-profile.png" alt="Your profile" /></button>
+      <div class="app-user-menu">
+        <div class="app-user-opt" data-go="profile"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/></svg><span>Profile</span></div>
+        <div class="app-user-opt" data-go="onboarding"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg><span>Onboarding</span></div>
+        <div class="app-user-opt" data-go="settings"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Settings</span></div>
+        <div class="app-user-sep"></div>
+        <div class="app-user-opt danger"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>Log out</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="browse layout-tl">
+    <hr class="browse-divider" hidden />
+    <div class="browse-cats">
+    <div class="browse-cat" data-cat="0"><div class="browse-cat-head"><h3></h3><div class="browse-nav"><button class="browse-arrow" data-dir="-1" aria-label="Scroll left"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg></button><button class="browse-arrow" data-dir="1" aria-label="Scroll right"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></button></div></div><div class="browse-track"></div></div>
+    <div class="browse-cat" data-cat="1"><div class="browse-cat-head"><h3></h3><div class="browse-nav"><button class="browse-arrow" data-dir="-1" aria-label="Scroll left"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg></button><button class="browse-arrow" data-dir="1" aria-label="Scroll right"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></button></div></div><div class="browse-track"></div></div>
+    <div class="browse-cat" data-cat="2"><div class="browse-cat-head"><h3></h3><div class="browse-nav"><button class="browse-arrow" data-dir="-1" aria-label="Scroll left"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg></button><button class="browse-arrow" data-dir="1" aria-label="Scroll right"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></button></div></div><div class="browse-track"></div></div>
+    </div>
+    <div class="tl">
+      <div class="tl-head"><div class="tl-chips"><div class="tl-side tl-side-l"><button class="tl-nav-chip tl-prev tl-catnav" type="button" data-dir="-1" aria-label="Previous category"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg></button><button class="tl-chip tl-left tl-catnav" type="button" data-dir="-1"></button></div><h3 class="tl-chip tl-center tl-cat"></h3><div class="tl-side tl-side-r"><button class="tl-chip tl-right tl-catnav" type="button" data-dir="1"></button><button class="tl-nav-chip tl-next tl-catnav" type="button" data-dir="1" aria-label="Next category"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></button></div></div><div class="tl-count"></div></div>
+    <div class="browse-filters2">
+      <div class="filter ctype">
+        <button class="filter-btn" type="button"><span class="lbl">All challenges</span></button>
+        <div class="filter-menu ctype-menu"><div class="filter-opt sel" data-kind="all">All challenges</div><div class="filter-opt" data-kind="bounty">Bounty challenges</div><div class="filter-opt" data-kind="hiring">Hiring challenges</div><div class="filter-opt" data-kind="jobs">Jobs</div></div>
+      </div>
+      <div class="filter tier">
+        <button class="filter-btn tier-btn" type="button"><span class="lbl">All tiers</span></button>
+        <div class="filter-menu tier-menu">
+          <div class="tier-opt sel tier-all" data-tier="all"><div class="tier-tx"><span class="tier-name">All tiers</span></div></div>
+          <div class="tier-opt" data-tier="bronze"><span class="tier-medal bronze"></span><div class="tier-tx"><span class="tier-name">Bronze</span><span class="tier-sub">Unlocked</span></div><span class="tier-state"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+          <div class="tier-opt" data-tier="gold"><span class="tier-medal gold"></span><div class="tier-tx"><span class="tier-name">Gold</span><span class="tier-sub">Complete 3 challenges to unlock</span></div><span class="tier-state"><svg class="tier-lock" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span></div>
+          <div class="tier-opt" data-tier="platinum"><span class="tier-medal platinum"></span><div class="tier-tx"><span class="tier-name">Platinum</span><span class="tier-sub">Win a gold challenge to unlock</span></div><span class="tier-state"><svg class="tier-lock" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span></div>
+        </div>
+      </div>
+      <div class="filter" data-filter="companies">
+        <button class="filter-btn" type="button"><span class="lbl">Companies</span></button>
+        <div class="filter-menu"></div>
+      </div>
+      <div class="filter" data-filter="stack">
+        <button class="filter-btn" type="button"><span class="lbl">Tech stack</span></button>
+        <div class="filter-menu"></div>
+      </div>
+      <div class="bsearch open"><button class="bsearch-btn" type="button" aria-label="Search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg></button><input class="bsearch-in" type="search" placeholder="Search" aria-label="Search" /></div>
+      <span class="bf-div" aria-hidden="true"></span>
+      <div class="filter bsort"><button class="filter-btn" type="button" aria-haspopup="listbox"><svg class="bsort-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4v16"/><polyline points="3 16 7 20 11 16"/><path d="M17 20V4"/><polyline points="13 8 17 4 21 8"/></svg><span class="lbl">Recommended</span><svg class="bsort-ch" viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button><div class="filter-menu bsort-menu" role="listbox"><div class="filter-opt sel" data-sort="rec">Recommended</div><div class="filter-opt" data-sort="reward-d">Highest reward</div><div class="filter-opt" data-sort="reward-a">Lowest reward</div><div class="filter-opt" data-sort="time-a">Shortest timeline</div><div class="filter-opt" data-sort="time-d">Longest timeline</div></div></div>
+    </div>
+      <div class="tl-scroll"></div>
+      <div class="tl-nav">
+        <button class="tl-arrow" type="button" data-dir="-1" aria-label="Previous"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="18 15 12 9 6 15"/></svg></button>
+        <button class="tl-arrow" type="button" data-dir="1" aria-label="Next"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="cd" id="challengeDetail" aria-hidden="true">
+  <div class="cd-inner">
+    <div class="app-logo"><span class="tc-mark"><svg viewBox="0 0 40 42" aria-hidden="true"><path fill="#648dc6" d="M1 1H16V8H8V34H16V41H1ZM39 1H24V8H32V34H24V41H39Z"></path></svg></span><span class="the">the</span>Colosseum</div>
+    <div class="cd-body">
+    <button class="cd-back" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>Back to challenges</button>
+    <div class="cd-top">
+      <div class="cd-co"><span class="cd-ic"><img alt="" /></span><span class="cd-co-name"></span><button type="button" class="pl-fol co-fol"></button></div>
+      <div class="cd-topright"><span class="cd-kind"></span><div class="cd-stack"></div></div>
+    </div>
+    <h2 class="cd-title"></h2>
+    <div class="ch-meta-chips">
+      <div class="ch-meta-chip"><span class="lbl">Effort</span><span class="val cd-effort"></span></div>
+      <div class="ch-meta-chip"><span class="lbl">Timeline</span><span class="val cd-window"></span></div>
+      <div class="ch-meta-chip cd-loc-chip" hidden><span class="lbl">Location</span><span class="val cd-loc"></span></div>
+      <div class="ch-meta-chip cd-reward"><span class="lbl">Reward</span><span class="val cd-budget"></span><svg class="cd-rchev" viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg><div class="cd-split"></div></div>
+    </div>
+    <div class="ch-card cd-read-card">
+      <div class="ch-sec"><h4>Overview</h4><p class="cd-ov"></p></div>
+      <div class="ch-sec"><h4>Goal</h4><p class="cd-goal"></p></div>
+      <div class="ch-sec"><h4>Details</h4><div class="ch-scroll cd-details"></div></div>
+      <div class="ch-sec cd-rules-sec"><h4>Rules</h4><ul class="cd-rules"><li>Work solo — no collaborators, pair-programming, or outsourced help.</li><li>Any language or framework is allowed unless the challenge states otherwise.</li><li>AI assistants may be used, but you must be able to explain every line you submit.</li><li>Submit a runnable repository with clear setup instructions and your tests.</li><li>All work must be your own and completed within the stated timeline.</li></ul></div>
+    </div>
+    <div class="ch-card cd-upload-card">
+      <div class="ch-sec"><h4>Submit your work</h4>
+        <div class="cd-dz" id="cdDrop">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          <span class="cd-dz-title">Drag &amp; drop your files here</span>
+          <span class="cd-dz-sub">or click to browse — zip, repo archive, PDF, up to 50 MB</span>
+          <input type="file" id="cdFile" multiple hidden />
+        </div>
+        <div class="cd-files" id="cdFiles"></div>
+      </div>
+    </div>
+    <div class="ch-card cd-describe-card">
+      <div class="ch-sec"><h4>Describe your submission</h4>
+        <textarea class="cd-describe" id="cdDescribe" rows="5" placeholder="Summarise your approach, key tradeoffs, and anything the reviewers should know before running it."></textarea>
+      </div>
+    </div>
+    <div class="cd-submit-rules">
+      <h4>Submission rules</h4>
+      <ul class="cd-rules"><li>Work solo — no collaborators, pair-programming, or outsourced help.</li><li>Any language or framework is allowed unless the challenge states otherwise.</li><li>AI assistants may be used, but you must be able to explain every line you submit.</li><li>Submit a runnable repository with clear setup instructions and your tests.</li><li>All work must be your own and completed within the stated timeline.</li></ul>
+    </div>
+    <div class="cd-success">
+      <span class="cd-success-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span>
+      <div class="cd-success-title">Submission received</div>
+      <p class="cd-success-sub">Your work is in. The team will review it and get back to you through your dashboard — you'll get an email when there's an update.</p>
+      <button class="cd-success-btn cd-back2" type="button">Back to challenges</button>
+    </div>
+    </div>
+  </div>
+  <div class="cd-apply-bar"><button class="cd-apply" type="button">Apply now</button></div>
+</div>
+<div class="cop" id="coProfile" aria-hidden="true">
+  <div class="cop-card" role="dialog" aria-modal="true">
+    <button class="cop-close" type="button" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <div class="cop-head"><span class="cop-ic"><img alt="" class="cop-img" /></span><div><div class="cop-nm"><div class="cop-name"></div><button type="button" class="pl-fol co-fol"></button></div><div class="cop-tag"></div></div>
+<div class="cop-links">
+      <a class="cop-link site" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span class="cop-site-lbl"></span></a>
+      <a class="cop-link li" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></a>
+      <a class="cop-link tw" target="_blank" rel="noopener" aria-label="X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 1.15h3.68l-8.04 9.19L24 22.85h-7.41l-5.8-7.58-6.64 7.58H.46l8.6-9.83L0 1.15h7.6l5.24 6.93 6.06-6.93zm-1.29 19.5h2.04L6.48 3.24H4.29L17.61 20.65z"/></svg></a>
+    </div>
+    </div>
+    <div class="cop-badges"></div>
+    <div class="cop-facts">
+      <div class="cop-fact"><span class="lbl">Location</span><span class="val cop-location"></span></div>
+      <div class="cop-fact"><span class="lbl">Team size</span><span class="val cop-size"></span></div>
+      <div class="cop-fact"><span class="lbl">Rewards distributed</span><span class="val cop-rewards"></span></div>
+    </div>
+    <div class="cop-cols">
+      <div>
+        <p class="cop-about"></p>
+        <div class="cop-sec"><h4 class="cop-h">Badges</h4><div class="cop-bdgs"></div></div>
+      </div>
+      <div>
+        <div class="cop-sec"><h4 class="cop-h">Open challenges & jobs</h4><div class="cop-open"></div><div class="pgr cop-open-pgr"></div></div>
+        <div class="cop-sec"><h4 class="cop-h">Ratings</h4><div class="rt-top cop-rt-top"></div><div class="rt-list cop-rt-list"></div><div class="pgr cop-rt-pgr"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var browse=document.querySelector('.browse');if(!browse)return;
+  var bsw=browse.querySelector('.browse-switch');
+  if(bsw)bsw.addEventListener('click',function(e){var b=e.target.closest('.bsw-opt');if(!b)return;bsw.querySelectorAll('.bsw-opt').forEach(function(x){x.classList.toggle('sel',x===b);});});
+  var KINDS=[{k:'bounty',l:'Bounty challenge',s:'Reward pays out for solving the problem.'},{k:'hiring',l:'Hiring challenge',s:'Reward pays out as a signing bonus.'}];
+  function kindOf(ci,i){return KINDS[(ci*3+i)%2];}
+  var cats=[
+    {title:'Distributed systems & reliability',items:[
+      {prize:'$5,000',t:'Design a fault-tolerant job queue with at-least-once delivery',s:['go','redis','postgresql']},
+      {prize:'$4,500',t:'Build a write-ahead log with crash-safe recovery',s:['rust','rocksdb']},
+      {prize:'$4,000',t:'Build a leader-election protocol that survives network partitions',s:['go','etcd','kubernetes']},
+      {prize:'$3,000',t:'Reconcile eventual consistency across three regions',s:['go','apachecassandra','apachekafka']},
+      {prize:'$2,500',t:'Implement exactly-once semantics over an unreliable transport',s:['apachekafka','go']},
+      {prize:'$2,000',t:'Design a distributed rate limiter with a shared token budget',s:['redis','go']},
+      {prize:'$1,500',t:'Make event processing idempotent across retries',s:['apachekafka','postgresql']},
+      {prize:'$1,000',t:'Design a dead-letter pipeline with automatic replay',s:['redis','python']}
+    ]},
+    {title:'High-throughput backend & scale',items:[
+      {prize:'$5,000',t:'Scale a WebSocket gateway to 1M concurrent connections',s:['nodedotjs','redis','nginx']},
+      {prize:'$4,500',t:'Shard a write-heavy Postgres table without downtime',s:['postgresql','go']},
+      {prize:'$4,000',t:'Cut p99 latency on a fan-out service by half',s:['go','grafana','prometheus']},
+      {prize:'$3,000',t:'Backpressure a streaming pipeline without dropping events',s:['apachekafka','apacheflink']},
+      {prize:'$2,500',t:'Build a rate-limited metrics ingestion endpoint that survives a traffic spike',s:['python','redis','prometheus']},
+      {prize:'$2,000',t:'Design a caching layer that holds a 95% hit rate under churn',s:['redis','nodedotjs']},
+      {prize:'$1,500',t:'Batch and coalesce database writes under load',s:['postgresql','typescript']},
+      {prize:'$1,000',t:'Optimize a hot query path under a 10k req/s load',s:['postgresql','go']}
+    ]},
+    {title:'Systems thinking under constraints',items:[
+      {prize:'$5,000',t:'Model failure modes for a payment retry flow',s:['typescript','postgresql']},
+      {prize:'$4,500',t:'Design an API that degrades gracefully under partial outage',s:['go','openapiinitiative']},
+      {prize:'$4,000',t:'Refactor a monolith hot path into an isolated service',s:['docker','kubernetes','go']},
+      {prize:'$3,000',t:'Budget a request across a 40ms latency SLA',s:['go','prometheus']},
+      {prize:'$2,500',t:'Trace and fix a race condition in a concurrent scheduler',s:['go']},
+      {prize:'$2,000',t:'Design a feature-flag rollout with instant rollback',s:['nodedotjs','typescript']},
+      {prize:'$1,500',t:'Bound memory for an unbounded consumer queue',s:['rust','redis']},
+      {prize:'$1,000',t:'Debug a memory leak in a long-running Go service',s:['go','grafana']}
+    ]}
+  ];
+  var JOBS=[
+    {title:'Backend & infrastructure',items:[
+      {type:'Remote',t:'Senior Backend Engineer, Payments',s:['go','postgresql','apachekafka']},
+      {type:'Hybrid',t:'Distributed Systems Engineer',s:['rust','etcd','kubernetes']},
+      {type:'Remote',t:'Staff Engineer, Core Platform',s:['go','redis','docker']},
+      {type:'On-site',t:'Infrastructure Engineer, Storage',s:['rust','rocksdb']},
+      {type:'Remote',t:'Backend Engineer, Messaging',s:['apachekafka','go']},
+      {type:'Hybrid',t:'Senior Engineer, Data Pipelines',s:['python','apacheflink']},
+      {type:'Remote',t:'Platform Engineer, Observability',s:['prometheus','grafana','go']},
+      {type:'Remote',t:'Software Engineer, API Gateway',s:['nodedotjs','nginx','redis']}
+    ]},
+    {title:'Reliability & scale',items:[
+      {type:'Remote',t:'Site Reliability Engineer',s:['kubernetes','prometheus','go']},
+      {type:'Hybrid',t:'Senior SRE, Edge Network',s:['nginx','go','grafana']},
+      {type:'Remote',t:'Performance Engineer',s:['go','grafana']},
+      {type:'On-site',t:'Database Reliability Engineer',s:['postgresql','python']},
+      {type:'Remote',t:'Cloud Infrastructure Engineer',s:['docker','kubernetes','go']},
+      {type:'Remote',t:'Streaming Platform Engineer',s:['apachekafka','apacheflink']},
+      {type:'Hybrid',t:'Capacity & Scaling Engineer',s:['go','redis']},
+      {type:'Remote',t:'Incident Response Engineer',s:['python','prometheus']}
+    ]},
+    {title:'Systems & performance',items:[
+      {type:'Remote',t:'Systems Software Engineer',s:['rust','go']},
+      {type:'Hybrid',t:'Senior Engineer, Concurrency',s:['go']},
+      {type:'Remote',t:'Compiler & Runtime Engineer',s:['rust']},
+      {type:'On-site',t:'Low-Latency Engineer, Trading',s:['go','prometheus']},
+      {type:'Remote',t:'Performance & Profiling Engineer',s:['go','grafana']},
+      {type:'Remote',t:'Engineer, Feature Platform',s:['nodedotjs','typescript']},
+      {type:'Hybrid',t:'Memory & Storage Engineer',s:['rust','redis']},
+      {type:'Remote',t:'Backend Engineer, Scheduler',s:['go','postgresql']}
+    ]}
+  ];
+  var TIERS={bronze:{cls:'bronze',name:'Bronze',mult:1,locked:false,sub:'Unlocked'},gold:{cls:'gold',name:'Gold',mult:2,locked:true,sub:'Complete 3 challenges to unlock'},platinum:{cls:'platinum',name:'Platinum',mult:5,locked:true,sub:'Win a gold challenge to unlock'}};
+  var TIERPAT=['bronze','platinum','bronze','gold','bronze','bronze','platinum','gold','gold','bronze','bronze','platinum','bronze','gold','bronze','bronze','bronze','gold','platinum','bronze','bronze','gold','bronze','platinum'];
+  browse.querySelectorAll('.browse-cat').forEach(function(cat){
+    var track=cat.querySelector('.browse-track');
+    cat.querySelector('.browse-nav').addEventListener('click',function(e){
+      var b=e.target.closest('.browse-arrow');if(!b)return;
+      track.scrollBy({left:(+b.getAttribute('data-dir'))*(track.clientWidth*0.8),behavior:'smooth'});
+    });
+  });
+  function renderCats(dataset,jobs){
+    browse.querySelectorAll('.browse-cat').forEach(function(cat){
+      var ci=+cat.getAttribute('data-cat'),data=dataset[ci];if(!data)return;
+      cat.querySelector('h3').textContent=data.title;
+      var track=cat.querySelector('.browse-track');
+      track.innerHTML=data.items.map(function(it,i){
+        var chips=(it.s||[]).map(function(slug){return '<span class="stack-ic" title="'+slug+'"><img src="https://cdn.simpleicons.org/'+slug+'" alt="'+slug+'" loading="lazy" onerror="this.parentNode.remove()" /></span>';}).join('');
+        var logo=Math.floor(Math.random()*5)+1;
+        if(jobs){
+          var jtier=TIERPAT[ci*8+i]||'bronze',jtm=TIERS[jtier];
+          var jlock='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
+          var jov=jtm.locked?'<div class="card-lock"><span class="tier-medal '+jtm.cls+'">'+jlock+'</span><span class="card-lock-name">'+jtm.name+' tier \u2014 locked</span><span class="card-lock-sub">'+jtm.sub+'</span></div>':'';
+          return '<div class="browse-cardm'+(jtm.locked?' locked':'')+'" data-ci="'+ci+'" data-tier="'+jtier+'"><div class="res-top"><span class="res-ic"><img src="assets/lg-'+logo+'.png" alt="" /></span><span class="res-jobtype">'+it.type+'</span></div><h4>'+it.t+'</h4><div class="card-stack">'+chips+'</div>'+jov+'</div>';
+        }
+        var tier=TIERPAT[ci*8+i]||'bronze',tm=TIERS[tier];
+        var base=parseInt((it.prize||'').replace(/[^0-9]/g,''),10)||0,amt=base*tm.mult;
+        var prizeStr='$'+amt.toLocaleString('en-US');
+        var kd=kindOf(ci,i);
+        var lockIc='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
+        var overlay=tm.locked?'<div class="card-lock"><span class="tier-medal '+tm.cls+'">'+lockIc+'</span><span class="card-lock-name">'+tm.name+' tier — locked</span><span class="card-lock-sub">'+tm.sub+'</span></div>':'';
+        return '<div class="browse-cardm'+(tm.locked?' locked':'')+'" data-ci="'+ci+'" data-tier="'+tier+'"><div class="res-top"><span class="res-ic"><img src="assets/lg-'+logo+'.png" alt="" /></span><span class="res-right"><span class="res-kind '+kd.k+'" title="'+kd.s+'">'+kd.l+'</span><span class="res-prize">'+prizeStr+'</span></span></div><h4>'+it.t+'</h4><div class="card-stack">'+chips+'</div>'+overlay+'</div>';
+      }).join('');
+    });
+  }
+  renderCats(cats,false);
+  var FILTERS={
+    companies:{label:'Companies',opts:['Nimbuslab','Aperture Data','Vantage','Helios Systems','Kestrel','Northwind','Signalyze','Corewave']},
+    stack:{label:'Tech stack',opts:[['go','Go'],['redis','Redis'],['postgresql','PostgreSQL'],['nodedotjs','Node.js'],['python','Python'],['typescript','TypeScript'],['rust','Rust'],['kubernetes','Kubernetes'],['docker','Docker'],['apachekafka','Kafka'],['prometheus','Prometheus'],['grafana','Grafana']]}
+  };
+  browse.querySelectorAll('.filter[data-filter]').forEach(function(f){
+    var key=f.getAttribute('data-filter'),cfg=FILTERS[key],menu=f.querySelector('.filter-menu'),btn=f.querySelector('.filter-btn'),lbl=btn.querySelector('.lbl');
+    var opts=cfg.opts.map(function(o){
+      var slug=Array.isArray(o)?o[0]:null,text=Array.isArray(o)?o[1]:o;
+      var ico=slug?'<img class="fico" src="https://cdn.simpleicons.org/'+slug+'" alt="" loading="lazy" onerror="this.remove()" />':'';
+      return '<div class="filter-opt sel"><span class="fchk"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>'+ico+'<span>'+text+'</span></div>';
+    }).join('');
+    menu.innerHTML='<div class="filter-toggle-all">Deselect all</div>'+opts;
+    var toggleAll=menu.querySelector('.filter-toggle-all');
+    function refresh(){var all=menu.querySelectorAll('.filter-opt'),sel=menu.querySelectorAll('.filter-opt.sel');var n=sel.length;toggleAll.textContent=(n===all.length)?'Deselect all':'Select all';}
+    btn.addEventListener('click',function(e){e.stopPropagation();var wasOpen=f.classList.contains('open');browse.querySelectorAll('.filter.open').forEach(function(x){x.classList.remove('open');});if(!wasOpen)f.classList.add('open');});
+    menu.addEventListener('click',function(e){if(e.target.closest('.filter-toggle-all')){var all=menu.querySelectorAll('.filter-opt'),allSel=menu.querySelectorAll('.filter-opt.sel').length===all.length;all.forEach(function(o){o.classList.toggle('sel',!allSel);});refresh();return;}var o=e.target.closest('.filter-opt');if(!o)return;o.classList.toggle('sel');refresh();});
+    refresh();
+  });
+  var ctF=browse.querySelector('.filter.ctype');
+  if(ctF){ctF.querySelector('.filter-btn').addEventListener('click',function(e){e.stopPropagation();var wasOpen=ctF.classList.contains('open');browse.querySelectorAll('.filter.open').forEach(function(x){x.classList.remove('open');});if(!wasOpen)ctF.classList.add('open');});
+    ctF.querySelector('.ctype-menu').addEventListener('click',function(e){var o=e.target.closest('.filter-opt');if(!o)return;ctF.querySelectorAll('.filter-opt').forEach(function(x){x.classList.toggle('sel',x===o);});ctF.querySelector('.lbl').textContent=o.textContent;ctF.classList.remove('open');curKind=o.getAttribute('data-kind');var isJobs=curKind==='jobs';browse.classList.toggle('jobs',isJobs);renderCats(isJobs?JOBS:cats,isJobs);curJobs=isJobs;refreshTimeline();});}
+  var tierF=browse.querySelector('.filter.tier');
+  if(tierF){
+    tierF.querySelector('.filter-btn').addEventListener('click',function(e){e.stopPropagation();var wasOpen=tierF.classList.contains('open');browse.querySelectorAll('.filter.open').forEach(function(x){x.classList.remove('open');});if(!wasOpen)tierF.classList.add('open');});
+    var tierLbl=tierF.querySelector('.filter-btn .lbl');
+    function filterTier(t){
+      browse.querySelectorAll('.browse-cardm').forEach(function(c){c.style.display=(t==='all'||c.getAttribute('data-tier')===t)?'':'none';});
+      browse.querySelectorAll('.browse-cat').forEach(function(cat){var vis=Array.prototype.some.call(cat.querySelectorAll('.browse-cardm'),function(c){return c.style.display!=='none';});cat.style.display=vis?'':'none';});
+    }
+    tierF.querySelector('.tier-menu').addEventListener('click',function(e){
+      var o=e.target.closest('.tier-opt');if(!o)return;
+      tierF.querySelectorAll('.tier-opt').forEach(function(x){x.classList.remove('sel');});o.classList.add('sel');
+      var t=o.getAttribute('data-tier');tierLbl.textContent=(t==='all')?'All tiers':o.querySelector('.tier-name').textContent;
+      filterTier(t);tierF.classList.remove('open');curTier=t;refreshTimeline();
+    });
+  }
+  var CHDETAIL=[
+    {effort:'6 hours',window:'5 days',overview:'A background job system is dropping tasks whenever a worker crashes mid-run. Design a queue that guarantees every job is processed at least once, even across worker failures and restarts.',goal:'Ship a working queue with retry and acknowledgement semantics, and prove no job is lost under a simulated crash.',details:['You will be given a skeleton service that enqueues jobs and a worker pool that processes them. Under the current implementation, jobs in flight when a worker dies are silently lost. Your task is to redesign the delivery path so that every enqueued job is eventually processed, even if a worker crashes at the worst possible moment.','Focus on the acknowledgement lifecycle: when does a job become invisible to other workers, when is it considered done, and what happens to it if the worker never acknowledges. Visibility timeouts, redelivery, and idempotency keys are all fair game. We care more about correct semantics than raw throughput.','Deliverables include your queue implementation, a short design note explaining your delivery guarantees and their tradeoffs, and a test that kills a worker mid-run and demonstrates the job still completes exactly the number of times you claim.']},
+    {effort:'5 hours',window:'5 days',overview:'The metrics pipeline falls over when traffic spikes 10x during peak events. Build an ingestion endpoint that stays responsive by shedding or shaping load instead of collapsing.',goal:'Deliver a rate-limited endpoint that holds p99 latency steady through a burst load test.',details:['The ingestion endpoint currently accepts every request and forwards it downstream synchronously. When a product launch drives a sudden 10x burst, the downstream store saturates and the whole endpoint locks up, taking healthy traffic down with it. You will make this endpoint degrade gracefully instead of failing all at once.','Consider where to place backpressure: token-bucket or leaky-bucket limiting at the edge, a bounded buffer with load shedding, or batching writes downstream. Whatever you choose, the endpoint must stay responsive and return clear signals to clients it cannot serve, rather than timing out.','Submit your implementation plus a load-test script that ramps to a 10x burst and a short writeup of how p99 latency and error rate behaved before and after your change. We are looking for a stable p99 under load, not zero rejections.']},
+    {effort:'4 hours',window:'5 days',overview:'A design or reliability problem is limiting the system at scale. Work through the tradeoffs and deliver a change that measurably improves the behaviour without breaking the existing contract.',goal:'Deliver a measurable improvement and document the tradeoffs you made to get it.',details:['You will be given the relevant service, its schema, and a representative dataset. Start by profiling and forming a hypothesis before touching anything: read the plan, identify the expensive or fragile step, and decide what you expect to change.','Indexes, query rewrites, denormalization, caching, and structural refactors are all on the table, but each carries a cost you should be able to articulate. We care that you understand what you traded away as much as the win itself.','Provide the change, before-and-after numbers under representative load, and a short note on the tradeoffs, such as write amplification, storage, staleness, or added complexity, that came with your approach.']}
+  ];
+  var JOBDETAIL=[
+    {location:'Berlin, DE / Remote (EU)',level:'Senior',overview:'We are looking for a backend engineer to own core services in our payments and messaging platform. You will design and operate systems that move money and events reliably at scale, working closely with a small, senior team that values clean interfaces and clear tradeoffs.',mission:'Design, build, and operate the services that keep our platform correct and available under load.',details:['Responsibilities: own the design and delivery of backend services from schema to production; set the standard for reliability, observability, and testing; review architecture and code across the team; and partner with product to turn ambiguous problems into shippable systems.','Requirements: 5+ years building backend services in production; strong command of a systems language such as Go or Rust; deep understanding of databases, queues, and distributed-systems fundamentals; and a track record of owning services end to end, including on-call.','Nice to have: experience with event-driven architectures, exposure to high-throughput or low-latency systems, and a habit of writing clear design notes that explain the tradeoffs behind a decision.']},
+    {location:'Remote (US) / Hybrid',level:'Senior / Staff',overview:'Join our reliability team to keep a high-traffic platform fast and available. You will work at the intersection of infrastructure, performance, and incident response, making the system resilient by design rather than by heroics.',mission:'Make the platform stay responsive and predictable no matter what traffic throws at it.',details:['Responsibilities: define and defend SLOs; build the tooling and automation that keep services healthy; lead incident response and drive blameless postmortems; and remove classes of failure through better design, not just faster firefighting.','Requirements: strong operational background running production systems on Kubernetes; fluency with metrics, tracing, and alerting; comfort profiling and tuning services under load; and calm, structured judgement during incidents.','Nice to have: experience with edge networking or CDNs, capacity planning at scale, and a background in performance engineering.']},
+    {location:'Remote / On-site',level:'Mid / Senior',overview:'We need a systems-minded engineer to push on performance and correctness in the parts of the stack that matter most. You will profile, reason about tradeoffs, and ship measurable improvements without breaking existing contracts.',mission:'Find the expensive, fragile parts of the system and make them fast and correct.',details:['Responsibilities: profile services and form hypotheses before changing code; deliver measurable improvements to latency, throughput, or memory; and document the tradeoffs behind every change so the team understands what was gained and given up.','Requirements: solid grounding in data structures, concurrency, and memory behaviour; experience reading and reasoning about production profiles; and the discipline to prove a change with before-and-after numbers under representative load.','Nice to have: experience with low-latency systems, compiler or runtime internals, and comfort working across the boundary between application and infrastructure.']}
+  ];
+  var cd=document.getElementById('challengeDetail');
+  var CO_FOLLOWERS={'1':2481,'2':1312,'3':3904,'4':847,'5':1126};
+  function CO_FOLKEY(id){return id==='1'?'nimbus':'co'+id;}
+  function openDetail(card){
+    var jobs=browse.classList.contains('jobs');
+    var ci=+card.getAttribute('data-ci')||0;
+    var logo=card.querySelector('.res-ic img'),title=card.querySelector('h4'),stack=card.querySelector('.card-stack');
+    cd.querySelector('.cd-ic img').src=logo?logo.getAttribute('src'):'';
+    var CONAMES={'1':'Nimbuslab','2':'Aperture Data','3':'Vantage','4':'Helios Systems','5':'Kestrel'};
+    var lsrc=logo?logo.getAttribute('src'):'',cm=lsrc.match(/co-(\d+)/);
+    cd.querySelector('.cd-co-name').textContent=cm?(CONAMES[cm[1]]||''):'';
+    cd.querySelector('.cd-co').setAttribute('data-co',cm?cm[1]:'');
+    var cdf=cd.querySelector('.cd-co .co-fol');cdf.hidden=!cm;if(cm&&window.plFollowFill)plFollowFill(cdf,CO_FOLKEY(cm[1]),CO_FOLLOWERS[cm[1]]||0);
+    cd.querySelector('.cd-stack').innerHTML=stack?stack.innerHTML:'';
+    var kchip=card.querySelector('.res-kind'),kk=kchip?(kchip.classList.contains('bounty')?'bounty':'hiring'):'';
+    var cdk=cd.querySelector('.cd-kind');
+    cdk.className='cd-kind'+(kk?' '+kk:'');cdk.textContent=kchip?kchip.textContent:'';
+    cd.querySelector('.cd-title').textContent=title?title.textContent:'';
+    var chipLbls=cd.querySelectorAll('.ch-meta-chips .ch-meta-chip:not(.cd-loc-chip) .lbl');
+    var secH=cd.querySelectorAll('.cd-read-card .ch-sec h4');
+    var backTxt=cd.querySelector('.cd-back').lastChild,back2=cd.querySelector('.cd-back2');
+    if(jobs){
+      cd.classList.add('jobs');
+      var jd=JOBDETAIL[ci]||JOBDETAIL[0];
+      var jtype=(card.querySelector('.res-jobtype')||{}).textContent||'';
+      var wjd=WORKLOC[ci%WORKLOC.length];chipLbls[0].parentNode.hidden=false;chipLbls[0].textContent='Experience';cd.querySelector('.cd-effort').textContent=wjd.exp;cd.querySelector('.cd-loc').innerHTML=locHtml(ci);cd.querySelector('.cd-loc-chip').hidden=false;
+      chipLbls[1].textContent='Work';cd.querySelector('.cd-window').textContent=wjd.mode;
+      chipLbls[2].parentNode.hidden=true;
+      secH[0].textContent='About the role';cd.querySelector('.cd-ov').textContent=jd.overview;
+      secH[1].textContent='What you\u2019ll do';cd.querySelector('.cd-goal').textContent=jd.mission;
+      secH[2].textContent='Responsibilities & requirements';cd.querySelector('.cd-details').innerHTML=jd.details.map(function(p){return '<p>'+p+'</p>';}).join('');
+      if(backTxt)backTxt.textContent='Back to jobs';if(back2)back2.textContent='Back to jobs';
+      cd.querySelector('.cd-success-title').textContent='Application received';
+      cd.querySelector('.cd-success-sub').textContent='Your application is in. The team will review it and get back to you through your dashboard \u2014 you\u2019ll get an email when there\u2019s an update.';
+    }else{
+      cd.classList.remove('jobs');
+      var d=CHDETAIL[ci]||CHDETAIL[0];
+      var prize=card.querySelector('.res-prize');
+      var lcc=cd.querySelector('.cd-loc-chip');if(kk==='hiring'){var wl=WORKLOC[ci%WORKLOC.length];chipLbls[0].textContent='Experience';cd.querySelector('.cd-effort').textContent=wl.exp;cd.querySelector('.cd-loc').innerHTML=locHtml(ci);lcc.hidden=false;chipLbls[0].parentNode.hidden=false;}else{chipLbls[0].parentNode.hidden=true;lcc.hidden=true;}
+      if(kk==='hiring'){chipLbls[1].textContent='Work';cd.querySelector('.cd-window').textContent=WORKLOC[ci%WORKLOC.length].mode;}else{chipLbls[1].textContent='Timeline';cd.querySelector('.cd-window').textContent=d.window;}
+      chipLbls[2].parentNode.hidden=false;chipLbls[2].textContent='Reward';cd.querySelector('.cd-budget').textContent=prize?prize.textContent:'';
+      (function(){
+        var tier=card.getAttribute('data-tier')||'bronze',tm=(TIERS[tier]||TIERS.bronze),box=cd.querySelector('.cd-split');
+        if(tm.locked){
+          box.innerHTML='<div class="cd-split-lock"><span class="tier-medal '+tm.cls+'"></span><div class="cd-lock-tx"><span class="cd-lock-name">'+tm.name+' challenge</span><span class="cd-lock-sub">'+tm.sub+'</span></div></div>';
+          return;
+        }
+        var n=prize?(parseInt(prize.textContent.replace(/[^0-9]/g,''),10)||0):0;var parts=[Math.round(n*0.6),Math.round(n*0.25)];parts.push(n-parts[0]-parts[1]);var pl=['1st place','2nd place','3rd place'],cls=['g1','g2','g3'];var medal='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>';box.innerHTML=parts.map(function(v,i){return '<div class="cd-split-row"><span class="cd-split-medal '+cls[i]+'">'+medal+'</span><span class="cd-split-pl">'+pl[i]+'</span><span class="cd-split-amt">$'+v.toLocaleString('en-US')+'</span></div>'+(i===0&&kk!=='bounty'?'<div class="cd-split-sub">Winning hire \u2014 signing bonus</div>':'');}).join('')+'<hr class="cd-split-div" /><div class="cd-split-note"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg><span>'+(kk==='bounty'?'Applies to production-grade submissions only.':'Top 3 performers will be fast-tracked straight to an interview.')+'</span></div>';
+      })();
+      secH[0].textContent='Overview';cd.querySelector('.cd-ov').textContent=d.overview;
+      secH[1].textContent='Goal';cd.querySelector('.cd-goal').textContent=d.goal;
+      secH[2].textContent='Details';cd.querySelector('.cd-details').innerHTML=d.details.map(function(p){return '<p>'+p+'</p>';}).join('');
+      if(backTxt)backTxt.textContent='Back to challenges';if(back2)back2.textContent='Back to challenges';
+      cd.querySelector('.cd-success-title').textContent='Submission received';
+      cd.querySelector('.cd-success-sub').textContent='Your work is in. The team will review it and get back to you through your dashboard \u2014 you\u2019ll get an email when there\u2019s an update.';
+    }
+    cd.classList.remove('applying','submitted');
+    cdFiles.innerHTML='';cd.querySelector('#cdDescribe').value='';if(SUBMITTED[cdKey()]){applyBtn.textContent=SUBMITTED[cdKey()];applyBtn.disabled=true;}else{applyBtn.textContent='Apply now';applyBtn.disabled=false;}
+    cd.classList.add('show');cd.setAttribute('aria-hidden','false');cd.scrollTop=0;document.body.style.overflow='hidden';
+  }
+  function closeDetail(){cd.classList.remove('show');cd.setAttribute('aria-hidden','true');document.body.style.overflow='';}
+  var COPROFILE={
+    '1':{open:[["Idempotent job queue under retries","Take-home · 5 hours · closes in 3 days","hiring","Hiring"],["Cut p99 latency on the scheduler","Bounty · $1,500 · open until solved","bounty","Bounty"],["Senior Backend Engineer","Full-time · Berlin / remote","job","Job"]],score:88,roles:3,resp:'Under 2 days',name:'Nimbuslab',tag:'Cloud infrastructure platform',industry:'Developer tools',location:'Berlin, DE',size:'80–120',site:'nimbuslab.io',li:'company/nimbuslab',tw:'nimbuslab',about:'Nimbuslab builds the deployment and observability layer that early-stage teams use to ship without a dedicated platform team. Small, senior engineering org that values crisp systems thinking and clean handoffs.'},
+    '2':{open:[["Streaming aggregation correctness","Take-home · 6 hours · closes in 5 days","hiring","Hiring"],["Query planner regression hunt","Bounty · $2,000 · open until solved","bounty","Bounty"]],score:84,roles:2,resp:'Under 3 days',name:'Aperture Data',tag:'Real-time analytics engine',industry:'Data infrastructure',location:'Remote (US)',size:'40–60',site:'aperturedata.com',li:'company/aperture-data',tw:'aperturedata',about:'Aperture Data runs a columnar query engine for teams that need sub-second analytics over billions of rows. Engineers here own problems end to end, from storage format to query planner.'},
+    '3':{open:[["Risk model backtest harness","Take-home · 4 hours · closes in 2 days","hiring","Hiring"],["Pricing feed failover","Bounty · $2,500 · open until solved","bounty","Bounty"],["Staff Platform Engineer","Full-time · New York, NY","job","Job"],["Data Engineer","Full-time · Remote (US)","job","Job"]],score:91,roles:4,resp:'Same week',name:'Vantage',tag:'Financial data & risk modelling',industry:'Fintech',location:'New York, NY',size:'150–250',site:'vantage.co',li:'company/vantage',tw:'vantage',about:'Vantage powers pricing and risk for trading desks and asset managers. Correctness and latency both matter here — the team cares as much about the tradeoffs you name as the numbers you hit.'},
+    '4':{open:[["Grid telemetry ingest at 10×","Take-home · 5 hours · closes in 6 days","hiring","Hiring"]],score:79,roles:1,resp:'Under 4 days',name:'Helios Systems',tag:'Energy grid orchestration',industry:'Climate / energy',location:'Austin, TX',size:'60–90',site:'heliossystems.com',li:'company/helios-systems',tw:'heliosgrid',about:'Helios Systems coordinates distributed energy resources across regional grids. Reliability is non-negotiable — the challenges here mirror the fault-tolerance problems the team faces in production.'},
+    '5':{open:[["Edge cache invalidation storm","Bounty · $1,200 · open until solved","bounty","Bounty"],["Senior Network Engineer","Full-time · Remote (EU)","job","Job"]],score:86,roles:2,resp:'Under 2 days',name:'Kestrel',tag:'Edge networking & delivery',industry:'Networking',location:'Remote (EU)',size:'25–40',site:'kestrel.net',li:'company/kestrel-edge',tw:'kestreledge',about:'Kestrel operates a global edge network for low-latency delivery. A lean team that rewards deep systems knowledge and pragmatic, measurable improvements over rewrites.'}
+  };
+  document.addEventListener('click',function(e){var b=e.target.closest('.co-fol');if(!b)return;e.stopPropagation();e.preventDefault();window.plFollow&&plFollow(b.getAttribute('data-a'));},true);
+  var COP_REWARDS={'1':'$184,000','2':'$96,500','3':'$212,000','4':'$41,000','5':'$68,500'};
+  var cop=document.getElementById('coProfile'),copOpenCards=[];
+  function openCoProfile(id){
+    var p=COPROFILE[id];if(!p)return;
+    cop.querySelector('.cop-img').src=cd.querySelector('.cd-ic img').src;
+    cop.querySelector('.cop-name').textContent=p.name;
+    if(window.plFollowFill)plFollowFill(cop.querySelector('.co-fol'),CO_FOLKEY(id),CO_FOLLOWERS[id]||0);
+    cop.querySelector('.cop-tag').textContent=p.tag;
+    cop.querySelector('.cop-location').textContent=p.location;
+    cop.querySelector('.cop-size').textContent=p.size;
+    cop.querySelector('.cop-rewards').textContent=COP_REWARDS[id]||'—';
+    cop.querySelector('.cop-about').textContent=p.about;
+    var icCheck='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>',icStar='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z"/></svg>',icClock='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><polyline points="12 9 12 13 15 15"/></svg>',icChat='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';
+    cop.querySelector('.cop-badges').innerHTML='<span class="cop-chip verified">'+icCheck+'Verified employer</span>'+
+      '<span class="cop-chip score">'+icStar+'Employer score '+p.score+'%</span>'+
+      '<span class="cop-chip cop-roles"></span>';
+    var BDGS=[['gold',icCheck,'Verified'],['earned',icClock,'Fast replies'],['earned',icChat,'Always gives feedback'],['earned',icStar,'Top rewards']];
+    cop.querySelector('.cop-bdgs').innerHTML=BDGS.map(function(b){return '<div class="cop-bdg '+b[0]+'"><span class="cop-bdg-hex">'+b[1]+'</span><span class="cop-bdg-n">'+b[2]+'</span></div>';}).join('');
+    copOpenCards=Array.prototype.filter.call(browse.querySelectorAll('.browse-cardm'),function(c){
+      if(c.classList.contains('locked'))return false;
+      var im=c.querySelector('.res-ic img'),m=im?(im.getAttribute('src')||'').match(/co-(\d+)/):null;
+      return m&&m[1]===String(id);
+    });
+    var openRows=copOpenCards.map(function(c,i){
+      var t=(c.querySelector('h4')||{}).textContent||'',k=c.querySelector('.res-kind'),pz=c.querySelector('.res-prize');
+      var kk2=k&&k.classList.contains('bounty')?'bounty':'hiring',kl=k?k.textContent.replace(' challenge',''):'';
+      var eff=c.querySelector('.card-meta')?c.querySelector('.card-meta').textContent.trim():'';
+      var sub=[kl,pz?pz.textContent:'',eff].filter(Boolean).join(' \u00b7 ');
+      return '<div class="cop-row" data-i="'+i+'"><span class="cop-row-t">'+t+'<em>'+sub+'</em></span><span class="cop-row-k '+kk2+'">'+(kl||'Challenge')+'</span></div>';
+    });
+    var openEl=cop.querySelector('.cop-open'),openPg=cop.querySelector('.cop-open-pgr'),oper=5,on=Math.ceil(openRows.length/oper);
+    if(!openRows.length){openEl.innerHTML='<p class="cop-empty">Nothing open right now.</p>';openPg.innerHTML='';}
+    else (function drawOpen(i){
+      openEl.innerHTML=openRows.slice(i*oper,i*oper+oper).join('');
+      openPg.innerHTML=on<2?'':'<button type="button" aria-label="Previous"'+(i===0?' disabled':'')+'><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button><button type="button" aria-label="Next"'+(i>=on-1?' disabled':'')+'><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>';
+      var b=openPg.querySelectorAll('button');if(b[0])b[0].onclick=function(){if(i>0)drawOpen(i-1);};if(b[1])b[1].onclick=function(){if(i<on-1)drawOpen(i+1);};
+    })(0);
+    cop.querySelector('.cop-roles').textContent=copOpenCards.length+(copOpenCards.length===1?' role':' roles')+' open now';
+    cop.querySelector('.cop-link.site').href='https://'+p.site;
+    cop.querySelector('.cop-site-lbl').textContent=p.site;
+    cop.querySelector('.cop-link.li').href='https://linkedin.com/'+p.li;
+    cop.querySelector('.cop-link.tw').href='https://x.com/'+p.tw;
+    copRatings(p);
+    cop.classList.add('show');cop.setAttribute('aria-hidden','false');
+  }
+  var COP_RT=[
+    ['Priya Raghunathan',5,'Jun 2026','Brief was specific and the review came back in two days with actual notes on my approach. Rare.'],
+    ['Daniel Okonkwo',5,'May 2026','Paid the bounty the day it was awarded and the scope never moved mid-challenge.'],
+    ['Mei Lin Tan',4,'Apr 2026','Interviewers had read my submission properly. Timeline slipped by a week without much warning.'],
+    ['Tomas Berg',4,'Mar 2026','Realistic take-home that matched the work they described. Feedback on the rejection was brief.'],
+    ['Ana Sofia Duarte',5,'Feb 2026','Clear stages, clear compensation band, no surprises at offer stage.'],
+    ['Ravi Menon',4,'Jan 2026','Good technical conversation. Would have liked more detail on how the challenge was scored.'],
+    ['Julia Weiss',5,'Dec 2025','Five hours of work and they treated it as five hours of work. Respectful process throughout.']
+  ];
+  function rtEsc(t){return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function rtStar(on){return '<svg'+(on?' class="on"':'')+' viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.5 7 .9-5.1 4.8 1.3 7-6.2-3.4L5.8 21l1.3-7L2 9.4l7-.9z"/></svg>';}
+  function rtStars(n){var o='';for(var i=1;i<=5;i++){o+=(n>=i)?rtStar(true):(n>i-1)?'<span class="half">'+rtStar(false)+rtStar(true)+'</span>':rtStar(false);}return '<span class="stars">'+o+'</span>';}
+  function copRatings(p){
+    var top=cop.querySelector('.cop-rt-top'),el=cop.querySelector('.cop-rt-list'),pg=cop.querySelector('.cop-rt-pgr');
+    if(!top||!el||!pg)return;
+    var avg=COP_RT.reduce(function(a,x){return a+x[1];},0)/COP_RT.length;
+    top.innerHTML='<span class="rt-avg">'+avg.toFixed(1)+'<span>/5</span></span>'+rtStars(Math.round(avg*2)/2)+'<span class="rt-count">'+COP_RT.length+' reviews from candidates who worked with '+rtEsc(p.name)+'</span>';
+    var per=3,n=Math.ceil(COP_RT.length/per);
+    (function draw(i){
+      el.innerHTML=COP_RT.slice(i*per,i*per+per).map(function(x){return '<div class="rt-row"><div class="rt-hd"><span class="rt-co">'+rtEsc(x[0])+'</span>'+rtStars(x[1])+'<span class="rt-when">'+rtEsc(x[2])+'</span></div><p>'+rtEsc(x[3])+'</p></div>';}).join('');
+      pg.innerHTML=n<2?'':'<button type="button" aria-label="Previous"'+(i===0?' disabled':'')+'><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button><button type="button" aria-label="Next"'+(i>=n-1?' disabled':'')+'><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>';
+      var b=pg.querySelectorAll('button');if(b[0])b[0].onclick=function(){if(i>0)draw(i-1);};if(b[1])b[1].onclick=function(){if(i<n-1)draw(i+1);};
+    })(0);
+  }
+  function closeCoProfile(){cop.classList.remove('show');cop.setAttribute('aria-hidden','true');}
+  cd.querySelector('.cd-co').addEventListener('click',function(){openCoProfile(this.getAttribute('data-co'));});
+  cop.querySelector('.cop-close').addEventListener('click',closeCoProfile);
+  cop.addEventListener('click',function(e){if(e.target===cop)closeCoProfile();});
+  cop.querySelector('.cop-open').addEventListener('click',function(e){
+    var row=e.target.closest('.cop-row');if(!row)return;
+    var card=copOpenCards[+row.getAttribute('data-i')];if(!card)return;
+    closeCoProfile();openDetail(card);
+  });
+  browse.querySelector('.browse-cats').addEventListener('click',function(e){var card=e.target.closest('.browse-cardm');if(card&&!card.classList.contains('locked'))openDetail(card);});
+  cd.querySelector('.cd-back').addEventListener('click',closeDetail);
+  cd.querySelector('.cd-back2').addEventListener('click',closeDetail);
+  var applyBtn=cd.querySelector('.cd-apply'),cdFiles=cd.querySelector('#cdFiles'),cdDrop=cd.querySelector('#cdDrop'),cdFile=cd.querySelector('#cdFile');
+  function fmtSize(b){if(b<1024)return b+' B';if(b<1048576)return (b/1024).toFixed(0)+' KB';return (b/1048576).toFixed(1)+' MB';}
+  function addFiles(list){
+    Array.prototype.forEach.call(list,function(f){
+      var row=document.createElement('div');row.className='cd-file';
+      row.innerHTML='<svg class="fico" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span class="fname"></span><span class="fsize">'+fmtSize(f.size)+'</span><button class="fx" type="button" aria-label="Remove"><svg viewBox="0 0 24 24" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>';
+      row.querySelector('.fname').textContent=f.name;
+      row.querySelector('.fx').addEventListener('click',function(){row.remove();});
+      cdFiles.appendChild(row);
+    });
+  }
+  cdDrop.addEventListener('click',function(){cdFile.click();});
+  cdFile.addEventListener('change',function(){addFiles(cdFile.files);cdFile.value='';});
+  ['dragenter','dragover'].forEach(function(ev){cdDrop.addEventListener(ev,function(e){e.preventDefault();cdDrop.classList.add('drag');});});
+  ['dragleave','drop'].forEach(function(ev){cdDrop.addEventListener(ev,function(e){e.preventDefault();cdDrop.classList.remove('drag');});});
+  cdDrop.addEventListener('drop',function(e){if(e.dataTransfer&&e.dataTransfer.files)addFiles(e.dataTransfer.files);});
+  var SUBMITTED={};
+  function cdKey(){var t=cd.querySelector('.cd-title');return t?t.textContent.trim():'x';}
+  function markSubmitted(){var d=new Date(),day=d.getDate(),suf=(day%10==1&&day!=11)?'st':(day%10==2&&day!=12)?'nd':(day%10==3&&day!=13)?'rd':'th';var lbl='Submitted on '+day+suf+' '+d.toLocaleString('en-GB',{month:'long'});SUBMITTED[cdKey()]=lbl;applyBtn.textContent=lbl;applyBtn.disabled=true;}
+  applyBtn.addEventListener('click',function(){
+    if(cd.classList.contains('jobs')){cd.classList.add('submitted');markSubmitted();cd.scrollTop=0;return;}
+    if(!cd.classList.contains('applying')){
+      cd.classList.add('applying');applyBtn.textContent='Submit';cd.scrollTop=0;
+    }else{
+      cd.classList.remove('applying');cd.classList.add('submitted');markSubmitted();cd.scrollTop=0;
+    }
+  });
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){if(cop.classList.contains('show'))closeCoProfile();else if(cd.classList.contains('show'))closeDetail();}});
+  var userMenu=document.querySelector('.app-user');
+  if(userMenu){userMenu.querySelector('.app-user-btn').addEventListener('click',function(e){e.stopPropagation();userMenu.classList.toggle('open');});var goProf=userMenu.querySelector('[data-go="profile"]');if(goProf)goProf.addEventListener('click',function(){window.location.href='Candidate - Profile.html';});}
+  document.addEventListener('click',function(){browse.querySelectorAll('.filter.open').forEach(function(x){x.classList.remove('open');});if(userMenu)userMenu.classList.remove('open');});
+
+  // ---- Focus / timeline layout ----
+  var tlList=browse.querySelector('.tl-list'),tlDrop=browse.querySelector('.tl-drop');
+  var tlScroll=browse.querySelector('.tl-scroll'),tlCat=browse.querySelector('.tl-cat'),tlCount=browse.querySelector('.tl-count'),tlEl=browse.querySelector('.tl');
+  var curJobs=false,curKind='all',curTier='all',curLayout='tl',lastTitle='';
+  var WORKLOC=[{mode:'Remote',country:'United States',iso:'us',exp:'3 years'},{mode:'Hybrid',country:'Germany',iso:'de',exp:'5 years'},{mode:'Remote',country:'United Kingdom',iso:'gb',exp:'4 years'},{mode:'On-site',country:'Netherlands',iso:'nl',exp:'2 years'},{mode:'Remote',country:'Canada',iso:'ca',exp:'6 years'}];
+  function locHtml(ci){var w=WORKLOC[ci%WORKLOC.length];return '<img class="loc-flag" src="https://flagcdn.com/w40/'+w.iso+'.png" alt="" />'+w.country;}
+  function tlChips(ci,jobs,kind){if(!jobs&&kind==='hiring'){var w=WORKLOC[ci%WORKLOC.length],d0=CHDETAIL[ci]||CHDETAIL[0];return [['Experience',w.exp],['Work',w.mode],['Location',locHtml(ci)]];}if(jobs){var wj=WORKLOC[ci%WORKLOC.length];return [['Experience',wj.exp],['Work',wj.mode],['Location',locHtml(ci)]];}var d=CHDETAIL[ci]||CHDETAIL[0];return [['Timeline',d.window]];}
+  function renderTimeline(dataset,jobs,append){
+    if(!tlScroll)return;var html='';
+    dataset.forEach(function(data,ci){
+      data.items.forEach(function(it,idx){
+        var tier=TIERPAT[ci*8+idx]||'bronze',tm=TIERS[tier];
+        if(curTier!=='all'&&tier!==curTier)return;
+        var logo=((ci*8+idx)%5)+1;
+        var chipsIc=(it.s||[]).map(function(slug){return '<span class="stack-ic" title="'+slug+'"><img src="https://cdn.simpleicons.org/'+slug+'" alt="'+slug+'" loading="lazy" onerror="this.parentNode.remove()" /></span>';}).join('');
+        var kd=kindOf(ci,idx);
+        if(!jobs&&(curKind==='bounty'||curKind==='hiring')&&kd.k!==curKind)return;
+        var topRight,rewardChip='';
+        if(jobs){topRight='<span class="res-right"><span class="res-kind job">Job</span><span class="res-jobtype">'+it.type+'</span></span>';}
+        else{var base=parseInt((it.prize||'').replace(/[^0-9]/g,''),10)||0,amt=base*tm.mult,prizeStr='$'+amt.toLocaleString('en-US');topRight='<span class="res-right"><span class="res-kind '+kd.k+'">'+kd.l+'</span><span class="res-prize">'+prizeStr+'</span></span>';}
+        var meta=tlChips(ci,jobs,kd&&kd.k).map(function(c){return '<div class="tl-chip"><span class="lbl">'+c[0]+'</span><span class="val">'+c[1]+'</span></div>';}).join('')+rewardChip;
+        var det=jobs?(JOBDETAIL[ci]||JOBDETAIL[0]):(CHDETAIL[ci]||CHDETAIL[0]);
+        var lockIc='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
+        var overlay=tm.locked?'<div class="card-lock"><span class="tier-medal '+tm.cls+'">'+lockIc+'</span><span class="card-lock-name">'+tm.name+' tier \u2014 locked</span><span class="card-lock-sub">'+tm.sub+'</span></div>':'';
+        var SLUGLBL={nodedotjs:'Node.js',postgresql:'PostgreSQL',apachekafka:'Kafka',openapiinitiative:'OpenAPI',rocksdb:'RocksDB',redis:'Redis',nginx:'NGINX',etcd:'etcd',kubernetes:'Kubernetes',docker:'Docker',typescript:'TypeScript',python:'Python',rust:'Rust',go:'Go'};
+        var tagList=(it.s||[]).slice(0,4).map(function(sl){return SLUGLBL[sl]||sl.charAt(0).toUpperCase()+sl.slice(1);});
+        var tags='<div class="tl-tags">'+tagList.map(function(t){return '<span class="tl-tag">'+t+'</span>';}).join('')+'</div>';
+        var cta='<div class="tl-cta">'+(jobs?'View role':'View challenge')+' <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>';
+        html+='<div class="tl-slide" data-cat-title="'+data.title.replace(/"/g,'&quot;')+'"><div class="tl-card'+(tm.locked?' locked':'')+'" data-ci="'+ci+'" data-tier="'+tier+'"><div class="res-top"><span class="res-ic"><img src="assets/lg-'+logo+'.png" alt="" /></span>'+topRight+'</div><h4 class="tl-title">'+it.t+'</h4><div class="tl-meta">'+meta+'</div>'+(jobs?'':'<p class="tl-kindline">'+kd.l+' \u2014 '+kd.s+'</p>')+'<p class="tl-ov">'+det.overview+'</p><div class="card-stack">'+chipsIc+'</div>'+tags+overlay+'</div></div>';
+      });
+    });
+    tlScroll.innerHTML=(append?tlScroll.innerHTML:'')+html;
+    var slides=[].slice.call(tlScroll.querySelectorAll('.tl-slide')),counts={},seen={};
+    slides.forEach(function(s){var t=s.getAttribute('data-cat-title');counts[t]=(counts[t]||0)+1;});
+    slides.forEach(function(s){var t=s.getAttribute('data-cat-title');seen[t]=(seen[t]||0)+1;s.setAttribute('data-idx',seen[t]);s.setAttribute('data-total',counts[t]);});
+    if(tlList){var fi={},ord=[];slides.forEach(function(s,i){var t=s.getAttribute('data-cat-title');if(!(t in fi)){fi[t]=i;ord.push(t);}});tlList.innerHTML=ord.length?'<div class="tl-list-h">'+(jobs?'Role categories':'Challenge categories')+'</div>'+ord.map(function(t){return '<button class="tl-li" type="button" data-i="'+fi[t]+'" data-t="'+t.replace(/"/g,'&quot;')+'"><span>'+t+'</span><span class="n">'+counts[t]+'</span></button>';}).join(''):'';}
+    tlScroll.scrollTop=0;lastTitle='';tlUpdate();
+  }
+  function tlUpdate(){
+    if(!tlScroll)return;var slides=tlScroll.querySelectorAll('.tl-slide');
+    if(!slides.length){tlCat.textContent='No challenges match your filters';tlCount.textContent='';return;}
+    var mid=tlScroll.scrollTop+tlScroll.clientHeight/2,best=null,bd=1e9;
+    [].forEach.call(slides,function(s){var c=s.offsetTop+s.offsetHeight/2,d=Math.abs(c-mid);if(d<bd){bd=d;best=s;}});
+    [].forEach.call(slides,function(s){s.classList.toggle('is-active',s===best);});
+    if(best){var ai=[].indexOf.call(slides,best);tlCat.textContent=curKind==='jobs'?'Pick a role to get started':curKind==='all'?'Pick a challenge or role to get started':'Pick a challenge to get started';tlCat.style.opacity=1;tlCount.textContent=(curKind==='jobs'?'Role ':curKind==='all'?'':'Challenge ')+(ai+1)+' of '+slides.length;tlCount.style.opacity=1;}
+    var idx=[].indexOf.call(slides,best);if(tlUp)tlUp.disabled=idx<=0;if(tlDown)tlDown.disabled=idx>=slides.length-1;
+    if(best){var titles=[],seenT={};[].forEach.call(slides,function(s){var tt=s.getAttribute('data-cat-title');if(!seenT[tt]){seenT[tt]=1;titles.push(tt);}});var ci=titles.indexOf(best.getAttribute('data-cat-title')),n=titles.length;
+      if(tlChipsEl)tlChipsEl.classList.toggle('tl-solo',n<2);
+      if(n>1){if(tlLeft)tlLeft.textContent=titles[(ci-1+n)%n];if(tlRight)tlRight.textContent=titles[(ci+1)%n];}}
+    if(best&&tlNav){var card=best.querySelector('.tl-card');if(card)tlNav.style.top=(tlScroll.offsetTop+card.offsetTop-tlScroll.scrollTop+card.offsetHeight/2)+'px';}
+  }
+  var tlSnapT,tlAnim;
+  function tlScrollToIndex(n){if(!tlScroll)return;var slides=[].slice.call(tlScroll.querySelectorAll('.tl-slide'));if(!slides[n])return;var start=tlScroll.scrollTop,dest=Math.max(0,slides[n].offsetTop-14),t0=performance.now(),dur=380;if(dest===start)return;clearTimeout(tlSnapT);if(tlAnim)cancelAnimationFrame(tlAnim);tlScroll.style.scrollSnapType='none';(function step(now){var p=Math.min(1,(now-t0)/dur),e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;tlScroll.scrollTop=start+(dest-start)*e;if(p<1)tlAnim=requestAnimationFrame(step);else{tlAnim=null;tlUpdate();tlSnapT=setTimeout(function(){tlScroll.style.scrollSnapType='y mandatory';},60);}}(performance.now()));}
+  function tlGo(dir){if(!tlScroll)return;var slides=[].slice.call(tlScroll.querySelectorAll('.tl-slide'));if(!slides.length)return;var act=tlScroll.querySelector('.tl-slide.is-active'),i=slides.indexOf(act);if(i<0)i=0;tlScrollToIndex(Math.min(slides.length-1,Math.max(0,i+dir)));}
+  function tlGoCat(dir){if(!tlScroll)return;var slides=[].slice.call(tlScroll.querySelectorAll('.tl-slide'));if(!slides.length)return;var titles=[],firstIdx={};slides.forEach(function(s,i){var t=s.getAttribute('data-cat-title');if(!(t in firstIdx)){firstIdx[t]=i;titles.push(t);}});if(titles.length<2)return;var act=tlScroll.querySelector('.tl-slide.is-active'),curT=act?act.getAttribute('data-cat-title'):titles[0],ci=titles.indexOf(curT),nc=(ci+dir+titles.length)%titles.length;tlScrollToIndex(firstIdx[titles[nc]]);}
+  var tlRaf;
+  var tlNav=browse.querySelector('.tl-nav'),tlUp=tlNav&&tlNav.querySelector('[data-dir="-1"]'),tlDown=tlNav&&tlNav.querySelector('[data-dir="1"]');
+  var tlChipsEl=browse.querySelector('.tl-chips'),tlLeft=browse.querySelector('.tl-chip.tl-left'),tlRight=browse.querySelector('.tl-chip.tl-right'),tlPrev=browse.querySelector('.tl-nav-chip.tl-prev'),tlNext=browse.querySelector('.tl-nav-chip.tl-next');
+  if(tlChipsEl)tlChipsEl.addEventListener('click',function(e){var b=e.target.closest('.tl-catnav');if(!b||b.disabled)return;tlGoCat(+b.getAttribute('data-dir'));});
+  function tlListToggle(e){if(!window.matchMedia('(max-width:1080px)').matches)return;e.stopPropagation();tlEl.classList.toggle('list-open');}
+  if(tlDrop)tlDrop.addEventListener('click',tlListToggle);
+  if(tlCat)tlCat.addEventListener('click',tlListToggle);
+  if(tlList)tlList.addEventListener('click',function(e){e.stopPropagation();var b=e.target.closest('.tl-li');if(!b)return;tlEl.classList.remove('list-open');tlScrollToIndex(+b.getAttribute('data-i'));});
+  document.addEventListener('click',function(){if(tlEl)tlEl.classList.remove('list-open');});
+  if(tlNav)tlNav.addEventListener('click',function(e){var b=e.target.closest('.tl-arrow');if(!b||b.disabled)return;tlGo(+b.getAttribute('data-dir'));});
+  if(tlScroll){
+    tlScroll.addEventListener('scroll',function(){if(tlRaf)return;tlRaf=requestAnimationFrame(function(){tlRaf=null;tlUpdate();});});
+    tlScroll.addEventListener('click',function(e){var card=e.target.closest('.tl-card');if(card&&!card.classList.contains('locked'))openDetail(card);});
+    window.addEventListener('resize',function(){if(curLayout==='tl')tlUpdate();});
+  }
+  function tlFit(){if(!tlScroll||browse.classList.contains('pulse'))return;tlScroll.style.height='100px';var r=tlScroll.getBoundingClientRect(),k=r.height/100||1;tlScroll.style.height=Math.max(240,(window.innerHeight-r.top)/k)+'px';}
+  window.addEventListener('resize',tlFit);window.addEventListener('load',tlFit);new MutationObserver(function(){requestAnimationFrame(tlFit);}).observe(browse,{attributes:true,attributeFilter:['class']});
+  function refreshTimeline(){if(curLayout!=='tl')return;if(curKind==='jobs')renderTimeline(JOBS,true);else{renderTimeline(cats,false);if(curKind==='all'){var st=tlScroll.scrollTop;renderTimeline(JOBS,true,true);}}}
+  refreshTimeline();requestAnimationFrame(function(){tlFit();tlUpdate();});
+})();
+</script>
+<script>(function(){var s=document.querySelector('.bsearch');if(!s)return;var b=s.querySelector('.bsearch-btn'),i=s.querySelector('.bsearch-in');
+function apply(){var q=i.value.trim().toLowerCase();document.querySelectorAll('.tl-slide,.browse-cardm').forEach(function(c){var h=q&&c.textContent.toLowerCase().indexOf(q)<0;if(h){c.setAttribute('data-sq','');c.style.display='none';}else if(c.hasAttribute('data-sq')){c.removeAttribute('data-sq');c.style.display='';}});}
+b.addEventListener('click',function(e){e.stopPropagation();i.focus();});
+i.addEventListener('input',apply);i.addEventListener('keydown',function(e){if(e.key==='Escape'){i.value='';apply();i.blur();}});
+var sc=document.querySelector('.tl-scroll');if(sc)new MutationObserver(function(){if(i.value.trim())apply();}).observe(sc,{childList:true});})();</script>
+<script>document.addEventListener('wheel',function(e){var b=document.querySelector('.browse.pulse');if(!b)return;var f=b.querySelector('.pulse-feed');if(!f||f.contains(e.target)||e.target.closest('.app-top,.cd,.cop,.filter-menu,[class*="modal"],[class*="drawer"],[class*="panel"]'))return;f.scrollTop+=e.deltaMode===1?e.deltaY*16:e.deltaY;e.preventDefault();},{passive:false});</script>
+<script>window.PD_TWEAKS=/*EDITMODE-BEGIN*/{"rail":"peek","density":"comfortable","link":true,"startOpen":true}/*EDITMODE-END*/;</script>
+<script src="pulse-dock.js"></script>
+<script src="pulse-dock-ui.js"></script>
+<script src="notifications.js"></script>
+<script src="chat.js"></script>
+<script src="candidate-complete.js"></script><script src="mobile.js"></script><script src="review-tweaks.js"></script>
+<style id="chal-grid-css">
+.browse{grid-template-columns:minmax(0,1fr) var(--pdw,392px)!important}
+.browse>.pdock{grid-column:2!important}
+.browse>.tl,.browse>.browse-cats{grid-column:1!important;padding-right:0!important}
+.browse.pd-closed{--pdw:0px;column-gap:0!important;position:relative}
+.browse.pd-closed>.pdock{overflow:visible;position:absolute;top:2px;right:0;left:auto;width:auto;height:auto!important;z-index:7}
+.browse.pd-closed .pd-rail{overflow:visible;flex-direction:row;width:auto;height:auto;padding:5px 5px 5px 16px;gap:12px;border-radius:999px;border:1px solid var(--line);background:#fff;box-shadow:var(--shadow-card);cursor:pointer}
+.browse.pd-closed .pd-lbl{order:-1;font-size:11px}
+.browse.pd-closed .pd-open{width:34px;height:34px;background:var(--field);border-color:transparent}
+.browse.pd-closed .pd-open svg{width:17px;height:17px}
+.browse.pd-closed .pd-open .pd-badge{border-color:#fff}
+.browse.pd-closed .pd-rail:hover{border-color:var(--blue)}
+.browse.pd-closed .tl-head{padding-bottom:22px}
+.browse.pd-closed .pd-rail{padding:3px 3px 3px 14px}
+.browse.pd-closed .pd-open{width:30px;height:30px}
+.pd-rail{height:auto;padding:12px 0 14px;gap:10px}
+.pd-rail>:not(.pd-open):not(.pd-lbl){display:none!important}
+@media (max-width:900px){.browse{grid-template-columns:minmax(0,1fr)!important}.pdock{left:auto;right:0;transform:translateX(104%)}.pd-fab{left:auto;right:16px}}
+.bf-div{width:1px;height:20px;background:var(--line);flex:none}
+.bsort .filter-btn{gap:8px}
+.bsort .filter-btn svg{width:14px;height:14px;fill:none;stroke:var(--t-mute);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none;transition:transform .18s}
+.bsort.open .filter-btn{border-color:var(--blue);box-shadow:0 0 0 3px rgba(103,141,198,.16)}
+.bsort.open .bsort-ch{transform:rotate(180deg)}
+.bsort-menu{min-width:190px;left:auto;right:0;transform:none}
+.bsort-menu .filter-opt{font-weight:600;cursor:pointer}
+.bsort-menu .filter-opt.sel{background:var(--field);font-weight:700}
+</style>
+<script>(function(){var w=document.querySelector('.bsort');if(!w)return;var sc=document.querySelector('.tl-scroll'),lbl=w.querySelector('.lbl'),mode='rec',busy=false;
+function num(s){var m=(s||'').replace(/,/g,'').match(/\$\s?(\d+)/);return m?+m[1]:null;}
+function days(card){var v=null;card.querySelectorAll('.tl-chip').forEach(function(c){var l=c.querySelector('.lbl');if(l&&/timeline/i.test(l.textContent)){var t=c.querySelector('.val').textContent.toLowerCase(),n=parseFloat(t)||0;v=/week/.test(t)?n*7:/month/.test(t)?n*30:/hour|hr/.test(t)?n/24:n;}});return v;}
+function key(s){var c=s.querySelector('.tl-card');if(!c)return {};var p=c.querySelector('.res-right');return {r:num(p?p.textContent:''),d:days(c),t:(c.querySelector('.tl-title')||{}).textContent||''};}
+function apply(){if(!sc)return;busy=true;var sl=[].slice.call(sc.querySelectorAll('.tl-slide'));sl.forEach(function(s,i){if(s._o==null)s._o=i;});
+ var k=sl.map(function(s){return {s:s,k:key(s)};});
+ function nl(a,b,dir){if(a==null&&b==null)return 0;if(a==null)return 1;if(b==null)return -1;return dir*(a-b);}
+ k.sort(function(x,y){switch(mode){case 'reward-d':return nl(x.k.r,y.k.r,-1)||x.s._o-y.s._o;case 'reward-a':return nl(x.k.r,y.k.r,1)||x.s._o-y.s._o;case 'time-a':return nl(x.k.d,y.k.d,1)||x.s._o-y.s._o;case 'time-d':return nl(x.k.d,y.k.d,-1)||x.s._o-y.s._o;case 'az':return x.k.t.localeCompare(y.k.t);default:return x.s._o-y.s._o;}});
+ k.forEach(function(o){sc.appendChild(o.s);});sc.scrollTop=0;setTimeout(function(){busy=false;},0);}
+w.querySelector('.filter-btn').addEventListener('click',function(e){e.stopPropagation();document.querySelectorAll('.filter.open').forEach(function(f){if(f!==w)f.classList.remove('open');});w.classList.toggle('open');});
+w.querySelector('.filter-menu').addEventListener('click',function(e){e.stopPropagation();var o=e.target.closest('.filter-opt');if(!o)return;mode=o.getAttribute('data-sort');w.querySelectorAll('.filter-opt').forEach(function(x){x.classList.toggle('sel',x===o);});lbl.textContent=o.textContent;w.classList.remove('open');apply();});
+document.addEventListener('click',function(){w.classList.remove('open');});
+if(sc)new MutationObserver(function(){if(busy||mode==='rec')return;requestAnimationFrame(apply);}).observe(sc,{childList:true});
+})();</script>
+<style id="filters-layout-css">
+@media (min-width:981px){
+html[data-tw-filters-layout="spread"] .browse-filters2{justify-content:flex-start;flex-wrap:wrap;container-type:inline-size}
+html[data-tw-filters-layout="spread"] .browse-filters2>.bsearch{order:10;flex:1 1 100%;width:100%;margin:0}
+html[data-tw-filters-layout="spread"] .browse-filters2>.filter{flex:none}
+html[data-tw-filters-layout="spread"] .browse-filters2>.bf-div{display:none}
+html[data-tw-filters-layout="spread"] .browse-filters2>.filter:not(.bsort)>.filter-menu{left:0;transform:none}
+html[data-tw-filters-layout="spread"] .browse-filters2>.bsort{margin-left:auto}
+}
+@container (min-width:1100px){
+html[data-tw-filters-layout="spread"] .browse-filters2>.bsearch{order:0;flex:none;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:clamp(252px,calc(100% - 880px),420px)}
+html[data-tw-filters-layout="spread"] .browse:not(.pd-closed) .browse-filters2>.bsearch{width:252px}
+}
+</style>
+<script>TCTweaks.register({id:'filters',title:'Filter bar',controls:[{key:'layout',label:'Arrangement',def:'center',options:[['center','Centered'],['spread','Filters left · Sort right']]}]});</script>
+<style id="cards-layout-css">
+@media (min-width:981px){
+html[data-tw-cards-layout="list"] .tl-scroll{grid-template-columns:minmax(0,1fr)!important;gap:10px}
+html[data-tw-cards-layout="list"] .tl-card{height:auto;display:grid;grid-template-columns:40px minmax(0,2.4fr) minmax(0,1.7fr) minmax(0,1.3fr) 190px;align-items:center;column-gap:22px;padding:16px 22px;border-radius:16px}
+html[data-tw-cards-layout="list"] .res-top{display:contents}
+html[data-tw-cards-layout="list"] .res-ic{grid-column:1}
+html[data-tw-cards-layout="list"] .tl-title{grid-column:2;font-size:17px;min-height:0;-webkit-line-clamp:2}
+html[data-tw-cards-layout="list"] .tl-meta{grid-column:3;flex-wrap:nowrap;overflow:hidden;gap:6px}
+html[data-tw-cards-layout="list"] .tl-meta .tl-chip{padding:4px 11px;box-shadow:none}
+html[data-tw-cards-layout="list"] .tl-meta .tl-chip:nth-child(n+3){display:none}
+html[data-tw-cards-layout="list"] .tl-tags{grid-column:4;margin:0}
+html[data-tw-cards-layout="list"] .res-right{grid-column:5;justify-self:end;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+html[data-tw-cards-layout="list"] .res-jobtype{grid-column:5;justify-self:end}
+html[data-tw-cards-layout="list"] .tl-ov,html[data-tw-cards-layout="list"] .card-stack{display:none!important}
+html[data-tw-cards-layout="list"] .tl-card:hover{box-shadow:0 10px 28px -14px rgba(31,33,32,.25)}
+html[data-tw-cards-layout="lanes"] .tl-scroll{grid-template-columns:repeat(3,minmax(0,1fr))!important;grid-auto-flow:row dense;column-gap:18px}
+html[data-tw-cards-layout="lanes"] .tl-slide:has(.res-kind.bounty){grid-column:1}
+html[data-tw-cards-layout="lanes"] .tl-slide:has(.res-kind.hiring){grid-column:2}
+html[data-tw-cards-layout="lanes"] .tl-slide:has(.res-jobtype){grid-column:3}
+html[data-tw-cards-layout="lanes"] .tl-card{height:auto;min-height:0;gap:12px}
+html[data-tw-cards-layout="lanes"] .tl-ov{-webkit-line-clamp:3}
+html[data-tw-cards-layout="lanes"] .card-stack{display:none}
+html[data-tw-cards-layout="lanes"] .tl-kind-h{display:flex}
+html[data-tw-cards-layout="bento"] .tl-scroll{grid-template-columns:repeat(4,minmax(0,1fr))!important;grid-auto-rows:226px!important;grid-auto-flow:row dense}
+html[data-tw-cards-layout="bento"] .tl-slide{min-height:0!important}
+html[data-tw-cards-layout="bento"] .tl-card{height:100%}
+html[data-tw-cards-layout="bento"] .tl-slide:not(:nth-child(7n+1)) .tl-ov,html[data-tw-cards-layout="bento"] .tl-slide:not(:nth-child(7n+1)) .tl-meta,html[data-tw-cards-layout="bento"] .tl-slide:not(:nth-child(7n+1)) .card-stack{display:none!important}
+html[data-tw-cards-layout="bento"] .tl-slide:not(:nth-child(7n+1)) .tl-title{min-height:0}
+html[data-tw-cards-layout="bento"] .tl-slide:nth-child(7n+1){grid-column:span 2;grid-row:span 2}
+html[data-tw-cards-layout="bento"] .tl-slide:nth-child(7n+1) .tl-card{padding:30px 30px 26px;background:linear-gradient(#fff,#fff) padding-box;border-color:#d9d6cf}
+html[data-tw-cards-layout="bento"] .tl-slide:nth-child(7n+1) .tl-title{font-size:27px;line-height:1.22}
+html[data-tw-cards-layout="bento"] .tl-slide:nth-child(7n+1) .tl-ov{font-size:15px;-webkit-line-clamp:5;max-height:none}
+html[data-tw-cards-layout="bento"] .tl-slide:nth-child(7n+1) .tl-card::after{content:"Featured";position:absolute;top:-10px;left:28px;background:var(--ink2);color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:999px}
+}
+@media (min-width:1101px){.browse:not(.pd-closed) .tl-scroll{}html[data-tw-cards-layout="bento"] .browse:not(.pd-closed) .tl-scroll{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+.tl-kind-h{display:none;grid-row:1;align-items:center;gap:10px;padding:4px 4px 2px;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--t-mute);position:sticky;top:0;z-index:3;background:var(--bg,#fff)}
+.tl-kind-h b{font-weight:700;color:var(--t-faint);letter-spacing:0}
+.tl-kind-h::after{content:"";flex:1;height:1px;background:var(--line)}
+.tl-kind-h i{width:8px;height:8px;border-radius:50%;flex:none}
+</style>
+<script>(function(){var sc=document.querySelector('.tl-scroll');if(!sc)return;var mode='grid',lock=false;
+var K=[['bounty','Bounty challenges','rgba(199,124,32,.9)','.res-kind.bounty'],['hiring','Hiring challenges','rgb(47,107,79)','.res-kind.hiring'],['jobs','Jobs','var(--blue)','.res-jobtype']];
+function heads(){lock=true;sc.querySelectorAll('.tl-kind-h').forEach(function(x){x.remove();});
+ if(mode==='lanes'){K.forEach(function(k,i){var n=[].filter.call(sc.querySelectorAll('.tl-slide'),function(s){return s.style.display!=='none'&&s.querySelector(k[3]);}).length;var d=document.createElement('div');d.className='tl-kind-h';d.style.gridColumn=String(i+1);d.innerHTML='<i style="background:'+k[2]+'"></i>'+k[1]+' <b>'+n+'</b>';sc.insertBefore(d,sc.firstChild);});}
+ setTimeout(function(){lock=false;},0);}
+new MutationObserver(function(){if(!lock&&mode==='lanes')requestAnimationFrame(heads);}).observe(sc,{childList:true});
+var si=document.querySelector('.bsearch-in');if(si)si.addEventListener('input',function(){if(mode==='lanes')heads();});
+TCTweaks.register({id:'cards',title:'Challenge cards',controls:[{key:'layout',label:'Arrangement',def:'grid',options:[['grid','Grid'],['list','Compact list'],['lanes','Lanes by type'],['bento','Featured bento']]}],apply:function(s){mode=s.layout;heads();sc.scrollTop=0;}});
+})();</script>
+<script>document.addEventListener('click',function(e){if(e.target.closest('.browse.pd-closed .pd-rail')&&!e.target.closest('.pd-open')){var o=document.querySelector('.pd-open');o&&o.click();}});(function(){function go(){var b=document.querySelector('.browse');if(b){b.classList.add('pd-closed');window.dispatchEvent(new Event('resize'));}}if(document.readyState==='complete')go();else window.addEventListener('load',go);})();</script>
+<script>/*__goSettings*/document.querySelectorAll('[data-go="settings"]').forEach(function(el){el.addEventListener('click',function(){location.href='Candidate - Settings.html';});});</script>
+<script>try{localStorage.removeItem('tc-gsm-v2');localStorage.removeItem('tc-pc')}catch(e){}</script>
+<script>requestAnimationFrame(function(){var e=document.getElementById("tc-fouc");e&&e.remove();});</script>
+</body>
+</html>

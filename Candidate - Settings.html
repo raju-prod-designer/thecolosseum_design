@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>theColosseum — Settings</title>
+<link rel="stylesheet" href="colosseum.css" />
+<style>
+:root{--blue:#678DC6;--field:#f4f4f3;--line:#e6e4df;--ink2:#1c1d1c}
+html,body{height:auto}
+html{scrollbar-width:none}html::-webkit-scrollbar{display:none}
+body{background:#fff;color:var(--ink2);margin:0}
+a{color:var(--ink2);text-decoration:none;font-weight:600}
+a:hover{color:var(--blue)}
+.app{min-height:100vh;height:auto;overflow:visible;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;padding:30px 32px 60px;zoom:0.9}
+.app-top{width:100%;position:relative;display:flex;align-items:center;justify-content:center;margin-bottom:30px}
+.app-logo{font-weight:800;font-size:26px;letter-spacing:-0.03em;color:var(--ink2);line-height:1}
+.app-logo .the{font-weight:400}
+.app-back{position:absolute;left:0;top:50%;transform:translateY(-50%);display:inline-flex;align-items:center;gap:7px;font-family:inherit;font-size:13.5px;font-weight:600;color:var(--ink2);background:transparent;border:0;padding:0;cursor:pointer;text-decoration:none}
+.app-back:hover{color:var(--blue)}
+.app-back svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.app-user{position:absolute;right:0;top:50%;transform:translateY(-50%)}
+.app-user.open{z-index:200}
+.app-user-btn{width:26px;height:26px;border-radius:50%;overflow:hidden;border:1px solid var(--line);background:#fff;padding:0;cursor:pointer;display:block;transition:border-color .18s,box-shadow .18s}
+.app-user-btn img{width:100%;height:100%;object-fit:cover;display:block}
+.app-user-btn:hover{border-color:var(--ink2)}
+.app-user.open .app-user-btn{border-color:var(--blue);box-shadow:0 0 0 3px rgba(103,141,198,.16)}
+.app-user-menu{position:absolute;top:calc(100% + 10px);right:0;z-index:200;min-width:176px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 16px 40px rgba(31,33,32,.16);padding:6px;display:none}
+.app-user.open .app-user-menu{display:block}
+.app-user-opt{display:flex;align-items:center;gap:11px;padding:9px 11px;border-radius:10px;cursor:pointer;font-size:13px;font-weight:600;color:var(--ink2)}
+.app-user-opt+.app-user-opt{margin-top:2px}
+.app-user-opt:hover{background:var(--field)}
+.app-user-opt svg{width:17px;height:17px;stroke:var(--ink2);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.app-user-sep{border-top:1px solid var(--line);margin:5px 4px}
+.app-user-opt.danger{color:oklch(0.6 0.13 25)}
+.app-user-opt.danger svg{stroke:oklch(0.6 0.13 25)}
+
+.page{width:100%;max-width:680px}
+.st-title{font-family:"P22Mackinac",serif;font-weight:500;font-size:32px;letter-spacing:-0.02em;line-height:1.1;margin:0 0 6px}
+.st-sub{font-size:14.5px;color:var(--t-body);margin:0 0 30px}
+.st-sec{border:1px solid var(--line);border-radius:18px;padding:26px 28px;background:#fff}
+.st-sec+.st-sec{margin-top:20px}
+.st-h{font-family:"P22Mackinac",serif;font-weight:500;font-size:20px;letter-spacing:-0.01em;margin:0 0 4px}
+.st-p{font-size:13.5px;line-height:1.6;color:var(--t-body);margin:0 0 20px;text-wrap:pretty}
+.st-form{display:grid;gap:14px}
+.st-fld{display:grid;gap:7px}
+.st-lbl{font-size:12.5px;font-weight:700;color:var(--ink2)}
+.st-in{width:100%;box-sizing:border-box;font-family:inherit;font-size:14.5px;color:var(--ink2);background:var(--field);border:1px solid var(--field);border-radius:999px;padding:12px 18px;outline:none;transition:border-color .15s,box-shadow .15s,background .15s}
+.st-in::placeholder{color:var(--t-faint)}
+.st-in:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(103,141,198,.16);background:#fff}
+.st-in.bad{border-color:oklch(0.6 0.13 25)}
+.st-row2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}
+.st-hint{font-size:12px;color:var(--t-mute);margin:0}
+.st-msg{font-size:12.5px;font-weight:600;margin:0;min-height:18px}
+.st-msg.err{color:oklch(0.55 0.14 25)}
+.st-msg.ok{color:#2f6d4a}
+.st-acts{display:flex;align-items:center;flex-wrap:wrap;gap:10px 16px;margin-top:4px}
+.st-btn{font-family:inherit;font-size:13px;font-weight:600;color:#fff;background:var(--ink2);border:1px solid var(--ink2);border-radius:999px;padding:10px 20px;cursor:pointer;transition:opacity .15s;display:inline-flex;align-items:center;gap:8px}
+.st-btn:hover{opacity:.85}
+.st-btn[disabled]{opacity:.5;cursor:default}
+.st-btn.ghost{color:var(--ink2);background:#fff;border-color:var(--line)}
+.st-btn.ghost:hover{opacity:1;border-color:var(--ink2)}
+.st-btn.danger{color:oklch(0.55 0.14 25);background:#fff;border-color:var(--line)}
+.st-btn.danger:hover{opacity:1;border-color:oklch(0.55 0.14 25)}
+.st-btn svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.st-link{font-family:inherit;font-size:13px;font-weight:600;color:var(--ink2);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--line)}
+.st-link:hover{color:var(--blue);text-decoration-color:var(--blue)}
+.st-reset{display:none;margin-top:18px;padding:14px 16px;border-radius:14px;background:var(--field);font-size:13px;line-height:1.55;color:var(--t-body)}
+.st-reset.on{display:block}
+.st-reset b{color:var(--ink2)}
+.st-badge{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;border-radius:999px;padding:4px 11px;background:var(--field);color:var(--t-mute);border:1px solid var(--line)}
+.st-badge i{width:6px;height:6px;border-radius:50%;background:currentColor}
+.st-badge.on{color:#2f6d4a;background:rgba(47,109,74,.08);border-color:rgba(47,109,74,.2)}
+.st-hrow{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 4px}
+.st-hrow .st-h{margin:0}
+.st-acct{display:none}
+.st-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:0 0 20px}
+.st-kv{border:1px solid var(--line);border-radius:14px;padding:12px 16px}
+.st-kv .k{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--t-faint);margin:0 0 4px}
+.st-kv .v{font-size:14px;font-weight:600;color:var(--ink2);font-variant-numeric:tabular-nums}
+.st-pay.connected .st-acct{display:block}
+.st-pay.connected .st-empty{display:none}
+.st-spin{width:14px;height:14px;border-radius:50%;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;animation:stSpin .7s linear infinite}
+@keyframes stSpin{to{transform:rotate(360deg)}}
+@media (max-width:640px){.st-row2,.st-grid{grid-template-columns:minmax(0,1fr)}.st-sec{padding:22px 20px}}
+</style>
+<style id="tc-mark-css">.tc-mark{display:inline-flex;align-items:center;flex:none;margin-right:.5em;vertical-align:-.12em;line-height:0}.tc-mark svg{width:1em;height:1.08em;display:block}</style></head>
+<body>
+<div class="app">
+  <div class="app-top">
+    <a class="app-back" href="Candidate - Webapp copy.html"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>Back to challenges</a>
+    <div class="app-logo"><span class="tc-mark"><svg viewBox="0 0 40 42" aria-hidden="true"><path fill="#648dc6" d="M1 1H16V8H8V34H16V41H1ZM39 1H24V8H32V34H24V41H39Z"></path></svg></span><span class="the">the</span>Colosseum</div>
+    <div class="app-user">
+      <button class="app-user-btn" type="button" aria-label="Account menu"><img src="assets/candidate-profile.png" alt="Your profile" /></button>
+      <div class="app-user-menu">
+        <div class="app-user-opt" data-go="profile"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/></svg><span>Profile</span></div>
+        <div class="app-user-opt" data-go="settings"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1.08-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 8.6a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Settings</span></div>
+        <div class="app-user-sep"></div>
+        <div class="app-user-opt danger"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>Log out</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+    <h1 class="st-title">Settings</h1>
+    <p class="st-sub">Manage your password and where your rewards are paid out.</p>
+    <section class="st-sec">
+      <h2 class="st-h">Password</h2>
+      <p class="st-p">Signed in as marcus.vela@gmail.com</p>
+      <form class="st-form" id="pwForm" novalidate>
+        <div class="st-fld"><label class="st-lbl" for="pwCur">Current password</label><input class="st-in" id="pwCur" type="password" autocomplete="current-password" placeholder="Enter current password" /></div>
+        <div class="st-row2">
+          <div class="st-fld"><label class="st-lbl" for="pwNew">New password</label><input class="st-in" id="pwNew" type="password" autocomplete="new-password" placeholder="At least 8 characters" /></div>
+          <div class="st-fld"><label class="st-lbl" for="pwCon">Confirm new password</label><input class="st-in" id="pwCon" type="password" autocomplete="new-password" placeholder="Repeat new password" /></div>
+        </div>
+        <p class="st-msg" id="pwMsg"></p>
+        <div class="st-acts"><button class="st-btn" type="submit">Update password</button><button class="st-link" type="button" id="pwForgot">Forgot your password?</button></div>
+      </form>
+      <div class="st-reset" id="pwReset">We sent a reset link to <b>marcus.vela@gmail.com</b>. It expires in 30 minutes. <button class="st-link" type="button" id="pwResend">Resend</button></div>
+    </section>
+    <section class="st-sec st-pay" id="paySec">
+      <div class="st-hrow"><h2 class="st-h">Payouts</h2><span class="st-badge" id="payBadge"><i></i><span>Not connected</span></span></div>
+      <div class="st-empty">
+        <p class="st-p">Connect a Stripe account to receive challenge rewards and bounty payments. When a company pays you, the money is sent to your Stripe account and then to your bank.</p>
+        <div class="st-acts"><button class="st-btn" type="button" id="payConnect">Connect Stripe account</button></div>
+      </div>
+      <div class="st-acct">
+        <p class="st-p">Rewards you earn are sent to this account automatically.</p>
+        <div class="st-grid">
+          <div class="st-kv"><span class="k">Stripe account</span><span class="v">acct_••••4821</span></div>
+          <div class="st-kv"><span class="k">Bank account</span><span class="v">DE •••• 6789</span></div>
+          <div class="st-kv"><span class="k">Payout currency</span><span class="v">EUR</span></div>
+          <div class="st-kv"><span class="k">Payout schedule</span><span class="v">Daily, 2 business days</span></div>
+        </div>
+        <div class="st-acts"><button class="st-btn ghost" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Open Stripe dashboard</button><button class="st-btn danger" type="button" id="payDisc">Disconnect</button></div>
+      </div>
+    </section>
+  </div>
+</div>
+<script>
+(function(){
+  var userMenu=document.querySelector('.app-user');
+  userMenu.querySelector('.app-user-btn').addEventListener('click',function(e){e.stopPropagation();userMenu.classList.toggle('open');});
+  document.addEventListener('click',function(){userMenu.classList.remove('open');});
+  var gp=userMenu.querySelector('[data-go="profile"]');if(gp)gp.addEventListener('click',function(){location.href='Candidate - Profile.html';});
+  var f=document.getElementById('pwForm'),cur=document.getElementById('pwCur'),nw=document.getElementById('pwNew'),cn=document.getElementById('pwCon'),msg=document.getElementById('pwMsg');
+  function say(t,k){msg.textContent=t;msg.className='st-msg'+(k?' '+k:'');}
+  [cur,nw,cn].forEach(function(i){i.addEventListener('input',function(){i.classList.remove('bad');say('');});});
+  f.addEventListener('submit',function(e){
+    e.preventDefault();[cur,nw,cn].forEach(function(i){i.classList.remove('bad');});
+    if(!cur.value){cur.classList.add('bad');return say('Enter your current password.','err');}
+    if(nw.value.length<8){nw.classList.add('bad');return say('New password must be at least 8 characters.','err');}
+    if(nw.value===cur.value){nw.classList.add('bad');return say('New password must be different from the current one.','err');}
+    if(nw.value!==cn.value){cn.classList.add('bad');return say('Passwords do not match.','err');}
+    f.reset();say('Password updated.','ok');
+  });
+  var rs=document.getElementById('pwReset');
+  document.getElementById('pwForgot').addEventListener('click',function(){rs.classList.add('on');});
+  document.getElementById('pwResend').addEventListener('click',function(){this.textContent='Sent';this.disabled=true;});
+  var KEY='tc-cand-stripe',sec=document.getElementById('paySec'),badge=document.getElementById('payBadge'),btn=document.getElementById('payConnect');
+  function render(on){sec.classList.toggle('connected',on);badge.classList.toggle('on',on);badge.querySelector('span').textContent=on?'Connected':'Not connected';}
+  render(localStorage.getItem(KEY)==='1');
+  btn.addEventListener('click',function(){
+    btn.disabled=true;btn.innerHTML='<span class="st-spin"></span>Redirecting to Stripe…';
+    setTimeout(function(){localStorage.setItem(KEY,'1');render(true);btn.disabled=false;btn.textContent='Connect Stripe account';},1400);
+  });
+  document.getElementById('payDisc').addEventListener('click',function(){if(confirm('Disconnect your Stripe account? You will not receive payouts until you connect one again.')){localStorage.setItem(KEY,'0');render(false);}});
+})();
+</script>
+<script src="notifications.js"></script>
+<script src="chat.js"></script>
+<script src="candidate-complete.js"></script><script src="mobile.js"></script>
+<script>/*__goSettings*/document.querySelectorAll('[data-go="settings"]').forEach(function(el){el.addEventListener('click',function(){location.href='Candidate - Settings.html';});});</script>
+</body>
+</html>

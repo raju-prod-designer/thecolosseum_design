@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>theColosseum — AI Interview</title>
+<link rel="stylesheet" href="colosseum.css" />
+<style>
+:root{--blue:#678DC6;--field:#f4f4f3;--line:#e6e4df;--ink2:#1c1d1c}
+html,body{height:100%;overflow:hidden}
+body{background:#fff;color:var(--ink2);margin:0}
+a{color:var(--ink2);text-decoration:none;font-weight:600}
+a:hover{color:var(--blue)}
+.iv{height:100vh;display:flex;flex-direction:column;padding:18px 22px 20px;box-sizing:border-box;zoom:.92}
+.iv-top{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:18px;flex:none;margin-bottom:16px}
+.iv-top-r{display:flex;align-items:center;justify-content:flex-end;gap:14px}
+.app-logo{font-weight:800;font-size:22px;letter-spacing:-0.03em;line-height:1;flex:none}
+.app-logo .the{font-weight:400}
+.iv-role{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--t-body)}
+.iv-role img{width:22px;height:22px;border-radius:50%;object-fit:cover}
+.iv-role b{color:var(--ink2);font-weight:700}
+.iv-live{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#b4453f}
+.iv-live i{width:7px;height:7px;border-radius:50%;background:#c0605a;animation:pulse 1.6s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.hide{display:none!important}
+.iv-stop{display:inline-flex;align-items:center;gap:7px;font:inherit;font-size:13px;font-weight:700;color:oklch(0.55 0.15 25);background:#fff;border:1px solid oklch(0.55 0.15 25 / .3);border-radius:999px;padding:5px 13px;cursor:pointer;flex:none;transition:background .18s,border-color .18s}
+.iv-stop:hover{background:oklch(0.6 0.13 25 / .1);border-color:oklch(0.55 0.15 25 / .55)}
+.iv-stop svg{width:12px;height:12px;fill:currentColor}
+.sm-back{position:fixed;inset:0;z-index:950;background:rgba(244,244,243,.7);backdrop-filter:blur(10px);display:none;place-items:center;padding:24px}
+.sm-back.open{display:grid;animation:smFade .18s ease}
+@keyframes smFade{from{opacity:0}to{opacity:1}}
+@keyframes smRise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.sm{width:min(470px,100%);box-sizing:border-box;background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:0 30px 70px rgba(31,33,32,.2);padding:28px 30px 26px;animation:smRise .22s ease}
+.sm h2{font-family:"P22Mackinac",serif;font-weight:500;font-size:23px;letter-spacing:-0.02em;line-height:1.2;margin:0 0 8px}
+.sm p{font-size:13.5px;line-height:1.6;color:var(--t-body);margin:0 0 20px;text-wrap:pretty}
+.sm-lbl{display:block;font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;font-weight:700;color:var(--t-faint);margin:0 0 10px}
+.sm-reasons{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px}
+.sm-reason{font:inherit;font-size:12.5px;font-weight:600;color:var(--t-body);background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 14px;cursor:pointer;transition:border-color .15s,background .15s,color .15s}
+.sm-reason:hover{border-color:var(--ink2)}
+.sm-reason.on{background:var(--ink2);border-color:var(--ink2);color:#fff}
+.sm textarea{width:100%;box-sizing:border-box;min-height:84px;resize:vertical;font:inherit;font-size:13.5px;line-height:1.6;color:var(--ink2);background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;outline:0;margin:0 0 22px;transition:border-color .18s,box-shadow .18s}
+.sm textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(103,141,198,.14)}
+.sm textarea::placeholder{color:var(--t-faint)}
+.up-set{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.up{display:flex;align-items:center;gap:13px;border:1px dashed #c9c8c3;border-radius:14px;padding:14px 16px;cursor:pointer;transition:border-color .16s,background .16s}
+.up:hover{border-color:var(--ink2);background:var(--field)}
+.up input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.up-ic{width:34px;height:34px;border-radius:50%;background:var(--field);display:grid;place-items:center;flex:none}
+.up-ic svg{width:16px;height:16px;fill:none;stroke:var(--ink2);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.up-txt{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+.up-txt b{font-size:13.5px;font-weight:700;color:var(--ink2)}
+.up-txt em{font-style:normal;font-size:11.5px;color:var(--t-faint);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.up-st{font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;font-weight:800;color:var(--t-faint);flex:none}
+.up.done{border-style:solid;border-color:#b6cdbc;background:oklch(0.96 0.02 150)}
+.up.done .up-ic{background:#dfeee2}
+.up.done .up-ic svg{stroke:#3d6b4e}
+.up.done .up-st{color:#3d6b4e}
+.up-note{font-size:12px!important;line-height:1.55;color:var(--t-faint)!important;margin:0 0 18px!important}
+.sm-acts{display:flex;gap:10px;justify-content:flex-end}
+.sm-btn.dark{background:var(--ink2);border-color:var(--ink2);color:#fff}
+.sm-btn.dark:hover{opacity:.9;border-color:var(--ink2)}
+.sm-btn[disabled]{opacity:.45;cursor:not-allowed}
+.sm-btn[disabled]:hover{border-color:var(--line)}
+.sm-btn{font:inherit;font-size:13px;font-weight:700;border-radius:999px;padding:10px 20px;cursor:pointer;border:1px solid var(--line);background:#fff;color:var(--ink2);transition:border-color .18s,background .18s}
+.sm-btn:hover{border-color:var(--ink2)}
+.sm-btn.danger{background:oklch(0.55 0.15 25);border-color:oklch(0.55 0.15 25);color:#fff}
+.sm-btn.danger:hover{background:oklch(0.48 0.15 25)}
+.sm-done{text-align:center;padding:8px 0 4px}
+.sm-done .tick{width:46px;height:46px;border-radius:50%;background:rgba(103,141,198,.14);display:grid;place-items:center;margin:0 auto 16px}
+.sm-done .tick svg{width:22px;height:22px;stroke:var(--blue);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.iv-timer{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:700;border:1px solid var(--line);border-radius:999px;padding:5px 13px;flex:none}
+.iv-timer svg{width:14px;height:14px;stroke:var(--ink2);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.app-user{position:relative;flex:none}
+.app-user-btn{width:26px;height:26px;border-radius:50%;overflow:hidden;border:1px solid var(--line);background:#fff;padding:0;cursor:pointer;display:block;transition:border-color .18s,box-shadow .18s}
+.app-user-btn img{width:100%;height:100%;object-fit:cover;display:block}
+.app-user-btn:hover{border-color:var(--ink2)}
+.app-user.open .app-user-btn{border-color:var(--blue);box-shadow:0 0 0 3px rgba(103,141,198,.16)}
+.app-user-menu{position:absolute;top:calc(100% + 10px);right:0;z-index:300;min-width:176px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 16px 40px rgba(31,33,32,.16);padding:6px;display:none}
+.app-user.open .app-user-menu{display:block}
+.app-user-opt{display:flex;align-items:center;gap:11px;padding:9px 11px;border-radius:10px;cursor:pointer;font-size:13px;font-weight:600;color:var(--ink2)}
+.app-user-opt+.app-user-opt{margin-top:2px}
+.app-user-opt:hover{background:var(--field)}
+.app-user-opt svg{width:17px;height:17px;stroke:var(--ink2);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.app-user-sep{border-top:1px solid var(--line);margin:5px 4px}
+.app-user-opt.danger{color:oklch(0.6 0.13 25)}
+.app-user-opt.danger svg{stroke:oklch(0.6 0.13 25)}
+.app-user-opt.danger:hover{background:oklch(0.6 0.13 25 / 0.08)}
+
+.iv-body{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,0.92fr) minmax(0,1.08fr);gap:14px}
+.col{min-height:0;display:flex;flex-direction:column;gap:12px}
+.col-l{overflow-y:auto;scrollbar-width:none;padding-right:2px}
+.col-l::-webkit-scrollbar{display:none}
+
+/* video tiles */
+.tile{border:1px solid var(--line);border-radius:14px;overflow:hidden;position:relative;background:var(--field);flex:none}
+.tile-ai{height:150px;background:#1f2120;display:grid;place-items:center}
+.wave{width:78%;height:56px;overflow:hidden}
+.wave-in{height:100%}
+.wave svg{width:200%;height:100%;display:block;animation:waveslide 3.2s linear infinite}
+.wave path{fill:none;stroke:var(--blue);stroke-width:2;stroke-linecap:round;vector-effect:non-scaling-stroke}
+.wave path.b{stroke:rgba(103,141,198,.34)}
+.wave-in{animation:waveamp 2.6s ease-in-out infinite;transform-origin:center}
+@keyframes waveslide{to{transform:translateX(-50%)}}
+@keyframes waveamp{0%,100%{transform:scaleY(.42)}50%{transform:scaleY(1)}}
+.tile-lbl{position:absolute;left:10px;bottom:9px;display:flex;align-items:center;gap:7px;font-size:11.5px;font-weight:700;color:#fff;background:rgba(31,33,32,.62);backdrop-filter:blur(6px);border-radius:999px;padding:4px 10px}
+.tile-lbl.light{color:var(--ink2);background:rgba(255,255,255,.88)}
+.tile-me{flex:1;min-height:0;height:auto}
+.tile-me img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(1.02)}
+.tile-me .ctrl{position:absolute;right:14px;bottom:14px;left:auto;justify-content:flex-end}
+.tile-me .stages{position:absolute;bottom:14px;left:14px;top:auto;width:258px;transition:width .22s ease;background:rgba(255,255,255,.82);backdrop-filter:blur(8px);border-color:rgba(255,255,255,.6);box-shadow:0 10px 30px rgba(31,33,32,.12)}
+.tile-me .stages h4{color:var(--ink2)}
+.tile-me .ctrl button{flex:none;width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.82);backdrop-filter:blur(8px);border-color:rgba(255,255,255,.6)}
+.tile-me .ctrl button:hover{background:#fff;border-color:#fff}
+.tile-me .ctrl button.off{background:rgba(31,33,32,.62);color:rgba(255,255,255,.9);border-color:transparent}
+.ctrl button .slash{opacity:0;transition:opacity .16s ease}
+.ctrl button.off .slash{opacity:1}
+.iv-warn{position:absolute;right:14px;bottom:70px;transition:bottom .26s cubic-bezier(.4,0,.2,1);display:none;align-items:center;gap:8px;white-space:nowrap;font-size:12px;font-weight:600;line-height:1.35;color:oklch(0.42 0.12 25);background:rgba(255,255,255,.82);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.6);border-radius:12px;padding:9px 12px;box-shadow:0 10px 30px rgba(31,33,32,.14)}
+.iv-warn.on{display:flex;animation:warnIn .22s cubic-bezier(.4,0,.2,1)}
+.tile-me .stages:hover ~ .iv-warn{bottom:166px}
+.iv-warn s{flex:none;width:7px;height:7px;border-radius:50%;background:oklch(0.6 0.13 25);text-decoration:none}
+@keyframes warnIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.ctrl{display:flex;gap:8px;flex:none}
+.ctrl button{flex:1;height:42px;border:1px solid var(--line);background:#fff;border-radius:12px;display:grid;place-items:center;cursor:pointer;color:var(--ink2);transition:border-color .18s,background .18s}
+.ctrl button:hover{border-color:var(--ink2)}
+.ctrl button.off{background:var(--field);color:var(--t-mute)}
+.ctrl button svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.ctrl .end{flex:none;width:52px;background:oklch(0.6 0.13 25 / .1);border-color:transparent;color:oklch(0.52 0.14 25)}
+.ctrl .end:hover{background:oklch(0.6 0.13 25 / .18);border-color:transparent}
+
+.stages{border:1px solid var(--line);border-radius:14px;padding:14px 15px;flex:none}
+.stages h4{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--t-faint);font-weight:700;margin:0 0 11px}
+.stage{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--t-mute);padding:5px 0}
+.stage b{font-weight:700;color:inherit;flex:none;width:52px;text-align:left;white-space:nowrap;font-variant-numeric:tabular-nums}
+.stage i{display:none}
+.stage.done{color:var(--t-body)}
+.stage.now{color:var(--blue);font-weight:700}
+.tile-me .stages{width:200px;height:46px;padding:0 18px;border-radius:999px;display:flex;flex-direction:column;justify-content:center;overflow:hidden;transition:width .26s cubic-bezier(.4,0,.2,1),height .26s cubic-bezier(.4,0,.2,1),padding .26s cubic-bezier(.4,0,.2,1),border-radius .26s cubic-bezier(.4,0,.2,1)}
+.tile-me .stages .stage.now{padding:0;flex:none}
+.tile-me .stages h4,.tile-me .stages .stage:not(.now){height:0;opacity:0;padding:0;margin:0;overflow:hidden;flex:none;transition:opacity .16s ease}
+.tile-me .stages:hover{width:258px;height:140px;padding:14px 15px;border-radius:14px;justify-content:flex-start}
+.tile-me .stages:hover .stage{padding:5px 0}
+.tile-me .stages:hover h4{height:auto;opacity:1;margin:0 0 11px;transition:opacity .2s ease .1s}
+.tile-me .stages:hover .stage:not(.now){height:auto;opacity:1;transition:opacity .2s ease .1s}
+.note{flex:none;font-size:11.5px;line-height:1.5;color:var(--t-faint);border-top:1px solid var(--line);padding-top:11px}
+
+/* editor */
+.ed{flex:1;min-height:0;border:1px solid var(--line);border-radius:14px;display:flex;flex-direction:column;overflow:hidden}
+.ed-top{display:flex;align-items:center;gap:2px;border-bottom:1px solid var(--line);padding:0 10px;flex:none;background:#fdfdfc}
+.tab{font-size:12.5px;font-weight:600;color:var(--t-mute);padding:12px 13px;cursor:pointer;border-bottom:2px solid transparent;font-family:ui-monospace,"SFMono-Regular",Menlo,monospace}
+.tab.on{color:var(--ink2);border-bottom-color:var(--ink2)}
+.ed-lang{margin-left:auto;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--t-faint)}
+.code{flex:1;min-height:0;overflow:auto;display:flex;font-family:ui-monospace,"SFMono-Regular",Menlo,monospace;font-size:11.6px;line-height:1.7;background:#fff;scrollbar-width:thin}
+.gut{flex:none;white-space:pre;text-align:right;padding:14px 10px 18px;color:#c9c7c1;user-select:none;background:#fcfcfb;border-right:1px solid var(--line)}
+.src{flex:1;padding:14px 16px 18px;white-space:pre;color:#33352f;tab-size:2}
+.k{color:#8a5cbd}.s{color:#2a7d5f}.c{color:#a8a6a0;font-style:italic}.f{color:#3f6fb5}.n{color:#b06a2c}
+.cursor{display:inline-block;width:7px;height:15px;background:var(--blue);vertical-align:-3px;animation:blink 1s step-end infinite}
+@keyframes blink{50%{opacity:0}}
+.ed-bar{flex:none;border-top:1px solid var(--line);padding:9px 12px;display:flex;align-items:center;gap:10px;background:#fdfdfc}
+.run{font:inherit;font-size:12.5px;font-weight:700;color:#fff;background:var(--ink2);border:0;border-radius:999px;padding:7px 16px;cursor:pointer;display:inline-flex;align-items:center;gap:7px}
+.run:hover{background:#000}
+.run svg{width:12px;height:12px;fill:#fff}
+.ed-hint{font-size:11.5px;color:var(--t-faint)}
+.out{flex:none;max-height:150px;overflow:auto;border-top:1px solid var(--line);background:#fbfbfa;padding:11px 14px;font-family:ui-monospace,Menlo,monospace;font-size:12px;line-height:1.7;color:var(--t-body);display:none}
+.out.show{display:block}
+.out b{color:var(--ink2)}
+.pass{color:#2a9d6e}.fail{color:#c0605a}
+
+/* chat */
+.chat{flex:1;min-height:0;border:1px solid var(--line);border-radius:14px;display:flex;flex-direction:column;overflow:hidden}
+.chat-top{flex:none;display:flex;align-items:center;gap:9px;padding:13px 15px;border-bottom:1px solid var(--line)}
+.chat-dot{width:26px;height:26px;border-radius:50%;background:var(--blue);display:grid;place-items:center;flex:none;color:#fff;font-size:11px;font-weight:800}
+.chat-top b{font-size:13px}
+.chat-top span{font-size:11.5px;color:var(--t-faint);margin-left:auto}
+.chat-log{flex:1;min-height:0;overflow-y:auto;padding:16px 15px;display:flex;flex-direction:column;gap:13px;scrollbar-width:none}
+.chat-log::-webkit-scrollbar{display:none}
+.m{max-width:96%;font-size:13.5px;line-height:1.56;background:var(--field);border-radius:14px;border-bottom-right-radius:5px;padding:11px 14px;text-wrap:pretty;animation:rise .35s ease both;align-self:flex-end}
+@keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.m.task{background:#fff;border:1px solid var(--line);border-radius:14px}
+.m.me{align-self:flex-start;background:#fff;border:1px solid var(--line);color:var(--ink2);border-bottom-right-radius:14px;border-bottom-left-radius:5px;max-width:88%}
+.m.task h5{font-family:"P22Mackinac",serif;font-weight:500;font-size:14.5px;margin:0 0 7px;letter-spacing:-0.01em}
+.m.task code{font-family:ui-monospace,Menlo,monospace;font-size:12.2px;background:var(--field);border-radius:5px;padding:1px 5px}
+.m.task ul{margin:9px 0 0;padding-left:17px;color:var(--t-body);font-size:12.8px;line-height:1.6}
+.m.task ul li+li{margin-top:3px}
+.stamp{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--t-faint);font-weight:700;align-self:center}
+.status{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--t-mute);font-style:italic}
+.chat-log>.status:last-child{font-size:24px;color:#000;font-style:normal;font-weight:600;letter-spacing:-0.01em;animation:breathe 2.4s ease-in-out infinite}
+.chat-log>.status:last-child i{width:8px;height:8px;animation:none}
+@keyframes breathe{0%,100%{opacity:.34}50%{opacity:1}}
+.status i{width:5px;height:5px;border-radius:50%;background:var(--blue);animation:pulse 1.3s infinite}
+.speaking{background:transparent;height:auto;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 14px;flex:none;position:relative;overflow:hidden}
+.speaking .attach{width:34px;height:34px;flex:none;border:1px solid var(--line);background:#fff;border-radius:50%;display:grid;place-items:center;cursor:pointer;color:var(--t-mute);transition:border-color .18s,color .18s}
+.speaking .attach:hover{border-color:var(--ink2);color:var(--ink2)}
+.speaking .attach svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.speaking .wave{flex:none;width:86px;height:34px;background:#1f2120;border-radius:999px;padding:0;box-sizing:border-box;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.speaking .wave svg{width:200%;height:100%;display:block;animation:waveslide 2.6s linear infinite}
+.speaking .wave path.b{stroke:rgba(103,141,198,.45)}
+.speaking .wave-in{width:100%;height:18px;display:block;transform-origin:center center;animation:waveamp 1.6s ease-in-out infinite}
+.speaking .tile-lbl{position:static;flex:none;background:transparent;backdrop-filter:none;padding:0;font-size:11.5px;color:rgba(255,255,255,.72)}
+.wave.sm{width:120px;height:22px;flex:none}
+.wave.sm path{stroke-width:1.6}
+
+/* pre-flight check */
+.pf{position:fixed;inset:0;z-index:900;background:rgba(244,244,243,.82);backdrop-filter:blur(14px);display:grid;place-items:center;padding:24px;transition:opacity .4s ease}
+.pf.gone{opacity:0;pointer-events:none}
+.pf-card{width:min(560px,100%);background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:0 30px 70px rgba(31,33,32,.16);padding:30px 32px 26px;box-sizing:border-box}
+.pf-eyebrow{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--t-faint);font-weight:700;margin-bottom:12px}
+.pf-card h2{font-family:"P22Mackinac",serif;font-weight:500;font-size:25px;letter-spacing:-0.02em;margin:0 0 9px;line-height:1.2}
+.pf-card p{margin:0;font-size:13.5px;line-height:1.6;color:var(--t-body);text-wrap:pretty}
+.pf-step{display:none}
+.pf-step.on{display:block}
+.pf-perm{display:flex;gap:12px;margin:20px 0 22px}
+.pf-perm div{flex:1;border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;align-items:center;gap:11px;font-size:13px;font-weight:600}
+.pf-perm svg{width:18px;height:18px;stroke:var(--ink2);fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.pf-perm .tick{margin-left:auto;width:18px;height:18px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center}
+.pf-perm div.ok .tick{background:var(--blue);border-color:var(--blue)}
+.pf-perm div.ok .tick:after{content:"";width:7px;height:4px;border-left:1.6px solid #fff;border-bottom:1.6px solid #fff;transform:rotate(-45deg) translateY(-1px)}
+.pf-check{display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;margin:20px 0 22px;align-items:stretch}
+.pf-vid{border-radius:14px;overflow:hidden;background:var(--field);aspect-ratio:3/4}
+.pf-vid img{width:100%;height:100%;object-fit:cover;display:block}
+.pf-meta{display:flex;flex-direction:column;gap:12px;justify-content:center}
+.pf-row{border:1px solid var(--line);border-radius:12px;padding:11px 13px}
+.pf-row b{display:block;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--t-faint);margin-bottom:6px}
+.pf-row span{font-size:13px;font-weight:600}
+.bars{height:26px;margin-top:8px;overflow:hidden}
+.bars .wave-in{height:100%}
+.bars svg{width:200%;height:100%;display:block;animation:waveslide 3.2s linear infinite}
+.bars path{fill:none;stroke:var(--blue);stroke-width:2;stroke-linecap:round;vector-effect:non-scaling-stroke}
+.bars path.b{stroke:rgba(103,141,198,.32)}
+.pf-btn{font:inherit;font-size:14px;font-weight:700;color:#fff;background:var(--ink2);border:0;border-radius:999px;padding:13px 24px;cursor:pointer;width:100%;transition:background .18s}
+.pf-btn:hover{background:#000}
+.pf-btn[disabled]{background:var(--field);color:var(--t-faint);cursor:default}
+.pf-foot{margin-top:12px;font-size:11.5px;color:var(--t-faint);text-align:center}
+
+@media (max-width:640px){.iv{height:100vh;height:100dvh;padding:12px 12px 14px;zoom:1}.iv-top{grid-template-columns:minmax(0,1fr) auto;gap:10px 12px;margin-bottom:12px}.iv-top>.app-logo{order:1;font-size:20px}.iv-top-r{order:2;gap:8px}.iv-role{order:3;grid-column:1/-1;font-size:12px;gap:8px;flex-wrap:wrap;line-height:1.35}.iv-timer{padding:5px 10px;font-size:12.5px}.iv-stop{font-size:0;gap:0;width:34px;height:34px;padding:0;justify-content:center}.iv-stop svg{width:12px;height:12px}.iv-top>.app-logo{white-space:nowrap}.iv-body{display:flex;flex-direction:column;gap:10px}.iv-body>.col{min-height:0}.iv-body>.col:first-child{flex:none;height:36vh}.iv-body>.col:last-child{flex:1}.tile-me{height:100%}.tile-me .ctrl{right:10px;bottom:10px;gap:6px}.tile-me .ctrl button{width:40px;height:40px}.tile-me .stages{left:10px;bottom:10px;width:auto;max-width:calc(100% - 160px);height:40px;padding:0 14px}.tile-me .stages:hover{width:auto;height:40px;padding:0 14px;border-radius:999px}.tile-me .stages:hover h4,.tile-me .stages:hover .stage:not(.now){height:0;opacity:0;margin:0;padding:0}.tile-me .stages .stage.now{font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.iv-warn{right:10px;left:10px;bottom:60px;white-space:normal}.chat-log{padding:12px}.m{font-size:13.5px}.chat-log>.status:last-child{font-size:19px}.pf-card{padding:24px 20px 20px}.pf-card h2{font-size:22px}.pf-perm{flex-direction:column;gap:8px}.pf-check{grid-template-columns:110px minmax(0,1fr);gap:12px}.sm{padding:22px 20px 20px}.sm-acts{flex-wrap:wrap}}
+</style>
+<style id="tc-mark-css">.tc-mark{display:inline-flex;align-items:center;flex:none;margin-right:.5em;vertical-align:-.12em;line-height:0}.tc-mark svg{width:1em;height:1.08em;display:block}</style></head>
+<body>
+<div class="pf" id="pf">
+  <div class="pf-card">
+    <div class="pf-step on" id="pf1">
+      <div class="pf-eyebrow">Before you join</div>
+      <h2>Allow camera and microphone</h2>
+      <p>This round is a live voice interview, so Colosseum needs access to your camera and mic. Your browser will ask you to confirm — choose <b>Allow</b>.</p>
+      <div class="pf-perm">
+        <div id="pmic"><svg viewBox="0 0 24 24"><path d="M12 15a3.5 3.5 0 0 0 3.5-3.5V6a3.5 3.5 0 0 0-7 0v5.5A3.5 3.5 0 0 0 12 15z"/><path d="M6 11.5a6 6 0 0 0 12 0"/><line x1="12" y1="17.5" x2="12" y2="21"/></svg>Microphone<span class="tick"></span></div>
+        <div id="pcam"><svg viewBox="0 0 24 24"><rect x="2.5" y="6.5" width="13" height="11" rx="2.5"/><path d="M15.5 11l6-3v8l-6-3z"/></svg>Camera<span class="tick"></span></div>
+      </div>
+      <button class="pf-btn" type="button" id="pfAllow">Allow access</button>
+      <div class="pf-foot">Recording starts only when the interview begins.</div>
+    </div>
+    <div class="pf-step" id="pf2">
+      <div class="pf-eyebrow">Step 2 of 2</div>
+      <h2>Check your sound and video</h2>
+      <p>Say a few words — you should see the level move. Confirm you can see yourself clearly before we start.</p>
+      <div class="pf-check">
+        <div class="pf-vid"><img src="uploads/Gemini_Generated_Image_u2d5nxu2d5nxu2d5.jpg" alt="Camera preview" /></div>
+        <div class="pf-meta">
+          <div class="pf-row"><b>Camera</b><span>FaceTime HD Camera</span></div>
+          <div class="pf-row"><b>Microphone</b><span>MacBook Pro Microphone</span><div class="bars"><div class="wave-in"><svg viewBox="0 0 240 60" preserveAspectRatio="none" aria-hidden="true"><path class="b" d="M0 30 Q7.5 6 15 30 T30 30 T45 30 T60 30 T75 30 T90 30 T105 30 T120 30 T135 30 T150 30 T165 30 T180 30 T195 30 T210 30 T225 30 T240 30"/><path d="M0 30 Q15 54 30 30 T60 30 T90 30 T120 30 T150 30 T180 30 T210 30 T240 30"/></svg></div></div></div>
+        </div>
+      </div>
+      <button class="pf-btn" type="button" id="pfStart">Sound and video look good — start interview</button>
+      <div class="pf-foot">Senior Backend Engineer · Round 2 · approx. 45 minutes</div>
+    </div>
+  </div>
+</div>
+<div class="iv">
+  <div class="iv-top">
+    <div class="iv-role"><img src="assets/lg-2.png" alt="" /><span><b>Senior Backend Engineer</b> · Live AI interview · Round 2</span><span class="iv-live"><i></i>recording</span></div>
+    <div class="app-logo"><span class="tc-mark"><svg viewBox="0 0 40 42" aria-hidden="true"><path fill="#648dc6" d="M1 1H16V8H8V34H16V41H1ZM39 1H24V8H32V34H24V41H39Z"></path></svg></span><span class="the">the</span>Colosseum</div>
+    <div class="iv-top-r">
+    <button class="iv-stop" type="button" id="stopBtn"><svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>Stop interview</button>
+    <div class="iv-timer"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/></svg><span id="clock">28:41</span></div>
+    <div class="app-user">
+      <button class="app-user-btn" type="button" aria-label="Account menu"><img src="assets/candidate-profile.png" alt="Your profile" /></button>
+      <div class="app-user-menu">
+        <div class="app-user-opt" data-go="profile"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/></svg><span>Profile</span></div>
+        <div class="app-user-opt"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.08a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.08a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Settings</span></div>
+        <div class="app-user-sep"></div>
+        <div class="app-user-opt danger"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>Log out</span></div>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <div class="iv-body">
+    <div class="col">
+      <div class="tile tile-me">
+        <img src="uploads/Gemini_Generated_Image_u2d5nxu2d5nxu2d5.jpg" alt="Your camera" />
+        <div class="stages">
+          <h4>Interview plan</h4>
+          <div class="stage done"><i></i><b>5 min</b>Intro &amp; role fit</div>
+          <div class="stage done"><i></i><b>8 min</b>Experience deep-dive</div>
+          <div class="stage now"><i></i><b>12 min</b>System design</div>
+          <div class="stage"><i></i><b>5 min</b>Your questions</div>
+        </div>
+        <div class="iv-warn" id="ivWarn" role="status"><s></s><span id="ivWarnMsg">Turn on the mic to continue the interview</span></div>
+        <div class="ctrl">
+          <button type="button" id="mic" aria-label="Mute microphone"><svg viewBox="0 0 24 24"><path d="M12 15a3.5 3.5 0 0 0 3.5-3.5V6a3.5 3.5 0 0 0-7 0v5.5A3.5 3.5 0 0 0 12 15z"/><path d="M6 11.5a6 6 0 0 0 12 0"/><line x1="12" y1="17.5" x2="12" y2="21"/><line class="slash" x1="3.5" y1="20.5" x2="20.5" y2="3.5"/></svg></button>
+          <button type="button" id="cam" aria-label="Turn off camera"><svg viewBox="0 0 24 24"><rect x="2.5" y="6.5" width="13" height="11" rx="2.5"/><path d="M15.5 11l6-3v8l-6-3z"/><line class="slash" x1="3.5" y1="20.5" x2="20.5" y2="3.5"/></svg></button>
+          <button type="button" id="share" aria-label="Share screen"><svg viewBox="0 0 24 24"><rect x="2.5" y="4.5" width="19" height="12.5" rx="2"/><line x1="8" y1="20.5" x2="16" y2="20.5"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="chat">
+        <div class="chat-top"><b>Colosseum AI</b></div>
+        <div class="chat-log" id="log">
+          <div class="stamp">00:00 · intro</div>
+          <div class="m">Hi Marcus, good to meet you. I've got your Colosseum profile and the Bronze challenge you shipped for Noon, so we can skip the CV walkthrough. I'll talk, you talk, and I'll drop anything code-related in here so you don't have to hold it in your head.</div>
+          <div class="m">Start me somewhere real: what were you actually responsible for on the payments service last year?</div>
+          <div class="m me">I owned the settlement path end to end — the service that reconciles card captures against the ledger. Team of four, I was the one on call for it.</div>
+          <div class="m">What was the failure mode you saw most often?</div>
+          <div class="m me">Duplicate captures during provider timeouts. We'd retry, the provider had actually succeeded, and the ledger got two entries. Idempotency keys fixed most of it.</div>
+          <div class="stamp">09:20 · deep-dive</div>
+          <div class="m">You mentioned the retry storm during the Ramadan peak. Before we move on — was throttling a decision the team made ahead of that, or a response to it?</div>
+          <div class="m me">Honestly, a response. We had exponential backoff but no jitter and no ceiling, so every client retried on the same beat. We shipped a limiter the week after.</div>
+          <div class="m">Useful, thank you. Let's put that into code, since it's the same shape of problem the team is hiring for.</div>
+          <div class="m task">
+            <h5>Live coding · sliding window limiter</h5>
+            <p style="margin:0;font-size:13px;line-height:1.55;color:var(--t-body)">Implement <code>RateLimiter.allow(key, now)</code> so each key gets at most <code>limit</code> requests per rolling <code>window</code> seconds. Talk me through it as you go — I care more about how you reason than whether it runs first try.</p>
+            <ul>
+              <li>Walk me through your approach out loud — no editor for this round</li>
+              <li>Standard library only</li>
+              <li>~15 minutes, then we'll discuss what breaks at scale</li>
+            </ul>
+          </div>
+          <div class="m me">Makes sense. I'd start with a per-key deque of timestamps and evict from the front — talking it through as I go.</div>
+          <div class="stamp">18:05 · live coding</div>
+          <div class="m">Nice — the deque gives you O(1) eviction. Quick one while you type: what happens to this if two workers share the same key on different machines?</div>
+          <div class="m me">It breaks. Each worker enforces its own limit, so you get N times the traffic. In production I'd move the counter into Redis and do the window check with a sorted set.</div>
+          <div class="m">Good. Add <code style="font-family:ui-monospace,Menlo,monospace;font-size:12.2px;background:var(--field);border-radius:5px;padding:1px 5px">retry_after</code> before you run the suite — clients will need it, and I want to see how you pick the value.</div>
+          <div class="m me">Returning the time until the oldest hit leaves the window. Floating point bites at the boundary, so I'd clamp it at zero.</div>
+          <div class="m">That's the right instinct. Last thing on this before system design: how would you tell whether the limiter is doing its job in production?</div>
+                  </div>
+        <div class="speaking"><button class="attach" type="button" aria-label="Attach a file"><svg viewBox="0 0 24 24"><path d="M20 11.5l-8 8a5 5 0 0 1-7-7l8.5-8.5a3.3 3.3 0 0 1 4.7 4.7L9.6 17.3a1.7 1.7 0 0 1-2.4-2.4l7.8-7.8"/></svg></button><div class="wave"><div class="wave-in"><svg viewBox="0 0 240 60" preserveAspectRatio="none" aria-hidden="true"><path class="b" d="M0 30 Q7.5 4 15 30 T30 30 T45 30 T60 30 T75 30 T90 30 T105 30 T120 30 T135 30 T150 30 T165 30 T180 30 T195 30 T210 30 T225 30 T240 30"/><path d="M0 30 Q15 56 30 30 T60 30 T90 30 T120 30 T150 30 T180 30 T210 30 T240 30"/></svg></div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="sm-back" id="stopBack">
+  <div class="sm" role="dialog" aria-modal="true">
+    <div id="stopForm">
+      <h2>End this interview?</h2>
+      <p>Your session will stop here and the work you've submitted so far will be sent for review. You can't resume once it ends.</p>
+      <span class="sm-lbl">Why are you stopping?</span>
+      <div class="sm-reasons" id="stopReasons">
+        <button class="sm-reason" type="button">Finished early</button>
+        <button class="sm-reason" type="button">Technical issue</button>
+        <button class="sm-reason" type="button">Ran out of time</button>
+        <button class="sm-reason" type="button">Question was unclear</button>
+        <button class="sm-reason" type="button">Something urgent came up</button>
+      </div>
+      <span class="sm-lbl">Anything else we should know?</span>
+      <textarea id="stopNote" placeholder="Optional. Tell us how the interview felt."></textarea>
+      <div class="sm-acts">
+        <button class="sm-btn" type="button" id="stopCancel">Keep going</button>
+        <button class="sm-btn danger" type="button" id="stopConfirm">End interview</button>
+      </div>
+    </div>
+    <div class="hide" id="stopDocs">
+      <h2>Two documents before we continue</h2>
+      <p>Verification is required before your final human interview round can be scheduled. Both files are reviewed by the hiring team only and are never shown to other companies.</p>
+      <div class="up-set">
+        <label class="up" data-up="offer"><input type="file" accept=".pdf,.png,.jpg,.jpeg,.doc,.docx" /><span class="up-ic"><svg viewBox="0 0 24 24"><path d="M12 16V4"/><polyline points="7 9 12 4 17 9"/><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg></span><span class="up-txt"><b>Previous offer letter</b><em>PDF, DOC or image · up to 10 MB</em></span><span class="up-st">Required</span></label>
+        <label class="up" data-up="slips"><input type="file" accept=".pdf,.png,.jpg,.jpeg,.doc,.docx" multiple /><span class="up-ic"><svg viewBox="0 0 24 24"><path d="M12 16V4"/><polyline points="7 9 12 4 17 9"/><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg></span><span class="up-txt"><b>Last 3 salary slips</b><em>PDF or image · select multiple files</em></span><span class="up-st">Required</span></label>
+      </div>
+      <p class="up-note">Your interview has already been submitted for review. You can close this and upload later, but scheduling stays on hold until both documents are in.</p>
+      <div class="sm-acts">
+        <button class="sm-btn" type="button" id="docsLater">Upload later</button>
+        <button class="sm-btn dark" type="button" id="docsSubmit" disabled>Submit documents</button>
+      </div>
+    </div>
+    <div class="sm-done hide" id="stopDone">
+      <span class="tick"><svg viewBox="0 0 24 24"><polyline points="5 13 10 18 19 6"/></svg></span>
+      <h2>Interview ended</h2>
+      <p>Thanks for the feedback. You'll hear back on your submission within a few days.</p>
+      <div class="sm-acts" style="justify-content:center"><button class="sm-btn" type="button" id="stopClose">Back to profile</button></div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var back=document.getElementById('stopBack'),ended=false;
+  document.getElementById('stopBtn').addEventListener('click',function(){back.classList.add('open');});
+  document.getElementById('stopCancel').addEventListener('click',function(){back.classList.remove('open');});
+  document.getElementById('stopClose').addEventListener('click',function(){window.location.href='Candidate - Profile.html';});
+  document.getElementById('stopReasons').addEventListener('click',function(e){
+    var b=e.target.closest('.sm-reason');if(!b)return;b.classList.toggle('on');
+  });
+  var docs=document.getElementById('stopDocs'),done=document.getElementById('stopDone');
+  var subBtn=document.getElementById('docsSubmit'),got={};
+  function showDone(msg){
+    docs.classList.add('hide');done.classList.remove('hide');
+    if(msg)done.querySelector('p').textContent=msg;
+  }
+  document.getElementById('stopConfirm').addEventListener('click',function(){
+    document.getElementById('stopForm').classList.add('hide');
+    docs.classList.remove('hide');
+    ended=true;window.__ivEnded=true;
+  });
+  docs.querySelectorAll('.up').forEach(function(l){
+    var inp=l.querySelector('input'),st=l.querySelector('.up-st'),em=l.querySelector('.up-txt em'),base=em.textContent;
+    inp.addEventListener('change',function(){
+      var n=inp.files.length;
+      if(!n){l.classList.remove('done');st.textContent='Required';em.textContent=base;got[l.getAttribute('data-up')]=0;}
+      else{l.classList.add('done');st.textContent='Attached';em.textContent=n>1?n+' files selected':inp.files[0].name;got[l.getAttribute('data-up')]=1;}
+      subBtn.disabled=!(got.offer&&got.slips);
+    });
+  });
+  document.getElementById('docsLater').addEventListener('click',function(){
+    showDone('Your submission is in review. Your final interview round can be scheduled once your offer letter and salary slips are uploaded.');
+  });
+  subBtn.addEventListener('click',function(){
+    showDone('Documents received. Your submission is in review and the hiring team will reach out to schedule your final interview round.');
+  });
+  back.addEventListener('click',function(e){if(e.target===back&&!ended)back.classList.remove('open');});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!ended)back.classList.remove('open');});
+})();
+</script>
+<script>
+(function(){
+  var left=28*60+41,clock=document.getElementById('clock');
+  var ivTick=function(){return window.__ivEnded;};
+  function startTimer(){clock.textContent='0:00';left=0;setInterval(function(){left++;var m=Math.floor(left/60),s=left%60;clock.textContent=m+':'+(s<10?'0':'')+s;},1000);}
+  ['mic','cam','share'].forEach(function(id){var b=document.getElementById(id);b.addEventListener('click',function(){b.classList.toggle('off');ivWarnSync();});});
+  function ivWarnSync(){var w=document.getElementById('ivWarn'),m=document.getElementById('ivWarnMsg'),mo=document.getElementById('mic').classList.contains('off'),co=document.getElementById('cam').classList.contains('off');
+    if(!mo&&!co){w.classList.remove('on');return;}
+    m.textContent=mo&&co?'Turn on the mic and camera to continue the interview':mo?'Turn on the mic to continue the interview':'Turn on the camera to continue the interview';
+    w.classList.remove('on');void w.offsetWidth;w.classList.add('on');}
+  var log=document.getElementById('log');
+  var um=document.querySelector('.app-user');
+  um.querySelector('.app-user-btn').addEventListener('click',function(e){e.stopPropagation();um.classList.toggle('open');});
+  um.querySelector('[data-go="profile"]').addEventListener('click',function(){window.location.href='Candidate - Profile.html';});
+  document.addEventListener('click',function(){um.classList.remove('open');});
+  log.scrollTop=log.scrollHeight;
+  var pf=document.getElementById('pf'),allow=document.getElementById('pfAllow');
+  clock.textContent='0:00';
+  allow.addEventListener('click',function(){
+    allow.disabled=true;allow.textContent='Waiting for your browser…';
+    setTimeout(function(){document.getElementById('pmic').classList.add('ok');},650);
+    setTimeout(function(){document.getElementById('pcam').classList.add('ok');},1200);
+    setTimeout(function(){document.getElementById('pf1').classList.remove('on');document.getElementById('pf2').classList.add('on');},1750);
+  });
+  document.getElementById('pfStart').addEventListener('click',function(){
+    pf.classList.add('gone');startTimer();
+    setTimeout(function(){pf.remove();},450);
+  });
+})();
+</script>
+<script src="notifications.js"></script>
+<script src="candidate-complete.js"></script><script src="mobile.js"></script>
+</body>
+</html>
