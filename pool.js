@@ -620,6 +620,8 @@ var CSS=`
 .cat-arrow svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .cat-track{display:flex;gap:16px;overflow-x:auto;scroll-behavior:smooth;padding:4px 2px 2px;scrollbar-width:none}
 .cat-track::-webkit-scrollbar{display:none}
+.cat-track{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 96px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 96px),transparent)}
+.cat-track.at-end{-webkit-mask-image:none;mask-image:none}
 .pc{flex:none;width:322px;box-sizing:border-box;border:1px solid var(--line);border-radius:16px;background:#fff;padding:20px 22px;display:flex;flex-direction:column;gap:16px;cursor:pointer;transition:border-color .2s ease,box-shadow .2s ease}
 .pc:hover{border-color:var(--blue);box-shadow:var(--shadow-card)}
 .pc-top{display:flex;align-items:flex-start;gap:14px}
@@ -1975,6 +1977,7 @@ function open(initial){
     setTimeout(function(){list.forEach(function(el){el.style.transition='';el.style.transformOrigin='';el.style.willChange='';});},420);
   }
   window.addEventListener('resize',centerTop);
+  document.addEventListener('scroll',function(e){var t=e.target;if(t&&t.classList&&t.classList.contains('cat-track'))t.classList.toggle('at-end',t.scrollLeft+t.clientWidth>=t.scrollWidth-4);},true);
   grid.addEventListener('click',function(e){
     var m=e.target.closest('.tm-mini');if(!m)return;
     e.stopPropagation();var n=eliteRows.length;if(!n)return;topFocus=((topFocus+(+m.getAttribute('data-t')))%n+n)%n;renderTop();
@@ -2492,6 +2495,7 @@ var ranked=currentRows.map(function(x,idx){return{x:x,idx:idx};}).sort(function(
     fitEl.onclick=function(e){if(e.target===fitEl)closeFit();};
   }
 
+  document.addEventListener('scroll',function(e){var t=e.target;if(t&&t.classList&&t.classList.contains('cat-track'))t.classList.toggle('at-end',t.scrollLeft+t.clientWidth>=t.scrollWidth-4);},true);
   grid.addEventListener('click',function(e){
     var arw=e.target.closest('.cat-arrow');
     if(arw){var track=arw.closest('.cat').querySelector('.cat-track');track.scrollBy({left:(+arw.getAttribute('data-dir'))*340,behavior:'smooth'});return;}

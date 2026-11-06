@@ -642,6 +642,8 @@ var CSS=`
 .cat-arrow svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .cat-track{display:flex;gap:16px;overflow-x:auto;scroll-behavior:smooth;padding:4px 2px 2px;scrollbar-width:none}
 .cat-track::-webkit-scrollbar{display:none}
+.cat-track{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 96px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 96px),transparent)}
+.cat-track.at-end{-webkit-mask-image:none;mask-image:none}
 .pc{flex:none;width:322px;box-sizing:border-box;border:1px solid var(--line);border-radius:16px;background:#fff;padding:20px 22px;display:flex;flex-direction:column;gap:16px;cursor:pointer;transition:border-color .2s ease,box-shadow .2s ease}
 .pc:hover{border-color:var(--blue);box-shadow:var(--shadow-card)}
 .pc-top{display:flex;align-items:flex-start;gap:14px}
@@ -677,6 +679,67 @@ var CSS=`
 .lay-tog .vtog-b{padding:0 9px}
 .lay-tog svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
 .cats-res{display:flex;flex-direction:column;gap:28px}
+html[data-tw-cpage-layout="tiers"] #poolTop,html[data-tw-cpage-layout="spot"] #poolTop,html[data-tw-cpage-layout="tiers"] .lay-tog,html[data-tw-cpage-layout="spot"] .lay-tog,html[data-tw-cpage-layout="tiers"] #poolPag,html[data-tw-cpage-layout="spot"] #poolPag{display:none}
+.lxt{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;align-items:start}
+.lxt-col{background:var(--field);border:1px solid var(--line);border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.lxt-col.g{--lx-c:#3f8f5f}.lxt-col.b{--lx-c:var(--blue)}.lxt-col.n{--lx-c:#b3b1aa}
+.lxt-h{display:flex;align-items:center;gap:9px;padding:4px 4px 2px}
+.lxt-h::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--lx-c);flex:none}
+.lxt-t{font-family:"P22Mackinac",serif;font-weight:500;font-size:18px;letter-spacing:-.01em;color:var(--ink2)}
+.lxt-r{font-size:12px;color:var(--t-faint);font-weight:600}
+.lxt-n{margin-left:auto;font-size:12px;font-weight:700;color:var(--ink2);background:#fff;border:1px solid var(--line);border-radius:999px;padding:3px 9px}
+.lxt-list{display:flex;flex-direction:column;gap:10px;max-height:calc(100vh - 200px);min-height:240px;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;-ms-overflow-style:none;margin:-4px -6px;padding:4px 6px 8px}.lxt-list::-webkit-scrollbar{display:none}
+.lxt-card{all:unset;box-sizing:border-box;display:flex;flex-direction:column;gap:11px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;cursor:pointer;transition:border-color .2s,box-shadow .2s,transform .2s}
+.lxt-card:hover{border-color:var(--lx-c);box-shadow:var(--shadow-card);transform:translateY(-1px)}
+.lxt-card:focus-visible,.lxs-row:focus-visible,.lxs-open:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.lxt-top{display:flex;align-items:center;gap:12px;min-width:0}
+.lxt-av,.lxs-av,.lxs-pav{border-radius:50%;overflow:hidden;background:#e8e8e4;flex:none}
+.lxt-av{width:38px;height:38px}.lxs-av{width:34px;height:34px}.lxs-pav{width:84px;height:84px}
+.lxt-av img,.lxs-av img,.lxs-pav img{width:100%;height:100%;object-fit:cover;display:block}
+.lxt-id,.lxs-id{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.lxt-nm{font-family:"P22Mackinac",serif;font-weight:500;font-size:15.5px;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lxt-role,.lxs-role{font-size:12.5px;color:var(--t-faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lxt-m{font-family:"P22Mackinac",serif;font-weight:500;font-size:20px;color:var(--ink2);font-variant-numeric:tabular-nums;flex:none}
+.lxt-m em{font-style:normal;font-family:inherit;font-size:12px;margin-left:1px}
+.lxt-bar{display:block;height:4px;border-radius:4px;background:#eeede9;overflow:hidden}.lxt-bar i{display:block;height:100%;background:var(--lx-c);border-radius:inherit}
+.lxt-meta{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:12px;color:var(--t-faint);font-weight:500}
+.lxt-card .pc-sk{gap:6px}
+.lxt-empty{font-size:12.5px;color:var(--t-faint);text-align:center;padding:22px 8px;border:1px dashed #d9d7d1;border-radius:12px}
+.lxs{display:grid;grid-template-columns:minmax(280px,360px) minmax(0,1fr);gap:24px;align-items:start}
+.lxs-roster{display:flex;flex-direction:column;gap:2px;border:1px solid var(--line);border-radius:18px;padding:8px;background:#fff;max-height:calc(100vh - 120px);overflow:auto;position:sticky;top:20px;scrollbar-width:thin}
+.lxs-row{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;cursor:pointer;transition:background .15s}
+.lxs-row:hover{background:var(--field)}
+.lxs-row.on{background:rgba(103,141,198,.13)}
+.lxs-rk{width:20px;font-size:12px;font-weight:700;color:var(--t-faint);font-variant-numeric:tabular-nums;text-align:right;flex:none}
+.lxs-row.on .lxs-rk{color:var(--blue)}
+.lxs-nm{font-size:13.5px;font-weight:600;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lxs-m{font-family:"P22Mackinac",serif;font-weight:500;font-size:16px;color:var(--ink2);font-variant-numeric:tabular-nums;flex:none}
+.lxs-panel{border:1px solid var(--line);border-radius:20px;background:#fff;box-shadow:var(--shadow-card);padding:30px 34px;display:flex;flex-direction:column;gap:26px;position:sticky;top:20px;min-width:0}
+.lxs-panel{padding:0;gap:0;overflow:hidden}.lxs-panel .fitm-scroll{max-height:calc(100vh - 40px)}.lxs-panel .fitm-head{top:0}
+.lxs-panel.swap{animation:lxsIn .28s ease}
+@keyframes lxsIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.lxs-hero{display:flex;align-items:center;gap:20px}
+.lxs-pid{flex:1;min-width:0}
+.lxs-pnm{font-family:"P22Mackinac",serif;font-weight:500;font-size:30px;letter-spacing:-.02em;color:var(--ink2);line-height:1.1}
+.lxs-prole{font-size:14px;color:var(--t-faint);margin-top:6px}
+.lxs-ring{--v:0;flex:none;width:96px;height:96px;border-radius:50%;background:conic-gradient(var(--blue) calc(var(--v) * 1%),#eceae5 0);display:grid;place-content:center;justify-items:center;position:relative}
+.lxs-ring::before{content:"";position:absolute;inset:7px;border-radius:50%;background:#fff}
+.lxs-ring b,.lxs-ring span{position:relative}
+.lxs-ring b{font-family:"P22Mackinac",serif;font-weight:500;font-size:26px;letter-spacing:-.02em;color:var(--ink2);line-height:1;font-variant-numeric:tabular-nums}
+.lxs-ring b em{font-style:normal;font-family:inherit;font-size:14px;margin-left:1px}
+.lxs-ring span{font-size:8.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:#8b97ab;margin-top:5px}
+.lxs-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--line);border-radius:14px}
+.lxs-stats div{padding:14px 18px;display:flex;flex-direction:column;gap:4px;min-width:0}.lxs-stats div+div{border-left:1px solid var(--line)}
+.lxs-stats b{font-family:"P22Mackinac",serif;font-weight:500;font-size:19px;color:var(--ink2)}
+.lxs-stats span{font-size:12px;color:var(--t-faint);font-weight:600}
+.lxs-sec{display:flex;flex-direction:column;gap:12px}
+.lxs-sec h5{margin:0;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t-faint)}
+.lxs-soft{display:flex;flex-direction:column;gap:9px}
+.lxs-act{display:flex;align-items:center;gap:16px;border-top:1px solid var(--line);padding-top:20px}
+.lxs-open{all:unset;height:40px;padding:0 20px;border-radius:999px;background:var(--ink2);color:#fff;font-size:13.5px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center}
+.lxs-open:hover{background:var(--blue)}
+.lxs-hint{font-size:12px;color:var(--t-faint)}
+@media (max-width:960px){.lxt,.lxs{grid-template-columns:minmax(0,1fr)}.lxs-roster{position:static;max-height:none}.lxs-panel{display:none}}
 .cat-sub{display:flex;align-items:baseline;gap:8px;margin:0;font-size:14px;font-weight:700;color:var(--ink2)}.cat-sub span{font-size:12px;font-weight:600;color:var(--t-faint)}
 .pl{border:1px solid var(--line);border-radius:16px;background:#fff;overflow:hidden}
 .pl-h,.prw{display:grid;grid-template-columns:minmax(0,2.3fr) minmax(0,2fr) 84px 120px 84px 64px;gap:16px;align-items:center;padding:12px 20px}
@@ -2079,6 +2142,7 @@ function open(initial){
     setTimeout(function(){list.forEach(function(el){el.style.transition='';el.style.transformOrigin='';el.style.willChange='';});},420);
   }
   window.addEventListener('resize',centerTop);
+  document.addEventListener('scroll',function(e){var t=e.target;if(t&&t.classList&&t.classList.contains('cat-track'))t.classList.toggle('at-end',t.scrollLeft+t.clientWidth>=t.scrollWidth-4);},true);
   grid.addEventListener('click',function(e){
     var m=e.target.closest('.tm-mini');if(!m)return;
     e.stopPropagation();var n=eliteRows.length;if(!n)return;topFocus=((topFocus+(+m.getAttribute('data-t')))%n+n)%n;renderTop();
@@ -2140,6 +2204,28 @@ function open(initial){
     topBox.innerHTML=eliteRows.length?'<div class="cat cat-top"><div class="cat-head"><h3>Top matches</h3></div><div class="tm-stack"><div class="tm-slide">'+topSlide()+'</div></div></div>':'';
     centerTop();
   }
+  function lxAv(c,cls){return '<span class="'+cls+'"><img src="https://i.pravatar.cc/150?u='+encodeURIComponent(c.name)+'" alt="" loading="lazy"></span>';}
+  var LX_BANDS=[['Strong fit','85+',85,'g'],['Good fit','70\u201384',70,'b'],['Others','Under 70',0,'n']],spotSel=null;
+  function tiersHTML(items){
+    var cols=LX_BANDS.map(function(){return[];});
+    items.forEach(function(it){var v=it.x.s.overall;for(var i=0;i<LX_BANDS.length;i++){if(v>=LX_BANDS[i][2]){cols[i].push(it);break;}}});
+    return '<div class="lxt">'+LX_BANDS.map(function(b,i){var its=cols[i];
+      return '<section class="lxt-col '+b[3]+'"><header class="lxt-h"><span class="lxt-t">'+b[0]+'</span><span class="lxt-r">'+b[1]+'% match</span><span class="lxt-n">'+its.length+'</span></header><div class="lxt-list">'
+        +(its.length?its.map(function(it){var c=it.x.c,s=it.x.s;
+          return '<button type="button" class="lxt-card" data-lx="'+it.idx+'"><span class="lxt-top">'+lxAv(c,'lxt-av')+'<span class="lxt-id"><span class="lxt-nm">'+esc(c.name)+'</span><span class="lxt-role">'+esc(c.role)+' \u00b7 '+esc(c.city)+'</span></span><span class="lxt-m">'+s.overall+'<em>%</em></span></span><span class="lxt-bar"><i style="width:'+s.overall+'%"></i></span><span class="lxt-meta"><span>'+c.years+' yrs</span><span>'+esc(c.avail)+'</span><span>'+c.done+' challenges</span></span><span class="pc-sk">'+c.skills.slice(0,3).map(function(k){return '<span>'+esc(k)+'</span>';}).join('')+(c.skills.length>3?'<span>+'+(c.skills.length-3)+'</span>':'')+'</span></button>';}).join(''):'<div class="lxt-empty">No candidates in this range</div>')
+        +'</div></section>';}).join('')+'</div>';
+  }
+  function spotPanel(it){return fitInner(it.idx);}
+  function spotHTML(items){
+    if(spotSel==null||!items.some(function(it){return it.idx===spotSel;}))spotSel=items[0].idx;
+    var cur=items.filter(function(it){return it.idx===spotSel;})[0];
+    return '<div class="lxs"><div class="lxs-roster" role="listbox" aria-label="Candidates">'+items.map(function(it,i){var c=it.x.c,on=it.idx===spotSel;
+      return '<button type="button" role="option" class="lxs-row'+(on?' on':'')+'" data-sp="'+it.idx+'" aria-selected="'+on+'"><span class="lxs-rk">'+(i+1)+'</span>'+lxAv(c,'lxs-av')+'<span class="lxs-id"><span class="lxs-nm">'+esc(c.name)+'</span><span class="lxs-role">'+esc(c.role)+'</span></span><span class="lxs-m">'+it.x.s.overall+'%</span></button>';}).join('')+'</div><div class="lxs-panel">'+spotPanel(cur)+'</div></div>';
+  }
+  function selectSpot(idx){spotSel=idx;
+    resBox.querySelectorAll('.lxs-row').forEach(function(r){var on=+r.getAttribute('data-sp')===idx;r.classList.toggle('on',on);r.setAttribute('aria-selected',on);});
+    var p=resBox.querySelector('.lxs-panel');if(!p)return;p.innerHTML=spotPanel({x:currentRows[idx],idx:idx});p.classList.remove('swap');void p.offsetWidth;p.classList.add('swap');
+  }
   function render(){
     if(topDirty){currentRows=matched();topDirty=false;renderTopSec();}
     renderSortMenu();
@@ -2148,6 +2234,9 @@ function open(initial){
     allN.textContent=items.length+' of '+currentRows.length;
     pagBox.innerHTML='';
     if(!items.length){resBox.innerHTML='<div class="cand-empty">No candidates match. Clear a requirement, the tech stack or your search to widen the list.</div>';return;}
+    var LX=document.documentElement.getAttribute('data-tw-cpage-layout');
+    if(LX==='tiers'){resBox.innerHTML=tiersHTML(items);return;}
+    if(LX==='spot'){resBox.innerHTML=spotHTML(items);return;}
     if(layout==='list'){
       var pages=Math.max(1,Math.ceil(items.length/PER));if(page>pages)page=pages;
       var from=(page-1)*PER,slice=items.slice(from,from+PER);
@@ -2172,6 +2261,16 @@ function open(initial){
   el.querySelector('.lay-tog').addEventListener('click',function(e){var b=e.target.closest('[data-lay]');if(!b)return;layout=b.getAttribute('data-lay');page=1;try{localStorage.setItem('tc-pool-layout',layout);}catch(_){}render();});
   pagBox.addEventListener('click',function(e){var b=e.target.closest('[data-p]');if(!b||b.disabled)return;page=+b.getAttribute('data-p');render();var sec=el.querySelector('.all-sec');if(sec)el.scrollTop=Math.max(0,sec.offsetTop-20);});
   resBox.addEventListener('click',function(e){var r=e.target.closest('.prw');if(r)showFit(+r.getAttribute('data-i'));});
+  resBox.addEventListener('click',function(e){if(e.target.closest('.lxs-panel .fitm-full')){showProfile(spotSel);return;}var a=e.target.closest('[data-lx]');if(a){showFit(+a.getAttribute('data-lx'));return;}var r=e.target.closest('[data-sp]');if(!r)return;if(window.innerWidth<=960){showFit(+r.getAttribute('data-sp'));return;}selectSpot(+r.getAttribute('data-sp'));});
+  document.addEventListener('keydown',function(e){
+    if(document.documentElement.getAttribute('data-tw-cpage-layout')!=='spot'||!el.isConnected||!resBox.offsetParent||(e.key!=='ArrowDown'&&e.key!=='ArrowUp'))return;
+    var t=e.target;if(t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA'||t.isContentEditable))return;
+    var rows=[].slice.call(resBox.querySelectorAll('.lxs-row'));if(!rows.length)return;
+    var i=rows.findIndex(function(r){return r.classList.contains('on');});
+    var n=rows[Math.max(0,Math.min(rows.length-1,i+(e.key==='ArrowDown'?1:-1)))];e.preventDefault();selectSpot(+n.getAttribute('data-sp'));
+    var ro=resBox.querySelector('.lxs-roster');if(ro){var top=n.offsetTop,bt=top+n.offsetHeight;if(top<ro.scrollTop)ro.scrollTop=top-8;else if(bt>ro.scrollTop+ro.clientHeight)ro.scrollTop=bt-ro.clientHeight+8;}
+  });
+  window.__poolRerender=function(){if(el.isConnected)render();};
 
   var _subStats={};
   function subStats(idx){
@@ -2586,8 +2685,8 @@ function open(initial){
   var dotI='<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/></svg>';
   function verdict(kind,txt){return '<span class="fitm-v '+kind+'">'+esc(txt)+'</span>';}
   function fitRow(left,right){return '<div class="fitm-c l">'+left+'</div><div class="fitm-c">'+right+'</div>';}
-  function showFit(idx){
-    var x=currentRows[idx];if(!x)return;var c=x.c,s=x.s;
+  function fitInner(idx){
+    var x=currentRows[idx];if(!x)return '';var c=x.c,s=x.s;
     var first=c.name.split(' ')[0];
     var g={};s.gates.forEach(function(gt){g[gt.k]=gt;});
     var extra=c.skills.filter(function(k){return req.skills.indexOf(k)<0;});
@@ -2600,9 +2699,7 @@ function open(initial){
     var yrsOK=c.years>=req.minYears;
     var relScore=s.rel;
     var summary='Evidences <b>'+hitN+' of '+reqN+'</b> required skills, '+(yrsOK?'clears':'sits under')+' the seniority bar at <b>'+c.years+' yrs</b>, and is available <b>'+esc(c.avail).toLowerCase()+'</b>'+(availOK?' inside your window.':', outside your stated window.');
-    fitEl.innerHTML='<div class="fitm-sheet">'
-      +'<button class="fitm-x" type="button" aria-label="Close"><svg viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></button>'
-      +'<div class="fitm-scroll"><div class="fitm-head">'
+    return '<div class="fitm-scroll"><div class="fitm-head">'
         +'<div class="fitm-hl"><span class="fitm-kind">'+esc(challenge.kind==='job'?'Open role':'Hiring challenge')+'</span>'
           +'<h3 class="fitm-ttl">'+esc(challenge.title||'Challenge')+'</h3>'
           +'<div class="fitm-meta">'+(challenge.effort?'<span>Effort <b>'+esc(challenge.effort)+'</b></span>':'')+(challenge.window?'<span>Window <b>'+esc(challenge.window)+'</b></span>':'')+(challenge.budget?'<span>Reward <b>'+esc(challenge.budget)+'</b></span>':'')+'</div></div>'
@@ -2630,7 +2727,10 @@ function open(initial){
                 '<p class="fitm-l">Assessment scores</p>'+verdict(s.soft>=82?'ok':(s.soft>=70?'part':'no'),'Average '+s.soft+'/100')+'<div class="fitm-soft">'+SOFT_K.map(function(k){return '<div class="fitm-soft-r"><b>'+esc(k)+'</b><span>'+c.soft[k]+'</span><i><em style="width:'+c.soft[k]+'%"></em></i></div>';}).join('')+'</div>')
         +fitRow('<p class="fitm-l">Verification</p><p>Identity and work history must be verified before an invite is sent.</p>',
                 '<p class="fitm-l">Status</p>'+verdict(c.verified?'ok':'no',c.verified?'Verified':'Pending')+'<p>'+esc(g['Identity verified']?g['Identity verified'].txt:'')+'.</p>')
-      +'</div></div></div>';
+      +'</div></div>';
+  }
+  function showFit(idx){if(!currentRows[idx])return;
+    fitEl.innerHTML='<div class="fitm-sheet">'+'<button class="fitm-x" type="button" aria-label="Close"><svg viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></button>'+fitInner(idx)+'</div>';
     fitEl.classList.add('on');
     function closeFit(){fitEl.classList.remove('on');document.removeEventListener('keydown',fitKey);}
     function fitKey(e){if(e.key==='Escape')closeFit();}
@@ -2640,6 +2740,7 @@ function open(initial){
     fitEl.onclick=function(e){if(e.target===fitEl)closeFit();};
   }
 
+  document.addEventListener('scroll',function(e){var t=e.target;if(t&&t.classList&&t.classList.contains('cat-track'))t.classList.toggle('at-end',t.scrollLeft+t.clientWidth>=t.scrollWidth-4);},true);
   grid.addEventListener('click',function(e){
     var arw=e.target.closest('.cat-arrow');
     if(arw){var track=arw.closest('.cat').querySelector('.cat-track');track.scrollBy({left:(+arw.getAttribute('data-dir'))*340,behavior:'smooth'});return;}

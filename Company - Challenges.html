@@ -1025,7 +1025,7 @@ a:hover{color:var(--blue)}
 })();
 </script>
 <script>(function(){var u=document.querySelector('#load .app-user');if(!u)return;u.querySelector('.app-user-btn').addEventListener('click',function(e){e.stopPropagation();u.classList.toggle('open');});document.addEventListener('click',function(e){if(!u.contains(e.target))u.classList.remove('open');});})();</script>
-<script src="audit.js"></script><script src="pool-threshold.js?v=47"></script>
+<script src="audit.js"></script><script src="pool-threshold.js?v=51"></script>
 <script>(function(){var l=document.getElementById('load');if(!l)return;l.classList.add('on','revealed');var cards=[].slice.call(document.querySelectorAll('.res-card'));if(!cards.length)return;var n=cards.length;var m=location.search.match(/[?&]c=(\d+)/);var i=m?Math.min(Math.max(+m[1],0),n-1):1;cards.forEach(function(c,k){c.classList.remove('slot-left','slot-center','slot-right');c.classList.add(k===i?'slot-center':k===(i-1+n)%n?'slot-left':'slot-right');});cards[i].click();})();</script>
 <script src="notifications.js"></script>
 <script src="chat.js"></script>
@@ -1033,6 +1033,9 @@ a:hover{color:var(--blue)}
 <script src="company-complete.js"></script><script src="mobile.js"></script>
 <script src="challenge-list.js?v=23"></script>
 <script src="review-tweaks.js"></script>
+<script>TCTweaks.register({id:'cpage',title:'Candidates page layout',controls:[{key:'layout',label:'Layout',def:'rows',options:[['rows','Category rows'],['tiers','Match tiers'],['spot','Spotlight']]}],apply:function(){if(window.__poolRerender)window.__poolRerender();}});</script>
+<script>TCTweaks.register({id:'chpage',title:'Challenges page layout',controls:[{key:'layout',label:'Layout',def:'focus',options:[['focus','Focus'],['command','Command centre']]}],apply:function(){if(window.__chLayout)window.__chLayout();}});</script>
+<script src="challenge-layouts.js?v=3"></script>
 <script>TCTweaks.register({id:'cltype',title:'Challenge type filter',controls:[{key:'style',label:'Style',def:'seg',options:[['seg','Segmented'],['chips','Chips'],['tabs','Underline tabs']]}]});</script>
 <script id="mobile-reward-fix-js">(function(){
 function place(rw){var sp=rw.querySelector('.ch-split');if(!sp)return;if(window.innerWidth>760){rw.style.removeProperty('--split-x');return;}
