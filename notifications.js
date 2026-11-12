@@ -36,6 +36,14 @@ var CSS=`
 .np-foot{padding:10px 15px;border-top:1px solid var(--line);text-align:center;font-size:11.5px;font-weight:700;color:var(--ink2);cursor:pointer}
 .np-foot:hover{color:var(--blue)}
 .pool-top .app-actions,.cprof-topbar .app-actions{right:34px}
+
+.app-notif-btn{border:0!important;background:none!important;box-shadow:none!important;border-radius:8px}.app-notif-btn svg{width:21px;height:21px}.app-notif-btn:hover svg,.app-notif.open .app-notif-btn svg{stroke:var(--blue)}.app-notif-dot{top:-4px;right:-6px}
+.app-actions{gap:24px!important}.app-notif-btn,.app-chat-btn{width:36px!important}.app-top>.app-actions,.pool-top>.app-actions,.cprof-topbar>.app-actions{margin-right:6px}
+.app-actions .app-user-btn{width:39px!important;height:39px!important}
+.app-user-btn img[src*="lg-1"]{transform:scale(1.72)}
+.app-notif-btn .app-notif-dot,.app-chat-btn .app-chat-dot{top:calc(50% - 17px)!important;right:auto!important;left:calc(50% + 4px)!important;box-shadow:0 0 0 2px #fff}
+.app-actions{align-items:center!important}.app-actions>*{display:flex;align-items:center;align-self:center}.app-notif-btn,.app-chat-btn{height:39px!important}.app-actions .app-user-btn{display:block}
+@media (min-width:721px){.app-top>.app-actions,.load-logo>.app-actions,.pool-top>.app-actions,.cprof-topbar>.app-actions{top:0!important;bottom:0!important;margin-top:auto!important;margin-bottom:auto!important;height:max-content!important;transform:none!important}}
 `;
 var BELL='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>';
 var I={

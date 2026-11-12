@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="app-shell">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
 <title>theColosseum — Sign up</title>
-<link rel="stylesheet" href="colosseum.css" />
+<link rel="stylesheet" href="colosseum.css" /><link rel="stylesheet" href="app-shell.css" />
 <style>
 :root{--blue:#678DC6;--field:#f4f4f3;--line:#e6e4df;--ink2:#1c1d1c}
 html,body{height:100%}
@@ -349,12 +349,13 @@ a:hover{color:var(--blue)}
 .qz-file .qz-sl-ic{left:14px}
 .qz-ta:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(103,141,198,.16);background:#fff}
 .qz .actions{margin-top:40px;padding-top:24px;border-top:1px solid var(--line);justify-content:flex-end;gap:14px}
-.qz .link-back{text-decoration:none}.qz .actions [data-qz="back"]{margin-right:auto}
+.qz .link-back{text-decoration:none}.qz .actions [data-qz="back"]{margin-right:auto}.qz .actions .qz-skipall{margin-right:auto}
 @media (max-width:760px){.res-cards .slot-left,.res-cards .slot-right{display:none}.res-lede{font-size:20px}}
 
 @font-face{font-family:'P22Mackinac';src:url('fonts/P22MackinacPro-Book.otf') format('opentype');font-weight:400;font-style:normal;font-display:swap}
 @font-face{font-family:'P22Mackinac';src:url('fonts/P22MackinacPro-BookItalic.otf') format('opentype');font-weight:400;font-style:italic;font-display:swap}
 .su-right{background:#fbfcf7;display:flex;align-items:center;justify-content:center;padding:48px clamp(32px,5vw,80px)}
+.sr-sw{display:flex;flex-direction:column}.sr-sw[hidden]{display:none}.sr-in{animation:srIn .45s cubic-bezier(.2,.8,.2,1)}@keyframes srIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .sr{width:100%;min-width:0;max-width:560px;display:flex;flex-direction:column}
 .sr-h{font-family:'P22Mackinac',serif;font-weight:400;font-size:clamp(42px,4.6vw,72px);line-height:1.02;letter-spacing:-.03em;color:#1c1d1c;margin:0;text-wrap:balance}
 .sr-h em{font-style:italic;color:#648dc6;display:inline-block}
@@ -379,6 +380,34 @@ a:hover{color:var(--blue)}
   .su-right{display:none}
   .su-left{border-right:0}
 }
+
+.app-top{width:100%;position:relative;z-index:300;display:flex;align-items:center;justify-content:center;margin-bottom:32px}
+.app-logo{flex:none;font-weight:800;font-size:26px;letter-spacing:-0.03em;color:var(--ink2);line-height:1}
+.app-logo .the{font-weight:400}
+.app-user{position:absolute;right:0;top:50%;transform:translateY(-50%);flex:none}
+.app-user.open{z-index:200}
+.app-user-btn{width:26px;height:26px;border-radius:50%;overflow:hidden;border:1px solid var(--line);background:#fff;padding:0;cursor:pointer;display:block;transition:border-color .18s,box-shadow .18s}
+.app-user-btn img{width:100%;height:100%;object-fit:cover;display:block}
+.app-user-btn:hover{border-color:var(--ink2)}
+.app-user.open .app-user-btn{border-color:var(--blue);box-shadow:0 0 0 3px rgba(103,141,198,.16)}
+.app-user-menu{position:absolute;top:calc(100% + 10px);right:0;z-index:200;min-width:176px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 16px 40px rgba(31,33,32,.16);padding:6px;display:none}
+.app-user.open .app-user-menu{display:block}
+.app-user-opt{display:flex;align-items:center;gap:11px;padding:9px 11px;border-radius:10px;cursor:pointer;font-size:13px;font-weight:600;color:var(--ink2)}
+.app-user-opt+.app-user-opt{margin-top:2px}
+.app-user-opt:hover{background:var(--field)}
+.app-user-opt svg{width:17px;height:17px;stroke:var(--ink2);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.app-user-sep{border-top:1px solid var(--line);margin:5px 4px}
+.app-user-opt.danger{color:oklch(0.6 0.13 25)}
+.app-user-opt.danger svg{stroke:oklch(0.6 0.13 25)}
+.app-user-opt.danger:hover{background:oklch(0.6 0.13 25 / 0.08)}
+.load>.app-top{display:none;flex:none;zoom:.9;width:calc(100% / .9);max-width:none;margin:0 0 40px!important;top:0!important;align-self:stretch}
+.load.testing>.app-top{display:flex}
+.load.testing{justify-content:flex-start;padding-top:24px}
+.load.testing .load-logo{display:none!important}
+.load.testing>.app-top .tw-nav{display:grid!important}
+.load>.app-top>.app-actions{position:absolute!important;right:22px!important;top:0!important;bottom:0!important;margin:auto 0!important;height:max-content!important;transform:none!important}
+html:not(:has(.load.testing)) .tw{display:none!important}
+@media (max-width:720px){.load.testing>.app-top .tw-nav{display:none!important}.load>.app-top>.app-actions{right:12px}}
 </style>
 <style id="mobile-input-fix">@media (max-width:820px){.finput,.ccsearch,.ot-in,.qz-ta,textarea,select,input[type="search"],#testInput{font-size:16px!important}input,textarea{scroll-margin:96px 0 40vh}}</style><style id="mobile-carousel-fix">@media (max-width:760px){
 .res-cards{min-height:360px;overflow:hidden;margin:0 -20px;padding:0 20px;touch-action:pan-y;user-select:none;-webkit-user-select:none}
@@ -407,8 +436,8 @@ a:hover{color:var(--blue)}
 
       <!-- track toggle -->
       <div class="seg" id="trackToggle" role="tablist">
-        <button class="seg-btn on" type="button" data-track="technical" role="tab" aria-selected="true">Technical</button>
-        <button class="seg-btn" type="button" data-track="creative" role="tab" aria-selected="false">Creative</button>
+        <button class="seg-btn on" type="button" data-track="technical" role="tab" aria-selected="true">Candidate</button>
+        <button class="seg-btn" type="button" data-track="creative" role="tab" aria-selected="false">Company</button>
       </div>
 
       <!-- STEP 1 -->
@@ -446,29 +475,24 @@ a:hover{color:var(--blue)}
               </div>
             </div>
           </div>
-          <div class="fres">
-            <label class="flbl">Resume</label>
-            <label class="qz-file"><span class="qz-sl-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm0 2 4 4h-4V4zM8 13h8v1.6H8V13zm0 3.4h8V18H8v-1.6z"/></svg></span><input type="file" accept=".pdf,.doc,.docx" hidden /><span class="qz-file-txt">Upload PDF or DOC</span></label>
-          </div>
-        </div>
-        <div class="fgrp" data-track-field="creative" hidden>
-          <div class="frow">
-            <div>
-              <label class="flbl">LinkedIn</label>
-              <button class="btn-linkedin" type="button">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 110-4.13 2.06 2.06 0 010 4.13zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"></path></svg>
-                Connect LinkedIn
-              </button>
-            </div>
+          <div class="frow fres">
             <div>
               <label class="flbl">Website / Portfolio</label>
               <input class="finput" type="url" placeholder="https://yourportfolio.com" />
             </div>
+            <div>
+              <label class="flbl">Resume</label>
+              <label class="qz-file"><span class="qz-sl-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm0 2 4 4h-4V4zM8 13h8v1.6H8V13zm0 3.4h8V18H8v-1.6z"/></svg></span><input type="file" accept=".pdf,.doc,.docx" hidden /><span class="qz-file-txt">Upload PDF or DOC</span></label>
+            </div>
           </div>
-          <div class="fres">
-            <label class="flbl">Resume</label>
-            <label class="qz-file"><span class="qz-sl-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm0 2 4 4h-4V4zM8 13h8v1.6H8V13zm0 3.4h8V18H8v-1.6z"/></svg></span><input type="file" accept=".pdf,.doc,.docx" hidden /><span class="qz-file-txt">Upload PDF or DOC</span></label>
-          </div>
+        </div>
+        <div class="fgrp" data-track-field="creative" hidden>
+          <label class="flbl">Company name <span class="ast">*</span></label>
+          <input class="finput" type="text" placeholder="Company name" />
+        </div>
+        <div class="fgrp" data-track-field="creative" hidden>
+          <label class="flbl">Company website</label>
+          <input class="finput" type="url" placeholder="https://example.com" />
         </div>
 
         <p class="terms">By submitting this form, you agree to the Terms of Service and Privacy Policy.</p>
@@ -533,29 +557,24 @@ a:hover{color:var(--blue)}
               </div>
             </div>
           </div>
-          <div class="fres">
-            <label class="flbl">Resume</label>
-            <label class="qz-file"><span class="qz-sl-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm0 2 4 4h-4V4zM8 13h8v1.6H8V13zm0 3.4h8V18H8v-1.6z"/></svg></span><input type="file" accept=".pdf,.doc,.docx" hidden /><span class="qz-file-txt">Upload PDF or DOC</span></label>
-          </div>
-        </div>
-        <div class="fgrp" data-track-field="creative" hidden>
-          <div class="frow">
-            <div>
-              <label class="flbl">LinkedIn</label>
-              <button class="btn-linkedin" type="button">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 110-4.13 2.06 2.06 0 010 4.13zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"></path></svg>
-                Connect LinkedIn
-              </button>
-            </div>
+          <div class="frow fres">
             <div>
               <label class="flbl">Website / Portfolio</label>
               <input class="finput" type="url" placeholder="https://yourportfolio.com" />
             </div>
+            <div>
+              <label class="flbl">Resume</label>
+              <label class="qz-file"><span class="qz-sl-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm0 2 4 4h-4V4zM8 13h8v1.6H8V13zm0 3.4h8V18H8v-1.6z"/></svg></span><input type="file" accept=".pdf,.doc,.docx" hidden /><span class="qz-file-txt">Upload PDF or DOC</span></label>
+            </div>
           </div>
-          <div class="fres">
-            <label class="flbl">Resume</label>
-            <label class="qz-file"><span class="qz-sl-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm0 2 4 4h-4V4zM8 13h8v1.6H8V13zm0 3.4h8V18H8v-1.6z"/></svg></span><input type="file" accept=".pdf,.doc,.docx" hidden /><span class="qz-file-txt">Upload PDF or DOC</span></label>
-          </div>
+        </div>
+        <div class="fgrp" data-track-field="creative" hidden>
+          <label class="flbl">Company name <span class="ast">*</span></label>
+          <input class="finput" type="text" placeholder="Company name" />
+        </div>
+        <div class="fgrp" data-track-field="creative" hidden>
+          <label class="flbl">Company website</label>
+          <input class="finput" type="url" placeholder="https://example.com" />
         </div>
 
         <div class="fgrp">
@@ -622,9 +641,12 @@ a:hover{color:var(--blue)}
     </div>
   </div>
   <div class="su-right"><div class="sr">
-<h2 class="sr-h">More than a <em>résumé</em>.</h2>
+<div class="sr-sw" data-sr="technical"><h2 class="sr-h">More than a <em>résumé</em>.</h2>
 <p class="sr-sub">Solve real challenges from companies and earn rewards.</p>
-<div class="sr-ev"><img src="assets/purse.webp" alt="" decoding="async"><p>AI feedback on every submission helps you sharpen up and climb the leaderboard.</p></div>
+<div class="sr-ev"><img src="assets/purse.webp" alt="" decoding="async"><p>AI feedback on every submission helps you sharpen up and climb the leaderboard.</p></div></div>
+<div class="sr-sw" data-sr="creative" hidden><h2 class="sr-h">Skip the interview <em>theater</em>.</h2>
+<p class="sr-sub">Start with a real problem. See how people think, build, and deliver before you choose who to work with.</p>
+<div class="sr-ev"><img src="assets/scales.webp" alt="" width="120" height="120" decoding="async"><p>AI-assisted evaluation brings the evidence together. Your team keeps the final decision.</p></div></div>
 <div class="sr-logos" aria-label="Companies hiring on theColosseum"><span class="sr-tag">Trusted by</span><div class="sr-view"><div class="sr-track" id="sr-track"></div></div></div>
 </div></div>
 <script>(()=>{const L='#9aa1a8',m={
@@ -640,6 +662,19 @@ document.getElementById('sr-track').innerHTML=one+one.replace(/class="sr-co"/g,'
 </div>
 
 <div class="load" id="load">
+  <div class="app-top">
+    <a class="app-logo" href="Candidate - Dashboard.html" style="text-decoration:none;color:inherit"><span class="tc-mark"><svg viewBox="0 0 40 42" aria-hidden="true"><path fill="#648dc6" d="M1 1H16V8H8V34H16V41H1ZM39 1H24V8H32V34H24V41H39Z"></path></svg></span><span class="the">the</span>Colosseum</a>
+    <nav class="tw-nav" aria-label="Main"><a href="Candidate - Dashboard.html"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg>Dashboard</a><span class="sep"></span><a href="Candidate - Webapp copy.html"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"/><line x1="13" y1="19" x2="19" y2="13"/><line x1="16" y1="16" x2="20" y2="20"/><line x1="19" y1="21" x2="21" y2="19"/><polyline points="14.5 6.5 18 3 21 3 21 6 17.5 9.5"/><line x1="5" y1="14" x2="9" y2="18"/><line x1="7" y1="17" x2="4" y2="20"/><line x1="3" y1="19" x2="5" y2="21"/></svg>Challenges &amp; Jobs</a><span class="sep"></span><a href="Candidate - My applications.html"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="7" width="17" height="13" rx="2"/><path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7"/></svg>My applications</a><span class="sep"></span><a href="Candidate - Leaderboard.html"><svg viewBox="0 0 24 24" aria-hidden="true"><line x1="4" y1="20" x2="20" y2="20"/><rect x="5" y="12" width="4" height="8"/><rect x="10" y="7" width="4" height="13"/><rect x="15" y="10" width="4" height="10"/></svg>Leaderboard</a></nav>
+    <div class="app-user">
+      <button class="app-user-btn" type="button" aria-label="Account menu"><img src="assets/candidate-profile.png" alt="Your profile" /></button>
+      <div class="app-user-menu">
+        <div class="app-user-opt" data-go="profile"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/></svg><span>Profile</span></div>
+        <div class="app-user-opt" data-go="settings"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Settings</span></div>
+        <div class="app-user-sep"></div>
+        <div class="app-user-opt danger"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>Log out</span></div>
+      </div>
+    </div>
+  </div>
   <div class="load-logo"><a class="load-logo-a" href="https://thecolosseum.ai/" aria-label="theColosseum home"><svg viewBox="0 0 40 42" aria-hidden="true"><path fill="#648dc6" d="M1 1H16V8H8V34H16V41H1ZM39 1H24V8H32V34H24V41H39Z"></path></svg><span><span class="the">the</span>Colosseum</span></a></div>
   <div class="load-inner">
     <h2>Scouting your battlefield…</h2>
@@ -689,16 +724,15 @@ Open-source maintainer with 2k+ GitHub stars</textarea>
                 <input class="finput" type="url" placeholder="https://github.com/you" />
               </div>
             </div>
-          </div><div class="fres"><label class="flbl">Resume</label><label class="qz-file has"><span class="qz-sl-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm0 2 4 4h-4V4zM8 13h8v1.6H8V13zm0 3.4h8V18H8v-1.6z"/></svg></span><input type="file" accept=".pdf,.doc,.docx" hidden /><span class="qz-file-txt">Marcus_Vela_Resume.pdf</span></label></div></div>
+          </div><div class="frow fres"><div><label class="flbl">Website / Portfolio</label><input class="finput" type="url" placeholder="https://yourportfolio.com" /></div><div><label class="flbl">Resume</label><label class="qz-file has"><span class="qz-sl-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm0 2 4 4h-4V4zM8 13h8v1.6H8V13zm0 3.4h8V18H8v-1.6z"/></svg></span><input type="file" accept=".pdf,.doc,.docx" hidden /><span class="qz-file-txt">Marcus_Vela_Resume.pdf</span></label></div></div></div>
       <div class="qz-q">
         <label class="flbl">More ways to know you better</label>
-        <div class="qz-social" style="grid-template-columns:1fr 1fr">
+        <div class="qz-social" style="grid-template-columns:1fr">
           <div class="qz-sl"><span class="qz-sl-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 3h3l-6.9 7.9L22 21h-6.3l-4.9-6.4L5.1 21H2l7.4-8.5L2 3h6.4l4.4 5.9zm-1.1 16h1.7L7.7 4.8H5.9z"/></svg></span><input class="finput" type="url" placeholder="Twitter / X" /></div>
-          <div class="qz-sl"><span class="qz-sl-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm6.9 6h-2.5a15.6 15.6 0 0 0-1.4-3.5A8 8 0 0 1 18.9 8zM12 4c.8 1.1 1.4 2.4 1.8 4h-3.6c.4-1.6 1-2.9 1.8-4zM4.3 14a8 8 0 0 1 0-4h2.9a17.6 17.6 0 0 0 0 4zm.8 2h2.5c.3 1.3.8 2.5 1.4 3.5A8 8 0 0 1 5.1 16zm2.5-8H5.1a8 8 0 0 1 3.9-3.5A15.6 15.6 0 0 0 7.6 8zM12 20c-.8-1.1-1.4-2.4-1.8-4h3.6c-.4 1.6-1 2.9-1.8 4zm2.2-6H9.8a15.4 15.4 0 0 1 0-4h4.4a15.4 15.4 0 0 1 0 4zm.6 5.5c.6-1 1.1-2.2 1.4-3.5h2.5a8 8 0 0 1-3.9 3.5zM16.8 14a17.6 17.6 0 0 0 0-4h2.9a8 8 0 0 1 0 4z"/></svg></span><input class="finput" type="url" placeholder="Website" /></div>
         </div>
       </div>
       <div class="actions end">
-        <button class="link-back" type="button" data-qz="next">Skip</button>
+        <button class="link-back qz-skipall" type="button" data-qz="finish">Skip onboarding</button>
         <button class="btn-black" type="button" data-qz="next">Continue</button>
       </div>
     </div>
@@ -773,7 +807,7 @@ Awwwards Site of the Day for a client launch</textarea>
         </div>
       </div><div class="qz-q qz-res"><div class="fres"><label class="flbl">Resume</label><label class="qz-file has"><span class="qz-sl-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm0 2 4 4h-4V4zM8 13h8v1.6H8V13zm0 3.4h8V18H8v-1.6z"/></svg></span><input type="file" accept=".pdf,.doc,.docx" hidden /><span class="qz-file-txt">Marcus_Vela_Resume.pdf</span></label></div></div>
       <div class="actions end">
-        <button class="link-back" type="button" data-qz="next">Skip</button>
+        <button class="link-back qz-skipall" type="button" data-qz="finish">Skip onboarding</button>
         <button class="btn-black" type="button" data-qz="next">Continue</button>
       </div>
     </div>
@@ -869,7 +903,7 @@ Awwwards Site of the Day for a client launch</textarea>
       <span><b>36 companies</b> have live challenges in the Arena right now — jump in and prove yourself.</span>
     </div>
     <button class="btn-black res-go" type="button">Continue to soft skills evaluation test</button>
-    <a class="res-skip" href="Candidate - My applications.html">Skip</a>
+    <a class="res-skip" href="Candidate - Dashboard.html">Skip</a>
   </div>
 
   <div class="result" data-res-track="creative">
@@ -913,7 +947,7 @@ Awwwards Site of the Day for a client launch</textarea>
       <span><b>36 companies</b> have live challenges in the Arena right now &mdash; jump in and prove yourself.</span>
     </div>
     <button class="btn-black res-go" type="button">Continue to soft skills evaluation test</button>
-    <a class="res-skip" href="Candidate - My applications.html">Skip</a>
+    <a class="res-skip" href="Candidate - Dashboard.html">Skip</a>
   </div>
 
   <div class="test">
@@ -940,7 +974,7 @@ Awwwards Site of the Day for a client launch</textarea>
     seg.querySelectorAll('.seg-btn').forEach(function(x){x.classList.remove('on');x.setAttribute('aria-selected','false')});
     b.classList.add('on');b.setAttribute('aria-selected','true');
     var t=b.getAttribute('data-track');
-    document.querySelectorAll('[data-track-field]').forEach(function(f){f.hidden=f.getAttribute('data-track-field')!==t});
+    document.querySelectorAll('[data-track-field]').forEach(function(f){f.hidden=f.getAttribute('data-track-field')!==t});document.querySelectorAll('.sr-sw').forEach(function(f){var on=f.getAttribute('data-sr')===t;if(f.hidden===on){f.hidden=!on;if(on){f.classList.remove('sr-in');void f.offsetWidth;f.classList.add('sr-in');}}});
   });
 })();
 (function(){
@@ -1015,7 +1049,7 @@ Awwwards Site of the Day for a client launch</textarea>
   document.querySelectorAll('.sel-dd[data-dd="years"]').forEach(function(p){initDD(p,YEARS.map(function(y){return{l:y};}),false,'5–8 years');});
   document.querySelectorAll('.sel-dd[data-dd="country"]').forEach(function(p){initDD(p,COUNTRIES.map(function(c){return{l:c[1],f:c[0]};}),true,'United States');});
   var startLoad=function(){var l=document.getElementById('load');var tb=document.querySelector('#trackToggle .seg-btn.on');l.setAttribute('data-track',tb?tb.getAttribute('data-track'):'technical');l.classList.add('on');setTimeout(function(){l.classList.add('leaving');},2000);setTimeout(function(){l.classList.add('quizmode');l.classList.remove('leaving');if(l._beginQuiz)l._beginQuiz();},2360);};
-  document.getElementById('createAcct').onclick=startLoad;
+  document.getElementById('createAcct').onclick=function(){var tb=document.querySelector('#trackToggle .seg-btn.on');if(tb&&tb.getAttribute('data-track')==='creative'){location.href='Company - Sign up.html#onboard';return;}startLoad();};
   var ea=document.getElementById('enterArena');if(ea)ea.onclick=startLoad;
 })();
 (function(){
@@ -1075,9 +1109,9 @@ Awwwards Site of the Day for a client launch</textarea>
     ld.classList.remove('testing');ld.scrollTop=0;
     setTimeout(function(){if(h)h.textContent=oh;if(p)p.textContent=op;ld.classList.add('testing');ld.scrollTop=0;showResult();},2000);
   }
-  function showResult(){(function(){testEl.classList.add('done');try{var P=JSON.parse(localStorage.getItem('tc-pc')||'{}');P.assess=1;localStorage.setItem('tc-pc',JSON.stringify(P));}catch(x){}var s=document.createElement('div');s.className='test-success';s.innerHTML='<div class="test-success-ic"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><h2>Congratulations! Assessment complete</h2><p>Thank you for finishing your psychometric &amp; soft-skill assessment. Your profile is now 100% and Bronze tier challenges are unlocked.</p><details class="sc-card"><summary class="sc-top"><span class="sc-lbl">Assessment score</span><span class="sc-right"><span class="sc-num">84<span>%</span></span><svg class="sc-chev" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span></summary><div class="sc-dims"><div class="sc-dim"><span class="sc-dim-n">communication</span><span class="sc-dim-s">82%</span><span class="sc-bar"><i style="width:82%"></i></span><span class="sc-note">Clear and direct, but answers stayed general.</span></div><div class="sc-dim best"><span class="sc-dim-n">collaboration</span><span class="sc-dim-s">91%</span><span class="sc-bar"><i style="width:91%"></i></span><span class="sc-note">Gave a real situation with your team lead and what you did about it.</span></div><div class="sc-dim"><span class="sc-dim-n">ownership</span><span class="sc-dim-s">80%</span><span class="sc-bar"><i style="width:80%"></i></span><span class="sc-note">Described how you usually operate more than something you actually did.</span></div><div class="sc-dim"><span class="sc-dim-n">resilience</span><span class="sc-dim-s">86%</span><span class="sc-bar"><i style="width:86%"></i></span><span class="sc-note">Handled the pressure well; you left the outcome open.</span></div><div class="sc-dim"><span class="sc-dim-n">learning</span><span class="sc-dim-s">79%</span><span class="sc-bar"><i style="width:79%"></i></span><span class="sc-note">Never named the skill you were building.</span></div></div></details><div class="tier-card"><div class="tier-row sel"><span class="tier-medal bronze"></span><div class="tier-tx"><span class="tier-name">Bronze</span><span class="tier-sub">Unlocked</span></div><span class="tier-state"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></div><div class="tier-row"><span class="tier-medal gold"></span><div class="tier-tx"><span class="tier-name">Gold</span><span class="tier-sub">Complete 3 challenges to unlock</span></div><span class="tier-state"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span></div><div class="tier-row"><span class="tier-medal platinum"></span><div class="tier-tx"><span class="tier-name">Platinum</span><span class="tier-sub">Win a gold challenge to unlock</span></div><span class="tier-state"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span></div></div><button class="test-arena-cta" type="button">Enter the arena</button>';testEl.appendChild(s);s.querySelector('.test-arena-cta').onclick=function(){window.location.href='Candidate - My applications.html';};})();}
+  function showResult(){(function(){testEl.classList.add('done');try{var P=JSON.parse(localStorage.getItem('tc-pc')||'{}');P.assess=1;localStorage.setItem('tc-pc',JSON.stringify(P));}catch(x){}var s=document.createElement('div');s.className='test-success';s.innerHTML='<div class="test-success-ic"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><h2>Congratulations! Assessment complete</h2><p>Thank you for finishing your psychometric &amp; soft-skill assessment. Your profile is now 100% and Bronze tier challenges are unlocked.</p><details class="sc-card"><summary class="sc-top"><span class="sc-lbl">Assessment score</span><span class="sc-right"><span class="sc-num">84<span>%</span></span><svg class="sc-chev" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span></summary><div class="sc-dims"><div class="sc-dim"><span class="sc-dim-n">communication</span><span class="sc-dim-s">82%</span><span class="sc-bar"><i style="width:82%"></i></span><span class="sc-note">Clear and direct, but answers stayed general.</span></div><div class="sc-dim best"><span class="sc-dim-n">collaboration</span><span class="sc-dim-s">91%</span><span class="sc-bar"><i style="width:91%"></i></span><span class="sc-note">Gave a real situation with your team lead and what you did about it.</span></div><div class="sc-dim"><span class="sc-dim-n">ownership</span><span class="sc-dim-s">80%</span><span class="sc-bar"><i style="width:80%"></i></span><span class="sc-note">Described how you usually operate more than something you actually did.</span></div><div class="sc-dim"><span class="sc-dim-n">resilience</span><span class="sc-dim-s">86%</span><span class="sc-bar"><i style="width:86%"></i></span><span class="sc-note">Handled the pressure well; you left the outcome open.</span></div><div class="sc-dim"><span class="sc-dim-n">learning</span><span class="sc-dim-s">79%</span><span class="sc-bar"><i style="width:79%"></i></span><span class="sc-note">Never named the skill you were building.</span></div></div></details><div class="tier-card"><div class="tier-row sel"><span class="tier-medal bronze"></span><div class="tier-tx"><span class="tier-name">Bronze</span><span class="tier-sub">Unlocked</span></div><span class="tier-state"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></div><div class="tier-row"><span class="tier-medal gold"></span><div class="tier-tx"><span class="tier-name">Gold</span><span class="tier-sub">Complete 3 challenges to unlock</span></div><span class="tier-state"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span></div><div class="tier-row"><span class="tier-medal platinum"></span><div class="tier-tx"><span class="tier-name">Platinum</span><span class="tier-sub">Win a gold challenge to unlock</span></div><span class="tier-state"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span></div></div><button class="test-arena-cta" type="button">Enter the arena</button>';testEl.appendChild(s);s.querySelector('.test-arena-cta').onclick=function(){window.location.href='Candidate - Dashboard.html';};})();}
   form.addEventListener('submit',function(e){e.preventDefault();var v=input.value.trim();if(!v)return;add(v,'me');input.value='';complete();});
-  var testEl=document.querySelector('.test'),startBtn=document.getElementById('testStart');var skipBtn=document.getElementById('testSkip');if(skipBtn)skipBtn.addEventListener('click',function(){window.location.href='Candidate - My applications.html';});
+  var testEl=document.querySelector('.test'),startBtn=document.getElementById('testStart');var skipBtn=document.getElementById('testSkip');if(skipBtn)skipBtn.addEventListener('click',function(){window.location.href='Candidate - Dashboard.html';});
   var tmr=document.getElementById('testTimer'),disc=document.getElementById('testDisclaimer');
   if(tmr&&disc){tmr.addEventListener('click',function(){disc.classList.add('hide');});}
   function begin(){testEl.classList.add('started');if(disc)disc.classList.add('hide');if(timer)clearInterval(timer);timer=setInterval(tick,1000);askNext();setTimeout(function(){input.focus();},400);}
@@ -1091,7 +1125,7 @@ document.querySelectorAll('.su .qz-file input[type=file]').forEach(function(inp)
 <script>
 document.querySelectorAll('.qz-up input[type=file]').forEach(function(inp){inp.addEventListener('change',function(){var w=inp.closest('.qz-up'),s=w.querySelector('.qz-up-s'),f=inp.files||[];if(f.length){s.textContent=f.length>1?f.length+' files selected':f[0].name;w.classList.add('has');}else{s.textContent=s.getAttribute('data-def');w.classList.remove('has');}});});
 </script>
-<script src="mobile.js"></script>
+<script src="notifications.js?v=3"></script><script src="chat.js?v=2"></script><script src="candidate-complete.js"></script><script src="review-tweaks.js"></script><script src="header-nav-tweaks.js"></script><script src="mobile.js"></script>
 <script src="avatar-crop.js"></script>
 <script id="mobile-input-fix-js">(function(){
 function tag(el){if(el.dataset.mfx)return;el.dataset.mfx=1;var t=(el.type||'').toLowerCase(),p=(el.placeholder||'').toLowerCase(),a=function(k,v){if(!el.hasAttribute(k))el.setAttribute(k,v)};
@@ -1123,5 +1157,6 @@ wrap.addEventListener('touchmove',function(e){if(x0===null)return;var t=e.touche
 wrap.addEventListener('touchend',function(e){if(x0===null)return;var dx=e.changedTouches[0].clientX-x0,dy=e.changedTouches[0].clientY-y0;x0=null;
 if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy)){var s=wrap.querySelector(dx<0?'.slot-right':'.slot-left');if(s){var m=moved;moved=false;s.click();moved=m;}}});
 wrap.addEventListener('click',function(e){if(moved){moved=false;e.stopPropagation();e.preventDefault();}},true);
-});})();</script><script>(function(){if(location.hash!=='#assessment')return;var ld=document.getElementById('load');if(!ld)return;ld.classList.remove('revealed','quizmode');ld.classList.add('on','testing');ld.scrollTop=0;if(window._startTest)window._startTest();})();</script><script>document.querySelectorAll('.su .qz-file input[type=file]').forEach(function(inp){inp.addEventListener('change',function(){if(!inp.files||!inp.files[0])return;var n=inp.files[0].name;document.querySelectorAll('.qz-links .qz-file-txt,.qz-res .qz-file-txt').forEach(function(t){t.textContent=n;t.closest('.qz-file').classList.add('has');});});});</script></body>
+});})();</script><script>(function(){if(location.hash!=='#assessment')return;var ld=document.getElementById('load');if(!ld)return;ld.classList.remove('revealed','quizmode');ld.classList.add('on','testing');ld.scrollTop=0;if(window._startTest)window._startTest();})();</script><script>document.querySelectorAll('.su .qz-file input[type=file]').forEach(function(inp){inp.addEventListener('change',function(){if(!inp.files||!inp.files[0])return;var n=inp.files[0].name;document.querySelectorAll('.qz-links .qz-file-txt,.qz-res .qz-file-txt').forEach(function(t){t.textContent=n;t.closest('.qz-file').classList.add('has');});});});</script><script>(function(){var a=new URLSearchParams(location.search).get('as');if(a!=='company')return;var b=document.querySelector('#trackToggle .seg-btn[data-track="creative"]');if(b)b.click();})();</script>
+</body>
 </html>

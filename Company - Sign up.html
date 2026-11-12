@@ -416,7 +416,7 @@ a:hover{color:var(--blue)}
 .qz-sl .finput{padding-left:42px;padding-right:12px}
 .qz-ta:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(103,141,198,.16);background:#fff}
 .qz .actions{margin-top:40px;padding-top:24px;border-top:1px solid var(--line);justify-content:flex-end;gap:14px}
-.qz .link-back{text-decoration:none}
+.qz .link-back{text-decoration:none}.qz .actions [data-qz="back"]{margin-right:auto}.qz .actions .qz-skipall{margin-right:auto}
 @media (max-width:760px){.res-cards .slot-left,.res-cards .slot-right{display:none}.res-lede{font-size:20px}}
 @font-face{font-family:'P22Mackinac';src:url('fonts/P22MackinacPro-Book.otf') format('opentype');font-weight:400;font-style:normal;font-display:swap}
 @font-face{font-family:'P22Mackinac';src:url('fonts/P22MackinacPro-BookItalic.otf') format('opentype');font-weight:400;font-style:italic;font-display:swap}
@@ -471,7 +471,8 @@ a:hover{color:var(--blue)}
 .ch-detail{margin-top:16px}
 .ch-cand{padding:16px}
 }</style><style id="mobile-reward-fix">.ch-meta-chips .ch-reward{position:relative!important}
-@media (max-width:760px){.ch-reward .ch-split{min-width:0;width:min(330px,calc(100vw - 32px));right:auto;left:var(--split-x,0px)}}</style><style id="tc-mark-css">.tc-mark{display:inline-flex;align-items:center;flex:none;margin-right:.5em;vertical-align:-.12em;line-height:0}.tc-mark svg{width:1em;height:1.08em;display:block}</style><style>.qz .actions{justify-content:flex-end;gap:14px}.qz .actions [data-qz="back"]{margin-right:auto}</style></head>
+@media (max-width:760px){.ch-reward .ch-split{min-width:0;width:min(330px,calc(100vw - 32px));right:auto;left:var(--split-x,0px)}}</style><style id="tc-mark-css">.tc-mark{display:inline-flex;align-items:center;flex:none;margin-right:.5em;vertical-align:-.12em;line-height:0}.tc-mark svg{width:1em;height:1.08em;display:block}</style><style>.qz .actions{justify-content:flex-end;gap:14px}.qz .actions [data-qz="back"]{margin-right:auto}</style><script id="nav-ca-hide">(function(){try{var s=JSON.parse(localStorage.getItem('tc-tweaks-v1'))||{};if(s.chpage&&s.chpage.layout)document.documentElement.setAttribute('data-tw-chpage-layout',s.chpage.layout);}catch(e){}})();</script><style id="nav-ca-hide-css">html[data-tw-chpage-layout="command"] .tw-nav a[data-nav="ca"],html[data-tw-chpage-layout="command"] .tw-nav .sep:has(+a[data-nav="ca"]){display:none!important}</style>
+</head>
 <body>
 <div class="su">
   <div class="su-left">
@@ -723,7 +724,7 @@ document.getElementById('sr-track').innerHTML=one+one.replace(/class="sr-co"/g,'
                   </div>
       </div>
       <div class="actions end">
-        <button class="link-back" type="button" data-qz="next">Skip</button>
+        <button class="link-back qz-skipall" type="button" data-qz="finish">Skip onboarding</button>
         <button class="btn-black" type="button" data-qz="next">Continue</button>
       </div>
     </div>
@@ -884,7 +885,7 @@ document.getElementById('sr-track').innerHTML=one+one.replace(/class="sr-co"/g,'
   document.querySelectorAll('.sel-dd[data-dd="country"]').forEach(function(p){initDD(p,COUNTRIES.map(function(c){return{l:c[1],f:c[0]};}),true,'United States');});
   function startLoad(){var l=document.getElementById('load');l.classList.add('on');setTimeout(function(){l.classList.add('leaving');},2000);setTimeout(function(){l.classList.add('quizmode');l.classList.remove('leaving');},2360);}
   document.getElementById('createAcct').onclick=startLoad;
-  var ea=document.getElementById('enterArena');if(ea)ea.onclick=startLoad;
+  var ea=document.getElementById('enterArena');if(ea)ea.onclick=startLoad;if(location.hash==='#onboard'){history.replaceState(null,'',location.pathname);startLoad();}
 })();
 (function(){
   var load=document.getElementById('load');var qz=document.querySelector('.qz');if(!qz)return;
@@ -1034,7 +1035,7 @@ document.getElementById('sr-track').innerHTML=one+one.replace(/class="sr-co"/g,'
 </script>
 <script>(function(){var u=document.querySelector('#load .app-user');if(!u)return;u.querySelector('.app-user-btn').addEventListener('click',function(e){e.stopPropagation();u.classList.toggle('open');});document.addEventListener('click',function(e){if(!u.contains(e.target))u.classList.remove('open');});})();</script>
 <script src="audit.js"></script><script src="pool.js?v=37"></script>
-<script src="notifications.js"></script>
+<script src="notifications.js?v=3"></script>
 <script src="wallet-topup.js?v=26"></script>
 <script src="company-complete.js"></script><script src="mobile.js"></script>
 <script src="avatar-crop.js"></script>

@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>theColosseum — Challenge</title>
-<link rel="stylesheet" href="colosseum.css" /><link rel="stylesheet" href="app-shell.css" />
+<link rel="stylesheet" href="colosseum.css" /><link rel="stylesheet" href="app-shell.css?v=2" />
 <style>
 :root{--blue:#678DC6;--field:#f4f4f3;--line:#e6e4df;--ink2:#1c1d1c}
 html,body{height:100%}
@@ -225,6 +225,8 @@ a:hover{color:var(--blue)}
 .ch-chip.ch-center:hover{background:rgba(0,0,0,0.03)}
 .ch-chip.ch-center[contenteditable="true"]{background:#fff;box-shadow:0 0 0 2px var(--blue);outline:none;white-space:normal}
 .ch-chip.ch-hidden{display:none}
+.ch-view:has(.ch-detail.is-published) .ch-chip.ch-center,.ch-detail.is-published .ch-edit{cursor:default}
+.ch-view:has(.ch-detail.is-published) .ch-chip.ch-center:hover,.ch-detail.is-published .ch-edit:hover{background:none}
 .ch-chip:empty::before{content:attr(data-ph);color:var(--t-faint)}
 .ch-edit:empty::before{content:attr(data-ph);color:var(--t-faint);pointer-events:none}
 .ch-num .val:empty::before{content:'Set';color:var(--t-faint);font-weight:400}
@@ -347,7 +349,8 @@ a:hover{color:var(--blue)}
 .ch-ai-pub:hover{background:var(--blue)}
 .ch-pub-wrap{position:relative;flex:none}
 .ch-pubnote{margin:0 auto;display:inline-flex;align-items:center;gap:8px;background:var(--field);border:1px solid var(--line);border-radius:var(--r-pill);padding:11px 20px;font-size:13px;font-weight:600;color:var(--t-body);pointer-events:auto;box-shadow:0 8px 24px rgba(31,33,32,.06)}
-.ch-pubnote i{width:7px;height:7px;border-radius:50%;background:#3d8f63;flex:none}
+.ch-pubnote i{width:7px;height:7px;border-radius:50%;background:#6fcf97;flex:none}
+.ch-detail .ch-pubnote{background:#3a3c3a;border-color:#3a3c3a;color:#fff}
 .ch-detail.is-published .ch-ai-row,.ch-detail.is-published .ch-ai-log{display:none}
 .ch-detail.is-published .ch-ai{align-items:center}
 .ch-detail:not(.is-published) .ch-pubnote{display:none}
@@ -456,7 +459,8 @@ a:hover{color:var(--blue)}
 .ch-detail{margin-top:16px}
 .ch-cand{padding:16px}
 }</style><style id="mobile-reward-fix">.ch-meta-chips .ch-reward{position:relative!important}
-@media (max-width:760px){.ch-reward .ch-split{min-width:0;width:min(330px,calc(100vw - 32px));right:auto;left:var(--split-x,0px)}}</style><style id="tc-mark-css">.tc-mark{display:inline-flex;align-items:center;flex:none;margin-right:.5em;vertical-align:-.12em;line-height:0}.tc-mark svg{width:1em;height:1.08em;display:block}</style><style>.qz .actions{justify-content:flex-end;gap:14px}.qz .actions [data-qz="back"]{margin-right:auto}</style></head>
+@media (max-width:760px){.ch-reward .ch-split{min-width:0;width:min(330px,calc(100vw - 32px));right:auto;left:var(--split-x,0px)}}</style><style id="tc-mark-css">.tc-mark{display:inline-flex;align-items:center;flex:none;margin-right:.5em;vertical-align:-.12em;line-height:0}.tc-mark svg{width:1em;height:1.08em;display:block}</style><style>.qz .actions{justify-content:flex-end;gap:14px}.qz .actions [data-qz="back"]{margin-right:auto}</style><style id="hide-chi-vt">.chi-vt{display:none!important}</style><script id="nav-ca-hide">(function(){try{var s=JSON.parse(localStorage.getItem('tc-tweaks-v1'))||{};if(s.chpage&&s.chpage.layout)document.documentElement.setAttribute('data-tw-chpage-layout',s.chpage.layout);}catch(e){}})();</script><style id="nav-ca-hide-css">html[data-tw-chpage-layout="command"] .tw-nav a[data-nav="ca"],html[data-tw-chpage-layout="command"] .tw-nav .sep:has(+a[data-nav="ca"]){display:none!important}</style>
+</head>
 <body>
 <div class="su">
   <div class="su-left">
@@ -639,7 +643,7 @@ a:hover{color:var(--blue)}
 </div>
 
 <div class="load" id="load">
-  <div class="load-logo"><span class="tc-mark"><svg viewBox="0 0 40 42" aria-hidden="true"><path fill="#648dc6" d="M1 1H16V8H8V34H16V41H1ZM39 1H24V8H32V34H24V41H39Z"></path></svg></span><span class="the">the</span>Colosseum<nav class="tw-nav" aria-label="Main"><a href="Company - Challenges.html" data-nav="ch" class="on" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"/><line x1="13" y1="19" x2="19" y2="13"/><line x1="16" y1="16" x2="20" y2="20"/><line x1="19" y1="21" x2="21" y2="19"/><polyline points="14.5 6.5 18 3 21 3 21 6 17.5 9.5"/><line x1="5" y1="14" x2="9" y2="18"/><line x1="7" y1="17" x2="4" y2="20"/><line x1="3" y1="19" x2="5" y2="21"/></svg>Challenges</a><span class="sep"></span><a href="Company - Challenges.html#pool" data-nav="ca"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20v-.5a6.5 6.5 0 0 1 13 0v.5"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8"/><path d="M18.5 14a6.5 6.5 0 0 1 3 5.5v.5"/></svg>Candidates</a><span class="sep"></span><a href="Company - Funds Escrow.html" data-nav="fu"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="14" rx="2.5"/><path d="M3 10h18"/><path d="M16 15h2"/><path d="M7 6V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1"/></svg>Funds</a></nav><div class="app-user"><button class="app-user-btn" type="button" aria-label="Account menu"><img src="assets/lg-1.png" alt="Company" /></button><div class="app-user-menu"><a class="app-user-opt" href="Company - Profile.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/></svg><span>Profile</span></a><a class="app-user-opt" href="Company - Funds Escrow.html"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="6" width="20" height="13" rx="2.5"/><path d="M2 10.5h20"/><circle cx="17.5" cy="15" r="1.2"/></svg><span>Funds</span></a><a class="app-user-opt" href="Company - Activity Log.html"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span>Activity log</span></a><a class="app-user-opt" href="Company - Settings.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Settings</span></a><div class="app-user-sep"></div><div class="app-user-opt danger"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>Log out</span></div></div></div></div>
+  <div class="load-logo"><span class="tc-mark"><svg viewBox="0 0 40 42" aria-hidden="true"><path fill="#648dc6" d="M1 1H16V8H8V34H16V41H1ZM39 1H24V8H32V34H24V41H39Z"></path></svg></span><span class="the">the</span>Colosseum<nav class="tw-nav" aria-label="Main"><a href="Company - Dashboard.html" data-nav="db"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg>Dashboard</a><span class="sep"></span><a href="Company - Challenges.html" data-nav="ch" class="on" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"/><line x1="13" y1="19" x2="19" y2="13"/><line x1="16" y1="16" x2="20" y2="20"/><line x1="19" y1="21" x2="21" y2="19"/><polyline points="14.5 6.5 18 3 21 3 21 6 17.5 9.5"/><line x1="5" y1="14" x2="9" y2="18"/><line x1="7" y1="17" x2="4" y2="20"/><line x1="3" y1="19" x2="5" y2="21"/></svg>Challenges &amp; Jobs</a><span class="sep"></span><a href="Company - Challenges.html#pool" data-nav="ca"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20v-.5a6.5 6.5 0 0 1 13 0v.5"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8"/><path d="M18.5 14a6.5 6.5 0 0 1 3 5.5v.5"/></svg>Candidates</a><span class="sep"></span><a href="Company - Funds Escrow.html" data-nav="fu"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="14" rx="2.5"/><path d="M3 10h18"/><path d="M16 15h2"/><path d="M7 6V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1"/></svg>Funds</a></nav><div class="app-user"><button class="app-user-btn" type="button" aria-label="Account menu"><img src="assets/lg-1.png" alt="Company" /></button><div class="app-user-menu"><a class="app-user-opt" href="Company - Profile.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/></svg><span>Profile</span></a><a class="app-user-opt" href="Company - Funds Escrow.html"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="6" width="20" height="13" rx="2.5"/><path d="M2 10.5h20"/><circle cx="17.5" cy="15" r="1.2"/></svg><span>Funds</span></a><a class="app-user-opt" href="Company - Activity Log.html"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span>Activity log</span></a><a class="app-user-opt" href="Company - Settings.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Settings</span></a><div class="app-user-sep"></div><div class="app-user-opt danger"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>Log out</span></div></div></div></div>
   <div class="load-inner">
     <div class="res-logo"><img src="assets/lg-1.png" alt="Company" /></div>
     <h2>Scouting your battlefield…</h2>
@@ -911,7 +915,7 @@ a:hover{color:var(--blue)}
     document.addEventListener('click',function(e){if(!e.target.closest('.ch-num'))detail.querySelectorAll('.ch-num.open').forEach(function(c){c.classList.remove('open');});});
   })();
   function saveEdit(el){var f=el.getAttribute('data-field');var v=el.textContent;if(f==='details'){info[curIdx].details=Array.prototype.map.call(el.querySelectorAll('p'),function(p){return p.textContent;}).filter(function(t){return t.trim();});if(!info[curIdx].details.length){info[curIdx].details=[v];}}else if(f==='reqs'){info[curIdx].reqs=Array.prototype.map.call(el.querySelectorAll('p'),function(p){return p.textContent;}).filter(function(t){return t.trim();});if(!info[curIdx].reqs.length)info[curIdx].reqs=[v];}else if(f==='rules'){info[curIdx].rules=Array.prototype.map.call(el.querySelectorAll('li'),function(li){return li.textContent;}).filter(function(t){return t.trim();});}else if(f==='budget'){var num=v.replace(/[^0-9,]/g,'');info[curIdx].budget='$'+num;el.textContent=num;}else if(f==='split'){var idx=+el.getAttribute('data-idx');info[curIdx].split=info[curIdx].split||['','',''];var sn=v.replace(/[^0-9,]/g,'');info[curIdx].split[idx]=sn;el.textContent=sn;}else{info[curIdx][f]=v;}}
-  detail.addEventListener('click',function(e){var el=e.target.closest('.ch-edit');if(!el||el.getAttribute('contenteditable')==='true')return;el.setAttribute('contenteditable','true');el.focus();var r=document.createRange();r.selectNodeContents(el);var s=window.getSelection();s.removeAllRanges();s.addRange(r);});
+  detail.addEventListener('click',function(e){var el=e.target.closest('.ch-edit');if(!el||el.getAttribute('contenteditable')==='true')return;if(info[curIdx]&&info[curIdx].published)return;el.setAttribute('contenteditable','true');el.focus();var r=document.createRange();r.selectNodeContents(el);var s=window.getSelection();s.removeAllRanges();s.addRange(r);});
   detail.addEventListener('blur',function(e){var el=e.target.closest('.ch-edit');if(!el)return;el.removeAttribute('contenteditable');saveEdit(el);if(el.classList.contains('ch-split-in')&&typeof splitTotal==='function')splitTotal();},true);
   detail.addEventListener('keydown',function(e){var el=e.target.closest('.ch-edit');if(!el)return;if(e.key==='Escape'){el.blur();}if(e.key==='Enter'&&el.getAttribute('data-field')!=='details'&&el.getAttribute('data-field')!=='rules'){e.preventDefault();el.blur();}});
   function splitTotal(){var s=(info[curIdx]&&info[curIdx].split)||[];var t=0;s.forEach(function(v){t+=parseInt((v||'').replace(/[^0-9]/g,''),10)||0;});var b=detail.querySelector('.ch-budget');if(b)b.textContent=t?t.toLocaleString():'0';}
@@ -989,7 +993,7 @@ a:hover{color:var(--blue)}
   function rotate(dir){flip(function(){applyCenter(curCenter+dir);});}
   chips.addEventListener('click',function(e){
     var chip=e.target.closest('.ch-chip');if(!chip)return;
-    if(chip.classList.contains('ch-center')){if(chip.getAttribute('contenteditable')==='true')return;chip.setAttribute('contenteditable','true');chip.focus();var r=document.createRange();r.selectNodeContents(chip);var s=window.getSelection();s.removeAllRanges();s.addRange(r);return;}
+    if(chip.classList.contains('ch-center')){if(chip.getAttribute('contenteditable')==='true')return;if(info[curIdx]&&info[curIdx].published)return;chip.setAttribute('contenteditable','true');chip.focus();var r=document.createRange();r.selectNodeContents(chip);var s=window.getSelection();s.removeAllRanges();s.addRange(r);return;}
     rotate(chip===chips.querySelector('.ch-left')?-1:1);
   });
   chips.addEventListener('blur',function(e){var chip=e.target.closest('.ch-chip');if(!chip||chip.getAttribute('contenteditable')!=='true')return;chip.removeAttribute('contenteditable');var idx=chipEls.indexOf(chip);if(idx>-1){titles[idx]=chip.textContent;var t=cards[idx]&&cards[idx].querySelector('.res-title');if(t)t.textContent=chip.textContent;}},true);
@@ -1025,17 +1029,17 @@ a:hover{color:var(--blue)}
 })();
 </script>
 <script>(function(){var u=document.querySelector('#load .app-user');if(!u)return;u.querySelector('.app-user-btn').addEventListener('click',function(e){e.stopPropagation();u.classList.toggle('open');});document.addEventListener('click',function(e){if(!u.contains(e.target))u.classList.remove('open');});})();</script>
-<script src="audit.js"></script><script src="pool-threshold.js?v=51"></script>
+<script src="audit.js"></script><script src="pool-threshold.js?v=55"></script>
 <script>(function(){var l=document.getElementById('load');if(!l)return;l.classList.add('on','revealed');var cards=[].slice.call(document.querySelectorAll('.res-card'));if(!cards.length)return;var n=cards.length;var m=location.search.match(/[?&]c=(\d+)/);var i=m?Math.min(Math.max(+m[1],0),n-1):1;cards.forEach(function(c,k){c.classList.remove('slot-left','slot-center','slot-right');c.classList.add(k===i?'slot-center':k===(i-1+n)%n?'slot-left':'slot-right');});cards[i].click();})();</script>
-<script src="notifications.js"></script>
-<script src="chat.js"></script>
+<script src="notifications.js?v=3"></script>
+<script src="chat.js?v=2"></script>
 <script src="wallet-topup.js?v=26"></script>
 <script src="company-complete.js"></script><script src="mobile.js"></script>
-<script src="challenge-list.js?v=23"></script>
-<script src="review-tweaks.js"></script>
-<script>TCTweaks.register({id:'cpage',title:'Candidates page layout',controls:[{key:'layout',label:'Layout',def:'rows',options:[['rows','Category rows'],['tiers','Match tiers'],['spot','Spotlight']]}],apply:function(){if(window.__poolRerender)window.__poolRerender();}});</script>
-<script>TCTweaks.register({id:'chpage',title:'Challenges page layout',controls:[{key:'layout',label:'Layout',def:'focus',options:[['focus','Focus'],['command','Command centre']]}],apply:function(){if(window.__chLayout)window.__chLayout();}});</script>
-<script src="challenge-layouts.js?v=3"></script>
+<script src="challenge-list.js?v=29"></script>
+<script src="review-tweaks.js?v=2"></script>
+<script>TCTweaks.register({id:'cpage',title:'Candidates page layout',controls:[{key:'layout',label:'Layout',def:'rows',options:[['rows','Category rows'],['spot','Spotlight']]}],apply:function(){if(window.__poolRerender)window.__poolRerender();}});if(document.documentElement.getAttribute('data-tw-cpage-layout')==='tiers')TCTweaks.set('cpage','layout','spot');</script>
+<script>TCTweaks.register({id:'chpage',title:'Challenges page layout',controls:[{key:'layout',label:'Layout',def:'focus',options:[['focus','Focus'],['command','Command centre'],['inbox','Inbox + pipeline']]}],apply:function(){if(window.__chLayout)window.__chLayout();}});</script>
+<script src="challenge-layouts.js?v=29"></script><script src="challenge-inbox.js?v=7"></script>
 <script>TCTweaks.register({id:'cltype',title:'Challenge type filter',controls:[{key:'style',label:'Style',def:'seg',options:[['seg','Segmented'],['chips','Chips'],['tabs','Underline tabs']]}]});</script>
 <script id="mobile-reward-fix-js">(function(){
 function place(rw){var sp=rw.querySelector('.ch-split');if(!sp)return;if(window.innerWidth>760){rw.style.removeProperty('--split-x');return;}
@@ -1048,5 +1052,6 @@ if(t.closest('.ch-ai-pub'))document.querySelectorAll('.ch-att-pop.open').forEach
 <script id="company-nav-js">document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('.tw-nav a[data-nav]');if(!a)return;var k=a.getAttribute('data-nav'),pool=document.querySelector('.pool.on');
 if(k==='ch'){e.preventDefault();if(pool){var b=pool.querySelector('.pool-back');b&&b.click();}return;}
 if(k==='ca'){e.preventDefault();if(pool)return;var o=document.querySelector('.chsw-opt[data-mode="candidates"]');if(o)o.click();else location.href='Company - Challenges.html#pool';}},true);</script>
+<script src="company-dash.js"></script>
 </body>
 </html>

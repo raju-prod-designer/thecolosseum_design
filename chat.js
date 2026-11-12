@@ -58,6 +58,8 @@ var CSS=`
 .cc-send{height:38px;padding:0 18px;border-radius:999px;border:0;background:var(--ink2);color:#fff;font:inherit;font-size:12.5px;font-weight:700;cursor:pointer}
 .cc-send:disabled{opacity:.4;cursor:default}
 @media (max-width:700px){.cc-back>.cc{grid-template-columns:1fr}.cc-side{display:none}}
+
+.app-chat-btn{border:0!important;background:none!important;box-shadow:none!important;border-radius:8px}.app-chat-btn svg{width:21px;height:21px}.app-chat-btn:hover svg,.app-chat.open .app-chat-btn svg{stroke:var(--blue)}.app-chat-dot{top:-4px;right:-6px}
 `;
 var ICON='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.4-5A8 8 0 1 1 21 12z"/></svg>';
 var PDF='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><polyline points="14 3 14 8 19 8"/></svg>';

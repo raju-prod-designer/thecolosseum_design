@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en" class="app-shell">
+<head><script>try{var tcS=JSON.parse(localStorage.getItem('tc-tweaks-v1'))||{};if(tcS.dash&&tcS.dash.show==='off')location.replace('Candidate - Webapp copy.html');}catch(e){}</script><style id="tc-fouc">html{visibility:hidden}</style><script>setTimeout(function(){var e=document.getElementById("tc-fouc");e&&e.remove();},1500);</script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>theColosseum — Dashboard</title>
+<link rel="stylesheet" href="colosseum.css" />
+<style>
+:root{--blue:#678DC6;--field:#f4f4f3;--line:#e6e4df;--ink2:#1c1d1c;--ok:#2f7a58;--amber:#8a5f18}
+html,body{height:auto}
+html{scrollbar-width:none}
+html::-webkit-scrollbar{display:none}
+body{background:#fff;color:var(--ink2);margin:0}
+a{color:var(--ink2);text-decoration:none;font-weight:600}
+a:hover{color:var(--blue)}
+.app{min-height:100vh;height:auto;overflow:visible;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;padding:30px 32px 60px;zoom:0.9}
+.app-top{width:100%;position:relative;z-index:300;display:flex;align-items:center;justify-content:center;margin-bottom:32px}
+.app-logo{flex:none;font-weight:800;font-size:26px;letter-spacing:-0.03em;color:var(--ink2);line-height:1}
+.app-logo .the{font-weight:400}
+.app-user{position:absolute;right:0;top:50%;transform:translateY(-50%);flex:none}
+.app-user.open{z-index:200}
+.app-user-btn{width:26px;height:26px;border-radius:50%;overflow:hidden;border:1px solid var(--line);background:#fff;padding:0;cursor:pointer;display:block;transition:border-color .18s,box-shadow .18s}
+.app-user-btn img{width:100%;height:100%;object-fit:cover;display:block}
+.app-user-btn:hover{border-color:var(--ink2)}
+.app-user.open .app-user-btn{border-color:var(--blue);box-shadow:0 0 0 3px rgba(103,141,198,.16)}
+.app-user-menu{position:absolute;top:calc(100% + 10px);right:0;z-index:200;min-width:176px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 16px 40px rgba(31,33,32,.16);padding:6px;display:none}
+.app-user.open .app-user-menu{display:block}
+.app-user-opt{display:flex;align-items:center;gap:11px;padding:9px 11px;border-radius:10px;cursor:pointer;font-size:13px;font-weight:600;color:var(--ink2)}
+.app-user-opt+.app-user-opt{margin-top:2px}
+.app-user-opt:hover{background:var(--field)}
+.app-user-opt svg{width:17px;height:17px;stroke:var(--ink2);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.app-user-sep{border-top:1px solid var(--line);margin:5px 4px}
+.app-user-opt.danger{color:oklch(0.6 0.13 25)}
+.app-user-opt.danger svg{stroke:oklch(0.6 0.13 25)}
+.app-user-opt.danger:hover{background:oklch(0.6 0.13 25 / 0.08)}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+.db{width:100%;max-width:1180px;animation:rise .5s ease both;display:flex;flex-direction:column;gap:18px}
+.db-hello{display:flex;align-items:flex-end;justify-content:space-between;gap:16px 24px;flex-wrap:wrap;margin:0 0 6px}
+.db-h1{font-family:"P22Mackinac",serif;font-weight:500;font-size:34px;letter-spacing:-0.015em;line-height:1.15;margin:0}
+.db-date{font-size:14.5px;color:var(--t-body);margin:8px 0 0}
+.db-links{display:flex;gap:8px;flex-wrap:wrap}
+.db-pill{display:flex;align-items:center;gap:7px;height:32px;box-sizing:border-box;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;color:var(--ink2);transition:border-color .15s}
+.db-pill:hover{border-color:var(--ink2);color:var(--ink2)}
+html[data-tw-nav-place]:not([data-tw-nav-place="page"])[data-tw-nav-dupes="hide"] .db-links{display:none}
+.db-grid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:18px;align-items:start}
+.db-col{display:flex;flex-direction:column;gap:18px;min-width:0}
+.db-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+.db-card{border:1px solid var(--line);border-radius:16px;background:#fff;box-shadow:var(--shadow-card);padding:22px 24px;min-width:0;box-sizing:border-box;display:flex;flex-direction:column}
+.db-head{display:flex;align-items:center;gap:10px;margin:0 0 14px}
+.db-k{font-size:11px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--t-mute);margin:0}
+.db-head .r{margin-left:auto;font-size:12px;color:var(--t-mute);font-weight:600;white-space:nowrap}
+.db-head a.r:hover{color:var(--ink2)}
+.db-spark{width:16px;height:16px;fill:var(--blue);flex:none}
+.db-lede{font-family:"P22Mackinac",serif;font-weight:500;font-size:21px;line-height:1.4;letter-spacing:-0.01em;margin:0 0 20px;text-wrap:pretty;max-width:62ch}
+
+.db-acts{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.db-act{display:grid;grid-template-columns:68px minmax(0,1fr) auto;gap:6px 14px;align-items:start;padding:16px 0;border-top:1px solid var(--line);transition:opacity .2s}
+.db-act:last-child{padding-bottom:0}
+.db-chk{width:22px;height:22px;margin-top:6px;border-radius:50%;border:1.5px solid #c9c8c3;background:#fff;padding:0;cursor:pointer;display:grid;place-items:center;transition:border-color .15s,background .15s}
+.db-chk:hover{border-color:var(--ink2)}
+.db-chk svg{width:12px;height:12px;stroke:#fff;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;opacity:0}
+.db-act.done .db-chk{background:var(--ok);border-color:var(--ok)}
+.db-act.done .db-chk svg{opacity:1}
+.db-lg{width:68px;height:68px;border-radius:16px;object-fit:contain;background:var(--field);padding:6px;box-sizing:border-box}
+.db-act-m{min-width:0;display:flex;flex-direction:column;gap:3px}
+.db-act-t{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.db-act-t b{font-size:14.5px;font-weight:650;line-height:1.3}
+.db-act-m em{font-style:normal;font-size:12.5px;color:var(--t-mute)}
+.db-why{font-size:13px;line-height:1.55;color:var(--t-body);margin:6px 0 0;text-wrap:pretty;max-width:60ch}
+.db-act.done{opacity:.5}
+.db-act.done .db-act-t b{text-decoration:line-through}
+.db-flag{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;font-weight:700;border-radius:999px;padding:3px 10px;white-space:nowrap;color:var(--t-body);background:var(--field)}
+.db-flag i{width:6px;height:6px;border-radius:50%;background:currentColor}
+.db-flag.warn{color:var(--amber);background:rgba(201,138,58,.13)}
+.db-flag.ok{color:var(--ok);background:rgba(47,122,88,.09)}
+.db-flag.info{color:#5470a8;background:#eaeef6}
+.db-btn{align-self:center;font-size:12.5px;font-weight:600;color:var(--ink2);background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 15px;white-space:nowrap;transition:border-color .15s,background .15s}
+.db-btn:hover{border-color:#b8b9b6;color:var(--ink2)}
+.db-btn.pri{background:var(--ink2);border-color:var(--ink2);color:#fff;font-weight:700}
+.db-btn.pri:hover{background:var(--blue);border-color:var(--blue);color:#fff}
+
+.db-tl{list-style:none;margin:0;padding:0}
+.db-tl li{display:grid;grid-template-columns:44px minmax(0,1fr);gap:16px;padding:13px 0;border-top:1px solid var(--line);align-items:start}
+.db-tl li:first-child{border-top:0;padding-top:0}
+.db-tl li:last-child{padding-bottom:0}
+.db-day{text-align:center;border-radius:11px;padding:6px 0 7px;background:var(--field)}
+.db-day span{display:block;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t-mute)}
+.db-day b{display:block;font-family:"P22Mackinac",serif;font-weight:500;font-size:20px;line-height:1.1;font-variant-numeric:tabular-nums}
+.db-tl li.today .db-day{background:var(--ink2)}
+.db-tl li.today .db-day span,.db-tl li.today .db-day b{color:#fff}
+.db-evs{display:flex;flex-direction:column;gap:10px;padding-top:3px;min-width:0}
+.db-ev{display:grid;grid-template-columns:7px minmax(0,1fr);gap:10px;align-items:baseline;font-weight:400}
+.db-ev i{width:7px;height:7px;border-radius:50%;background:var(--c,var(--ink2));transform:translateY(-1px)}
+.db-ev b{display:block;font-size:13.5px;font-weight:650;line-height:1.3;color:var(--ink2)}
+.db-ev span{display:block;font-size:12.5px;color:var(--t-mute);margin-top:2px}
+.db-ev:hover b{color:var(--blue)}
+
+.db-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.db-stat{display:block;border:1px solid var(--line);border-radius:14px;background:#fff;padding:15px 17px;font-weight:400;transition:border-color .15s}
+.db-stat:hover{border-color:#c9c8c3;color:var(--ink2)}
+.db-stat span{display:block;font-size:12px;color:var(--t-mute);font-weight:600}
+.db-stat b{display:block;font-family:"P22Mackinac",serif;font-weight:500;font-size:28px;line-height:1.1;letter-spacing:-.02em;margin:7px 0 6px;font-variant-numeric:tabular-nums}
+.db-stat em{display:block;font-style:normal;font-size:12px;font-weight:600;color:var(--t-body)}
+.db-stat em.up{color:var(--ok)}
+.db-stat em.act{color:var(--amber)}
+
+.db-fn{display:flex;flex-direction:column;gap:13px;margin:2px 0 0}
+.db-fn-r{display:grid;grid-template-columns:112px minmax(0,1fr) 16px;gap:12px;align-items:center;font-size:12.5px;font-weight:600;color:var(--t-body)}
+.db-fn-r .bar{height:8px;border-radius:99px;background:#eeede9;overflow:hidden}
+.db-fn-r .bar i{display:block;height:100%;border-radius:inherit;background:var(--c)}
+.db-fn-r b{font-size:13px;color:var(--ink2);text-align:right;font-variant-numeric:tabular-nums}
+.db-note{display:grid;grid-template-columns:14px minmax(0,1fr);gap:9px;font-size:12.5px;line-height:1.55;color:var(--t-body);margin:auto 0 0;padding-top:16px;text-wrap:pretty}
+.db-note .db-spark{width:14px;height:14px;margin-top:2px}
+.db-note p{margin:0}
+.db-chart{width:100%;max-width:440px;align-self:center;height:auto;display:block;overflow:visible}
+.db-chart .g{stroke:var(--line);stroke-width:1}
+.db-chart text{font-size:10px;fill:var(--t-mute);font-family:inherit;font-variant-numeric:tabular-nums}
+.db-chart .ln{fill:none;stroke:var(--ink2);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.db-chart .ar{fill:rgba(103,141,198,.12)}
+.db-chart circle{fill:#fff;stroke:var(--ink2);stroke-width:2;cursor:pointer}
+.db-chart circle.on{fill:var(--blue);stroke:var(--blue)}
+.db-chart .hit{fill:transparent;stroke:none}
+.db-cap{display:flex;justify-content:space-between;gap:12px;font-size:12.5px;color:var(--t-body);margin:10px 0 0;min-height:19px}
+.db-cap b{color:var(--ink2);font-variant-numeric:tabular-nums}
+.db-heat{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,auto);grid-template-columns:repeat(16,minmax(0,1fr));gap:4px;margin:2px 0 0;width:100%;max-width:380px;align-self:center}
+.db-heat i{width:100%;aspect-ratio:1;border-radius:50%;background:var(--field);display:block}
+.db-heat i[data-l="1"]{background:rgba(103,141,198,.3)}
+.db-heat i[data-l="2"]{background:rgba(103,141,198,.55)}
+.db-heat i[data-l="3"]{background:var(--blue)}
+.db-hw{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:8px;row-gap:5px;width:100%;max-width:400px;align-self:center;margin:2px 0 0}.db-hw .db-heat{grid-column:2;grid-row:2;max-width:none;margin:0}.db-months{grid-column:2;grid-row:1;display:grid;grid-template-columns:repeat(16,minmax(0,1fr));column-gap:4px;font-size:11px;font-weight:600;color:var(--t-mute);line-height:1}.db-months span{grid-row:1;white-space:nowrap}.db-days{grid-column:1;grid-row:2;display:grid;grid-template-rows:repeat(7,minmax(0,1fr));gap:4px;font-size:9px;line-height:1;font-weight:600;color:var(--t-faint)}.db-days span{display:flex;align-items:center}
+.db-heat i{cursor:default}.db-heat i:hover{outline:1.5px solid var(--ink2);outline-offset:1px}.db-tip{position:fixed;z-index:60;pointer-events:none;opacity:0;transition:opacity .12s;background:var(--ink2,#1a1a1a);color:#fff;border-radius:10px;padding:9px 11px;font-size:11.5px;line-height:1.45;min-width:172px;box-shadow:0 8px 24px rgba(0,0,0,.18)}.db-tip.on{opacity:1}.db-tip b{display:block;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;opacity:.65;margin:0 0 5px}.db-tip .r{display:flex;justify-content:space-between;gap:14px}.db-tip .r span:last-child{font-variant-numeric:tabular-nums;font-weight:700}
+.db-legend{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--t-mute);margin:12px 0 0;justify-content:flex-end}
+.db-legend i{width:10px;height:10px;border-radius:50%;background:var(--field)}
+
+.db-sec{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin:14px 0 -2px}
+.db-h2{font-family:"P22Mackinac",serif;font-weight:500;font-size:22px;letter-spacing:-0.01em;margin:0}
+.db-sec p{font-size:13.5px;color:var(--t-body);margin:0}
+.db-sec a{margin-left:auto;font-size:13px}
+.db-rec{gap:14px;color:var(--ink2);font-weight:400;transition:border-color .15s,transform .15s}
+.db-rec:hover{border-color:#c9c8c3;color:var(--ink2);transform:translateY(-2px)}
+.db-rec-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.db-kind{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#5470a8;background:#eaeef6;border-radius:999px;padding:3px 8px}
+.db-kind.bounty{color:var(--amber);background:rgba(201,138,58,.13)}
+.db-kind.job{color:#2f6b4f;background:rgba(47,107,79,.1)}
+.db-match{font-size:12.5px;font-weight:700;color:var(--ok)}
+.db-rec h3{font-size:16px;font-weight:650;line-height:1.35;margin:0;text-wrap:pretty}
+.db-sk{display:flex;flex-wrap:wrap;gap:6px}
+.db-sk span{font-size:11.5px;font-weight:600;color:var(--t-body);background:var(--field);border-radius:999px;padding:4px 10px}
+.db-rec .db-note{background:var(--field);border-radius:12px;padding:12px 14px;margin:0}
+.db-rec-f{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-top:auto;padding-top:2px}
+.db-rec-f b{font-family:"P22Mackinac",serif;font-weight:500;font-size:22px;letter-spacing:-.02em}
+.db-rec-f b small{font-family:inherit;font-size:12px;color:var(--t-mute);letter-spacing:0;margin-left:5px}
+.db-rec-f span{font-size:13px;font-weight:600}
+@media (max-width:760px){.db-grid{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:640px){.db-h1{font-size:28px}.db-card{padding:18px}.db-act{grid-template-columns:22px 34px minmax(0,1fr)}.db-act .db-btn{grid-column:3;justify-self:start;align-self:start;margin-top:6px}.db-lede{font-size:19px}}
+</style>
+<style id="tc-mark-css">.tc-mark{display:inline-flex;align-items:center;flex:none;margin-right:.5em;vertical-align:-.12em;line-height:0}.tc-mark svg{width:1em;height:1.08em;display:block}</style><link rel="stylesheet" href="app-shell.css" />
+<style id="db-focus-css">@media (min-width:900px){html[data-tw-dashl-layout="focus"] .db-grid{grid-template-columns:minmax(0,1fr)}html[data-tw-dashl-layout="focus"] .db-col{display:contents}html[data-tw-dashl-layout="focus"] .db-stats{order:1;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border:1px solid var(--line);border-radius:16px;background:#fff;box-shadow:var(--shadow-card);overflow:hidden}html[data-tw-dashl-layout="focus"] .db-stat{border:0;border-radius:0;padding:18px 22px}html[data-tw-dashl-layout="focus"] .db-stat+.db-stat{border-left:1px solid var(--line)}html[data-tw-dashl-layout="focus"] .db-grid>.db-card{order:2;padding:28px 30px}html[data-tw-dashl-layout="focus"] .db-col>.db-card{order:3;padding:24px 30px 26px}html[data-tw-dashl-layout="focus"] .db-lede{font-size:26px;line-height:1.3;max-width:44ch;margin-bottom:24px}html[data-tw-dashl-layout="focus"] .db-acts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}html[data-tw-dashl-layout="focus"] .db-act{display:flex;flex-direction:column;align-items:flex-start;gap:14px;border:1px solid var(--line);border-radius:16px;padding:20px}html[data-tw-dashl-layout="focus"] .db-act:last-child{padding-bottom:20px}html[data-tw-dashl-layout="focus"] .db-act .db-btn{align-self:flex-start;margin-top:auto}html[data-tw-dashl-layout="focus"] .db-act:first-child{grid-column:1/-1;display:grid;grid-template-columns:96px minmax(0,1fr) auto;gap:8px 26px;align-items:center;padding:28px 30px;background:var(--ink2);border-color:var(--ink2);color:#fff}html[data-tw-dashl-layout="focus"] .db-act:first-child .db-lg{width:96px;height:96px;border-radius:22px;background:#fff;padding:8px}html[data-tw-dashl-layout="focus"] .db-act:first-child .db-act-m{gap:6px}html[data-tw-dashl-layout="focus"] .db-act:first-child .db-act-t b{font-family:"P22Mackinac",serif;font-weight:500;font-size:26px;letter-spacing:-.015em;color:#fff}html[data-tw-dashl-layout="focus"] .db-act:first-child .db-act-m em{font-size:13.5px;color:#d9d9d5}html[data-tw-dashl-layout="focus"] .db-act:first-child .db-why{font-size:14.5px;color:#ededea;max-width:66ch}html[data-tw-dashl-layout="focus"] .db-act:first-child .db-flag{background:rgba(255,255,255,.14);color:#fff}html[data-tw-dashl-layout="focus"] .db-act:first-child .db-flag.warn{background:rgba(201,138,58,.24);color:#f3bd72}html[data-tw-dashl-layout="focus"] .db-act:first-child .db-btn{align-self:center;margin:0;background:#fff;border-color:#fff;color:var(--ink2);font-size:14px;font-weight:700;padding:12px 24px}html[data-tw-dashl-layout="focus"] .db-act:first-child .db-btn:hover{background:var(--blue);border-color:var(--blue);color:#fff}html[data-tw-dashl-layout="focus"] .db-tl{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));position:relative}html[data-tw-dashl-layout="focus"] .db-tl::before{content:"";position:absolute;left:24px;right:0;top:24px;height:1px;background:var(--line)}html[data-tw-dashl-layout="focus"] .db-tl li,html[data-tw-dashl-layout="focus"] .db-tl li:first-child,html[data-tw-dashl-layout="focus"] .db-tl li:last-child{display:flex;flex-direction:column;gap:16px;border-top:0;padding:0 22px 0 0}html[data-tw-dashl-layout="focus"] .db-day{width:48px;position:relative;z-index:1;box-shadow:0 0 0 8px #fff}html[data-tw-dashl-layout="focus"] .db-evs{padding-top:0;gap:12px}}</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="spark" viewBox="0 0 24 24"><path d="M12 2.5l2.3 6.4a1.3 1.3 0 0 0 .8.8l6.4 2.3-6.4 2.3a1.3 1.3 0 0 0-.8.8L12 21.5l-2.3-6.4a1.3 1.3 0 0 0-.8-.8L2.5 12l6.4-2.3a1.3 1.3 0 0 0 .8-.8z"></path></symbol></svg>
+<div class="app">
+  <div class="app-top">
+    <a class="app-logo" href="Candidate - Dashboard.html" style="text-decoration:none;color:inherit"><span class="tc-mark"><svg viewBox="0 0 40 42" aria-hidden="true"><path fill="#648dc6" d="M1 1H16V8H8V34H16V41H1ZM39 1H24V8H32V34H24V41H39Z"></path></svg></span><span class="the">the</span>Colosseum</a>
+    <nav class="tw-nav" aria-label="Main"><a href="Candidate - Dashboard.html" class="on" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg>Dashboard</a><span class="sep"></span><a href="Candidate - Webapp copy.html"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"/><line x1="13" y1="19" x2="19" y2="13"/><line x1="16" y1="16" x2="20" y2="20"/><line x1="19" y1="21" x2="21" y2="19"/><polyline points="14.5 6.5 18 3 21 3 21 6 17.5 9.5"/><line x1="5" y1="14" x2="9" y2="18"/><line x1="7" y1="17" x2="4" y2="20"/><line x1="3" y1="19" x2="5" y2="21"/></svg>Challenges &amp; Jobs</a><span class="sep"></span><a href="Candidate - My applications.html"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="7" width="17" height="13" rx="2"/><path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7"/></svg>My applications</a><span class="sep"></span><a href="Candidate - Leaderboard.html"><svg viewBox="0 0 24 24" aria-hidden="true"><line x1="4" y1="20" x2="20" y2="20"/><rect x="5" y="12" width="4" height="8"/><rect x="10" y="7" width="4" height="13"/><rect x="15" y="10" width="4" height="10"/></svg>Leaderboard</a></nav>
+    <div class="app-user">
+      <button class="app-user-btn" type="button" aria-label="Account menu"><img src="assets/candidate-profile.png" alt="Your profile" /></button>
+      <div class="app-user-menu">
+        <div class="app-user-opt" data-go="profile"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/></svg><span>Profile</span></div>
+        <div class="app-user-opt" data-go="settings"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Settings</span></div>
+        <div class="app-user-sep"></div>
+        <div class="app-user-opt danger"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>Log out</span></div>
+      </div>
+    </div>
+  </div>
+
+  <main class="db">
+    <div class="db-hello">
+      <div>
+        <h1 class="db-h1"><span id="dbGreet">Good morning</span>, Marcus</h1>
+        <p class="db-date">Tuesday 22 September</p>
+      </div>
+      <div class="db-links">
+        <a class="db-pill" href="Candidate - My applications.html">My applications</a>
+        <a class="db-pill" href="Candidate - Webapp copy.html">Browse challenges</a>
+        <a class="db-pill" href="Candidate - Leaderboard.html">Leaderboard</a>
+      </div>
+    </div>
+
+    <div class="db-grid">
+      <section class="db-card" aria-labelledby="dbBriefK">
+        <div class="db-head"><svg class="db-spark"><use href="#spark"></use></svg><h2 class="db-k" id="dbBriefK">AI briefing</h2><span class="r">Updated 07:30</span></div>
+        <p class="db-lede">Start with the Halden Group submission. It is the only item with a hard deadline this week, and the tradeoff note has not been started.</p>
+        <ul class="db-acts" id="dbActs">
+          <li class="db-act" data-id="halden">
+            <img class="db-lg" src="assets/lg-1.png" alt="" />
+            <div class="db-act-m">
+              <div class="db-act-t"><b>Finish your submission</b><span class="db-flag warn"><i></i>Due in 4 days</span></div>
+              <em>Data platform migration · Halden Group</em>
+              <p class="db-why">A written tradeoff note is required alongside the code. Your warehouse migration work is older than three years, so use the note to show current practice.</p>
+            </div>
+            <a class="db-btn pri" href="Candidate - My applications.html">Continue</a>
+          </li>
+          <li class="db-act" data-id="meridian">
+            <img class="db-lg" src="assets/lg-4.png" alt="" />
+            <div class="db-act-m">
+              <div class="db-act-t"><b>Start your AI interview</b><span class="db-flag info"><i></i>Ready now</span></div>
+              <em>Observability pipeline rebuild · Meridian Health</em>
+              <p class="db-why">Expect it to open on the rollback plan for a partial migration. Your retention story for clinical audit data was handled but not evidenced, so have an example ready.</p>
+            </div>
+            <a class="db-btn" href="Candidate - AI Interview copy.html">Start interview</a>
+          </li>
+          <li class="db-act" data-id="aurora">
+            <img class="db-lg" src="assets/lg-2.png" alt="" />
+            <div class="db-act-m">
+              <div class="db-act-t"><b>Respond to your offer</b><span class="db-flag ok"><i></i>Open until 30 Sep</span></div>
+              <em>Platform reliability sprint · Aurora Systems</em>
+              <p class="db-why">$168k base + equity. You can ask for the compensation band before you respond.</p>
+            </div>
+            <a class="db-btn" href="Candidate - My applications.html">Review offer</a>
+          </li>
+          <li class="db-act" data-id="volt" data-opt="1">
+            <img class="db-lg" src="assets/lg-2.png" alt="" />
+            <div class="db-act-m">
+              <div class="db-act-t"><b>Prepare for the final round</b><span class="db-flag"><i></i>29 Sep · 16:00</span></div>
+              <em>Payments ledger hardening · Volt</em>
+              <p class="db-why">Expect a walkthrough of your ledger design. The reconciliation job ran nightly rather than continuously; be ready to explain that choice.</p>
+            </div>
+            <a class="db-btn" href="Candidate - My applications.html">View details</a>
+          </li>
+        </ul>
+      </section>
+
+      <div class="db-col">
+        <section class="db-card" aria-labelledby="dbWeekK">
+          <div class="db-head"><h2 class="db-k" id="dbWeekK">Next 8 days</h2></div>
+          <ul class="db-tl">
+            <li class="today"><div class="db-day"><span>Tue</span><b>22</b></div><div class="db-evs"><a class="db-ev" href="Candidate - AI Interview copy.html" style="--c:#5470a8"><i></i><div><b>AI interview ready</b><span>Meridian Health · about 45 min</span></div></a></div></li>
+            <li><div class="db-day"><span>Sat</span><b>26</b></div><div class="db-evs"><a class="db-ev" href="Candidate - My applications.html" style="--c:#c98a3a"><i></i><div><b>Submission due</b><span>Halden Group · Data platform migration</span></div></a><a class="db-ev" href="Candidate - My applications.html" style="--c:#b8b9b6"><i></i><div><b>Decision expected</b><span>Kestrel · Incident tooling revamp</span></div></a></div></li>
+            <li><div class="db-day"><span>Tue</span><b>29</b></div><div class="db-evs"><a class="db-ev" href="Candidate - My applications.html" style="--c:#1c1d1c"><i></i><div><b>Human interview · 16:00</b><span>Volt · Zoom, about 60 min</span></div></a></div></li>
+            <li><div class="db-day"><span>Wed</span><b>30</b></div><div class="db-evs"><a class="db-ev" href="Candidate - My applications.html" style="--c:#2f7a58"><i></i><div><b>Offer closes</b><span>Aurora Systems</span></div></a></div></li>
+          </ul>
+        </section>
+        <div class="db-stats">
+          <a class="db-stat" href="Candidate - My applications.html"><span>Active applications</span><b>6</b><em class="act">3 waiting on you</em></a>
+          <a class="db-stat" href="Candidate - My applications.html"><span>Average AI score</span><b>89%</b><em class="up">Up 10 points over 8 assessments</em></a>
+          <a class="db-stat" href="Candidate - Leaderboard.html"><span>Leaderboard rank</span><b>#14</b><em class="up">Up 3 this week</em></a>
+          <a class="db-stat" href="Candidate - Profile.html"><span>Earned in 2026</span><b>$4,800</b><em>4 payouts</em></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="db-3">
+      <section class="db-card" aria-labelledby="dbPipeK">
+        <div class="db-head"><h2 class="db-k" id="dbPipeK">Your pipeline</h2><a class="r" href="Candidate - My applications.html">Open</a></div>
+        <div class="db-fn">
+          <div class="db-fn-r" style="--c:oklch(0.66 0.12 75)"><span>Challenge</span><span class="bar"><i style="width:100%"></i></span><b>2</b></div>
+          <div class="db-fn-r" style="--c:oklch(0.58 0.1 255)"><span>AI interview</span><span class="bar"><i style="width:100%"></i></span><b>2</b></div>
+          <div class="db-fn-r" style="--c:oklch(0.56 0.12 150)"><span>Human interview</span><span class="bar"><i style="width:50%"></i></span><b>1</b></div>
+          <div class="db-fn-r" style="--c:#1c1d1c"><span>Offer</span><span class="bar"><i style="width:50%"></i></span><b>1</b></div>
+        </div>
+        <div class="db-note"><svg class="db-spark"><use href="#spark"></use></svg><p>Three of six are waiting on you. Kestrel, Volt and the Cost-aware autoscaler bounty are with the company.</p></div>
+      </section>
+      <section class="db-card" aria-labelledby="dbTrendK">
+        <div class="db-head"><h2 class="db-k" id="dbTrendK">AI score trend</h2><span class="r">Last 8 assessments</span></div>
+        <svg class="db-chart" id="dbChart" viewBox="0 0 320 132" role="img" aria-label="AI score per assessment, rising from 84 to 94"></svg>
+        <p class="db-cap" id="dbCap"></p>
+        <div class="db-note"><svg class="db-spark"><use href="#spark"></use></svg><p>Two notes recur in your assessments: rollback paths left implicit, and latency measured at p50 or p99 without the tail.</p></div>
+      </section>
+      <section class="db-card" aria-labelledby="dbActK">
+        <div class="db-head"><h2 class="db-k" id="dbActK">Arena activity</h2><span class="r">Last 16 weeks</span></div>
+        <div class="db-hw"><div class="db-months" id="dbMonths"></div><div class="db-days"><span>M</span><span></span><span>W</span><span></span><span>F</span><span></span><span>S</span></div><div class="db-heat" id="dbHeat"></div></div>
+        <div class="db-legend"><span>Less</span><i></i><i style="background:rgba(103,141,198,.3)"></i><i style="background:rgba(103,141,198,.55)"></i><i style="background:var(--blue)"></i><span>More</span></div>
+        <div class="db-note"><svg class="db-spark"><use href="#spark"></use></svg><p id="dbHeatNote"></p></div>
+      </section>
+    </div>
+
+    <div class="db-sec"><h2 class="db-h2">Suggested for you</h2><p>Picked from open briefs using the notes in your assessments.</p><a href="Candidate - Webapp copy.html">Browse all</a></div>
+    <div class="db-3">
+      <a class="db-card db-rec" href="Candidate - Webapp copy.html">
+        <div class="db-rec-top"><span class="db-kind bounty">Bounty</span><span class="db-match">94% match</span></div>
+        <h3>Optimize a hot query path under a 10k req/s load</h3>
+        <div class="db-sk"><span>PostgreSQL</span><span>Go</span></div>
+        <div class="db-note"><svg class="db-spark"><use href="#spark"></use></svg><p>Scored on tail latency, the measurement missing from your Northwind and Lumen submissions.</p></div>
+        <div class="db-rec-f"><b>$1,000</b><span>View brief</span></div>
+      </a>
+      <a class="db-card db-rec" href="Candidate - Webapp copy.html">
+        <div class="db-rec-top"><span class="db-kind">Hiring</span><span class="db-match">91% match</span></div>
+        <h3>Build a write-ahead log with crash-safe recovery</h3>
+        <div class="db-sk"><span>Rust</span><span>RocksDB</span></div>
+        <div class="db-note"><svg class="db-spark"><use href="#spark"></use></svg><p>Recovery is the whole brief, so it is a direct way to evidence the rollback thinking reviewers asked for.</p></div>
+        <div class="db-rec-f"><b>$4,500</b><span>View brief</span></div>
+      </a>
+      <a class="db-card db-rec" href="Candidate - Webapp copy.html">
+        <div class="db-rec-top"><span class="db-kind job">Job</span><span class="db-match">96% match</span></div>
+        <h3>Site Reliability Engineer</h3>
+        <div class="db-sk"><span>Kubernetes</span><span>Prometheus</span><span>Go</span></div>
+        <div class="db-note"><svg class="db-spark"><use href="#spark"></use></svg><p>Same stack as your Platform reliability sprint, where you reached offer stage.</p></div>
+        <div class="db-rec-f"><b>Remote</b><span>View role</span></div>
+      </a>
+    </div>
+  </main>
+</div>
+<script>
+(function(){
+var user=document.querySelector('.app-user');
+user.querySelector('.app-user-btn').addEventListener('click',function(e){e.stopPropagation();user.classList.toggle('open');});
+document.addEventListener('click',function(){user.classList.remove('open');});
+document.querySelector('[data-go="profile"]').addEventListener('click',function(){location.href='Candidate - Profile.html';});
+document.querySelector('[data-go="settings"]').addEventListener('click',function(){location.href='Candidate - Settings.html';});
+
+var h=new Date().getHours();document.getElementById('dbGreet').textContent=h<12?'Good morning':h<18?'Good afternoon':'Good evening';
+
+var KEY='tc-dash-done-v1',done={};try{done=JSON.parse(localStorage.getItem(KEY))||{};}catch(e){}
+var acts=[].slice.call(document.querySelectorAll('.db-act')),left=document.getElementById('dbLeft');
+function sync(){var n=0;acts.forEach(function(a){var d=!!done[a.getAttribute('data-id')];a.classList.toggle('done',d);if(!d&&!a.hasAttribute('data-opt'))n++;});
+  if(left)left.textContent='';}
+document.getElementById('dbActs').addEventListener('click',function(e){var b=e.target.closest('.db-chk');if(!b)return;var id=b.closest('.db-act').getAttribute('data-id');done[id]=!done[id];try{localStorage.setItem(KEY,JSON.stringify(done));}catch(_){}sync();});
+sync();
+
+var S=[['Terraform module refactor',84],['Latency budget audit',86],['Data platform migration',86],['Incident tooling revamp',88],['Cost-aware autoscaler',89],['Observability pipeline rebuild',90],['Payments ledger hardening',92],['Platform reliability sprint',94]];
+var svg=document.getElementById('dbChart'),cap=document.getElementById('dbCap'),X0=26,X1=312,Y0=10,Y1=112,lo=80,hi=96;
+function x(i){return X0+(X1-X0)*i/(S.length-1);}function y(v){return Y1-(Y1-Y0)*(v-lo)/(hi-lo);}
+var pts=S.map(function(s,i){return x(i).toFixed(1)+','+y(s[1]).toFixed(1);}).join(' ');
+svg.innerHTML=[80,85,90,95].map(function(v){return '<line class="g" x1="'+X0+'" x2="'+X1+'" y1="'+y(v)+'" y2="'+y(v)+'"/><text x="0" y="'+(y(v)+3.5)+'">'+v+'</text>';}).join('')
+ +'<polygon class="ar" points="'+X0+','+Y1+' '+pts+' '+X1+','+Y1+'"/><polyline class="ln" points="'+pts+'"/>'
+ +S.map(function(s,i){return '<circle data-i="'+i+'" cx="'+x(i).toFixed(1)+'" cy="'+y(s[1]).toFixed(1)+'" r="4"/><circle class="hit" data-i="'+i+'" cx="'+x(i).toFixed(1)+'" cy="'+y(s[1]).toFixed(1)+'" r="13"/>';}).join('');
+function pick(i){cap.innerHTML='<span></span><b>'+S[i][1]+'%</b>';cap.firstChild.textContent=S[i][0];svg.querySelectorAll('circle:not(.hit)').forEach(function(c){c.classList.toggle('on',+c.getAttribute('data-i')===i);});}
+svg.addEventListener('mouseover',function(e){var c=e.target.closest('circle');if(c)pick(+c.getAttribute('data-i'));});
+svg.addEventListener('mouseleave',function(){pick(S.length-1);});
+pick(S.length-1);
+
+var hEnd=new Date();hEnd.setHours(0,0,0,0);var hTd=(hEnd.getDay()+6)%7,hSt=new Date(hEnd.getFullYear(),hEnd.getMonth(),hEnd.getDate()-hTd-105),hMon=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],hCols=[],hPm=-1;
+for(var hw=0;hw<16;hw++){var hm=new Date(hSt.getFullYear(),hSt.getMonth(),hSt.getDate()+hw*7).getMonth();if(hm!==hPm){hCols.push([hw,hm]);hPm=hm;}}
+if(hCols.length>1&&hCols[1][0]<3)hCols.shift();
+document.getElementById('dbMonths').innerHTML=hCols.map(function(c){return '<span style="grid-column:'+(c[0]+1)+'">'+hMon[c[1]]+'</span>';}).join('');
+var heat=document.getElementById('dbHeat'),seed=7,html='',active=0,wk=0;
+function rnd(){seed=(seed*1103515245+12345)%2147483648;return seed/2147483648;}
+for(var w=0;w<16;w++){for(var d=0;d<7;d++){if(w===15&&d>hTd){html+='<i style="visibility:hidden"></i>';continue;}var r=rnd(),bias=(d>4?.12:0)+(w>9?.14:0),l=r+bias>.86?3:r+bias>.68?2:r+bias>.5?1:0;if(l){active++;if(w>=12)wk++;}html+='<i data-l="'+l+'" data-w="'+w+'" data-d="'+d+'"></i>';}}
+heat.innerHTML=html;
+var hTip=document.createElement('div');hTip.className='db-tip';document.body.appendChild(hTip);
+function hRow(k,v){return '<div class="r"><span>'+k+'</span><span>'+v+'</span></div>';}
+function hH(n){var x=Math.sin(n*12.9898+4.1)*43758.5453;return x-Math.floor(x);}
+function hDur(m){return m<60?m+'m':Math.floor(m/60)+'h'+(m%60?' '+(m%60)+'m':'');}
+heat.addEventListener('mousemove',function(e){
+var c=e.target.closest('i[data-w]');if(!c){hTip.classList.remove('on');return;}
+var cw=+c.getAttribute('data-w'),cd=+c.getAttribute('data-d'),cl=+c.getAttribute('data-l'),n=cw*7+cd,dt=new Date(hSt.getFullYear(),hSt.getMonth(),hSt.getDate()+n);
+hTip.innerHTML='<b>'+dt.getDate()+' '+hMon[dt.getMonth()]+' '+dt.getFullYear()+'</b>'+(cl?(function(){var m=Math.round([0,25,70,150][cl]*(.7+hH(n)*.8)),ap=cl>1?Math.round(hH(n+99)*2):0,sb=cl===3||(cl===2&&hH(n+7)>.6)?1:0,iv=cl===3&&hH(n+31)>.7?1:0;return hRow('Time on platform',hDur(m))+hRow('Applied',ap)+hRow('Submissions',sb)+hRow('AI interviews',iv);})():'<div class="r"><span>No activity</span></div>');
+hTip.classList.add('on');
+var cr=c.getBoundingClientRect(),tw=hTip.offsetWidth,th=hTip.offsetHeight,x=Math.min(Math.max(8,cr.left+cr.width/2-tw/2),innerWidth-tw-8),y=cr.top-th-9;if(y<8)y=cr.bottom+9;
+hTip.style.left=x+'px';hTip.style.top=y+'px';
+});
+heat.addEventListener('mouseleave',function(){hTip.classList.remove('on');});
+document.getElementById('dbHeatNote').textContent=active+' active days, '+wk+' of them in the last four weeks. Most of your work lands in the week before a deadline.';
+})();
+</script>
+<script src="notifications.js?v=3"></script>
+<script src="chat.js?v=2"></script>
+<script src="candidate-complete.js"></script><script src="mobile.js"></script>
+<script>requestAnimationFrame(function(){var e=document.getElementById("tc-fouc");e&&e.remove();});</script>
+<script src="review-tweaks.js"></script><script>if(window.TCTweaks)TCTweaks.register({id:"dashl",title:"Dashboard layout",controls:[{key:"layout",label:"Layout",def:"classic",options:[["classic","Briefing + sidebar"],["focus","Focus board"]]}]});</script><script src="header-nav-tweaks.js"></script>
+</body>
+</html>

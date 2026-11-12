@@ -54,6 +54,6 @@ w.addEventListener('click',function(e){
 document.addEventListener('click',function(){w.classList.remove('open');});
 document.addEventListener('keydown',function(e){if(e.key==='Escape')w.classList.remove('open');});
 function mount(){if(document.body&&!w.parentNode)document.body.appendChild(w);}
-window.TCTweaks={register:function(g){groups.push(g);apply(g);render();if(document.body)mount();else document.addEventListener('DOMContentLoaded',mount);}};
+window.TCTweaks={register:function(g){groups.push(g);apply(g);render();if(document.body)mount();else document.addEventListener('DOMContentLoaded',mount);},set:function(id,k,v){var g=groups.filter(function(x){return x.id===id;})[0];if(!g)return;store[id]=state(g);store[id][k]=v;save();apply(g);render();}};
 
 })();

@@ -679,32 +679,13 @@ var CSS=`
 .lay-tog .vtog-b{padding:0 9px}
 .lay-tog svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
 .cats-res{display:flex;flex-direction:column;gap:28px}
-html[data-tw-cpage-layout="tiers"] #poolTop,html[data-tw-cpage-layout="spot"] #poolTop,html[data-tw-cpage-layout="tiers"] .lay-tog,html[data-tw-cpage-layout="spot"] .lay-tog,html[data-tw-cpage-layout="tiers"] #poolPag,html[data-tw-cpage-layout="spot"] #poolPag{display:none}
-.lxt{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;align-items:start}
-.lxt-col{background:var(--field);border:1px solid var(--line);border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:12px;min-width:0}
-.lxt-col.g{--lx-c:#3f8f5f}.lxt-col.b{--lx-c:var(--blue)}.lxt-col.n{--lx-c:#b3b1aa}
-.lxt-h{display:flex;align-items:center;gap:9px;padding:4px 4px 2px}
-.lxt-h::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--lx-c);flex:none}
-.lxt-t{font-family:"P22Mackinac",serif;font-weight:500;font-size:18px;letter-spacing:-.01em;color:var(--ink2)}
-.lxt-r{font-size:12px;color:var(--t-faint);font-weight:600}
-.lxt-n{margin-left:auto;font-size:12px;font-weight:700;color:var(--ink2);background:#fff;border:1px solid var(--line);border-radius:999px;padding:3px 9px}
-.lxt-list{display:flex;flex-direction:column;gap:10px;max-height:calc(100vh - 200px);min-height:240px;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;-ms-overflow-style:none;margin:-4px -6px;padding:4px 6px 8px}.lxt-list::-webkit-scrollbar{display:none}
-.lxt-card{all:unset;box-sizing:border-box;display:flex;flex-direction:column;gap:11px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;cursor:pointer;transition:border-color .2s,box-shadow .2s,transform .2s}
-.lxt-card:hover{border-color:var(--lx-c);box-shadow:var(--shadow-card);transform:translateY(-1px)}
-.lxt-card:focus-visible,.lxs-row:focus-visible,.lxs-open:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
-.lxt-top{display:flex;align-items:center;gap:12px;min-width:0}
-.lxt-av,.lxs-av,.lxs-pav{border-radius:50%;overflow:hidden;background:#e8e8e4;flex:none}
-.lxt-av{width:38px;height:38px}.lxs-av{width:34px;height:34px}.lxs-pav{width:84px;height:84px}
-.lxt-av img,.lxs-av img,.lxs-pav img{width:100%;height:100%;object-fit:cover;display:block}
-.lxt-id,.lxs-id{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
-.lxt-nm{font-family:"P22Mackinac",serif;font-weight:500;font-size:15.5px;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.lxt-role,.lxs-role{font-size:12.5px;color:var(--t-faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.lxt-m{font-family:"P22Mackinac",serif;font-weight:500;font-size:20px;color:var(--ink2);font-variant-numeric:tabular-nums;flex:none}
-.lxt-m em{font-style:normal;font-family:inherit;font-size:12px;margin-left:1px}
-.lxt-bar{display:block;height:4px;border-radius:4px;background:#eeede9;overflow:hidden}.lxt-bar i{display:block;height:100%;background:var(--lx-c);border-radius:inherit}
-.lxt-meta{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:12px;color:var(--t-faint);font-weight:500}
-.lxt-card .pc-sk{gap:6px}
-.lxt-empty{font-size:12.5px;color:var(--t-faint);text-align:center;padding:22px 8px;border:1px dashed #d9d7d1;border-radius:12px}
+html[data-tw-cpage-layout="spot"] #poolTop,html[data-tw-cpage-layout="spot"] .lay-tog,html[data-tw-cpage-layout="spot"] #poolPag{display:none}
+.lxs-row:focus-visible,.lxs-open:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.lxs-av,.lxs-pav{border-radius:50%;overflow:hidden;background:#e8e8e4;flex:none}
+.lxs-av{width:34px;height:34px}.lxs-pav{width:84px;height:84px}
+.lxs-av img,.lxs-pav img{width:100%;height:100%;object-fit:cover;display:block}
+.lxs-id{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.lxs-role{font-size:12.5px;color:var(--t-faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .lxs{display:grid;grid-template-columns:minmax(280px,360px) minmax(0,1fr);gap:24px;align-items:start}
 .lxs-roster{display:flex;flex-direction:column;gap:2px;border:1px solid var(--line);border-radius:18px;padding:8px;background:#fff;max-height:calc(100vh - 120px);overflow:auto;position:sticky;top:20px;scrollbar-width:thin}
 .lxs-row{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;cursor:pointer;transition:background .15s}
@@ -739,7 +720,7 @@ html[data-tw-cpage-layout="tiers"] #poolTop,html[data-tw-cpage-layout="spot"] #p
 .lxs-open{all:unset;height:40px;padding:0 20px;border-radius:999px;background:var(--ink2);color:#fff;font-size:13.5px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center}
 .lxs-open:hover{background:var(--blue)}
 .lxs-hint{font-size:12px;color:var(--t-faint)}
-@media (max-width:960px){.lxt,.lxs{grid-template-columns:minmax(0,1fr)}.lxs-roster{position:static;max-height:none}.lxs-panel{display:none}}
+@media (max-width:960px){.lxs{grid-template-columns:minmax(0,1fr)}.lxs-roster{position:static;max-height:none}.lxs-panel{display:none}}
 .cat-sub{display:flex;align-items:baseline;gap:8px;margin:0;font-size:14px;font-weight:700;color:var(--ink2)}.cat-sub span{font-size:12px;font-weight:600;color:var(--t-faint)}
 .pl{border:1px solid var(--line);border-radius:16px;background:#fff;overflow:hidden}
 .pl-h,.prw{display:grid;grid-template-columns:minmax(0,2.3fr) minmax(0,2fr) 84px 120px 84px 64px;gap:16px;align-items:center;padding:12px 20px}
@@ -1355,7 +1336,7 @@ function open(initial){
 
   var chev='<svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>';
   var el=document.createElement('div');el.className='pool';
-  el.innerHTML='<div class="pool-top"><button class="pool-back" type="button"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>Back to challenge</button><div class="pool-logo"><span class="tc-mark"><svg viewBox="0 0 40 42" aria-hidden="true"><path fill="#648dc6" d="M1 1H16V8H8V34H16V41H1ZM39 1H24V8H32V34H24V41H39Z"></path></svg></span><span class="the">the</span>Colosseum</div>'+'<nav class="tw-nav" aria-label="Main"><a href="Company - Challenges.html" data-nav="ch"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"/><line x1="13" y1="19" x2="19" y2="13"/><line x1="16" y1="16" x2="20" y2="20"/><line x1="19" y1="21" x2="21" y2="19"/><polyline points="14.5 6.5 18 3 21 3 21 6 17.5 9.5"/><line x1="5" y1="14" x2="9" y2="18"/><line x1="7" y1="17" x2="4" y2="20"/><line x1="3" y1="19" x2="5" y2="21"/></svg>Challenges</a><span class="sep"></span><a href="Company - Challenges.html#pool" data-nav="ca" class="on" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20v-.5a6.5 6.5 0 0 1 13 0v.5"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8"/><path d="M18.5 14a6.5 6.5 0 0 1 3 5.5v.5"/></svg>Candidates</a><span class="sep"></span><a href="Company - Funds Escrow.html" data-nav="fu"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="14" rx="2.5"/><path d="M3 10h18"/><path d="M16 15h2"/><path d="M7 6V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1"/></svg>Funds</a></nav>'+''+USER_HTML+'</div>'
+  el.innerHTML='<div class="pool-top"><button class="pool-back" type="button"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>Back to challenge</button><div class="pool-logo"><span class="tc-mark"><svg viewBox="0 0 40 42" aria-hidden="true"><path fill="#648dc6" d="M1 1H16V8H8V34H16V41H1ZM39 1H24V8H32V34H24V41H39Z"></path></svg></span><span class="the">the</span>Colosseum</div>'+'<nav class="tw-nav" aria-label="Main"><a href="Company - Dashboard.html" data-nav="db"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg>Dashboard</a><span class="sep"></span><a href="Company - Challenges.html" data-nav="ch"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"/><line x1="13" y1="19" x2="19" y2="13"/><line x1="16" y1="16" x2="20" y2="20"/><line x1="19" y1="21" x2="21" y2="19"/><polyline points="14.5 6.5 18 3 21 3 21 6 17.5 9.5"/><line x1="5" y1="14" x2="9" y2="18"/><line x1="7" y1="17" x2="4" y2="20"/><line x1="3" y1="19" x2="5" y2="21"/></svg>Challenges &amp; Jobs</a><span class="sep"></span><a href="Company - Challenges.html#pool" data-nav="ca" class="on" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20v-.5a6.5 6.5 0 0 1 13 0v.5"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8"/><path d="M18.5 14a6.5 6.5 0 0 1 3 5.5v.5"/></svg>Candidates</a><span class="sep"></span><a href="Company - Funds Escrow.html" data-nav="fu"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="14" rx="2.5"/><path d="M3 10h18"/><path d="M16 15h2"/><path d="M7 6V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1"/></svg>Funds</a></nav>'+''+USER_HTML+'</div>'
     +'<div class="pool-body"><div class="pool-h1-row"><h1 class="pool-h1">Targeted candidates</h1></div>'
     +'<div class="pool-controls">'
     +'<div class="cha-dd" id="ddChal"><button class="cha-btn" type="button"><span class="t"></span>'+chev+'</button><div class="cha-menu"></div></div>'
@@ -1601,8 +1582,8 @@ function open(initial){
     var cfb=t.closest('.sd-conf');if(cfb){var ci=+cfb.getAttribute('data-i'),cr=+cfb.getAttribute('data-rk');audit('confirm',ci);pipeUI.bConf=pipeUI.bConf||{};pipeUI.bConf[ci]=1;pipeUI.bPlace=pipeUI.bPlace||{};if(pipeUI.bPlace[ci]==null&&cr<3){Object.keys(pipeUI.bPlace).forEach(function(k){if(pipeUI.bPlace[k]===cr&&+k!==ci)delete pipeUI.bPlace[k];});pipeUI.bPlace[ci]=cr;}renderPipe();var rb=viewPipe.querySelector('.bf-rev[data-i="'+ci+'"]');if(rb)rb.click();return;}
       var ovr=t.closest('.sd-ovr');if(ovr){if(ovr.classList.contains('sd-rank'))rankModal(+ovr.getAttribute('data-i'),+(ovr.getAttribute('data-rk')||0));else confirmRemove(+ovr.getAttribute('data-i'));return;}
     var act=t.closest('.bf-act');if(act){var ai=act.getAttribute('data-i');if(ai!=null){showProfile(+ai);return;}}
-    var op=t.closest('[data-bf-compare]');if(op){pipeUI.lim=10;pipeUI.stage=4;pipeUI.compare=!pipeUI.compare;renderPipe();var ex=viewPipe.querySelector('.bf-exp');if(ex){var sc0=ex.closest('.pool')||document.scrollingElement;sc0.scrollTo({top:ex.getBoundingClientRect().top-sc0.getBoundingClientRect().top+sc0.scrollTop-24,behavior:'smooth'});}return;}
-    op=t.closest('[data-bf-jump]');if(op){var ex=viewPipe.querySelector('.bf-exp');if(ex){var sc=ex.closest('.pool')||document.scrollingElement;sc.scrollTo({top:ex.getBoundingClientRect().top-sc.getBoundingClientRect().top+sc.scrollTop-24,behavior:'smooth'});}return;}
+    var op=t.closest('[data-bf-compare]');if(op){pipeUI.lim=10;pipeUI.stage=4;pipeUI.compare=!pipeUI.compare;renderPipe();var ex=viewPipe.querySelector('.bf-exp');if(ex){var sc0=ex.closest('.pool,.ch-view')||document.scrollingElement;sc0.scrollTo({top:ex.getBoundingClientRect().top-sc0.getBoundingClientRect().top+sc0.scrollTop-24,behavior:'smooth'});}return;}
+    op=t.closest('[data-bf-jump]');if(op){var ex=viewPipe.querySelector('.bf-exp');if(ex){var sc=ex.closest('.pool,.ch-view')||document.scrollingElement;sc.scrollTo({top:ex.getBoundingClientRect().top-sc.getBoundingClientRect().top+sc.scrollTop-24,behavior:'smooth'});}return;}
   });
   function pdBar(p){return '<div class="sd-bar"><i style="width:'+p+'%"></i></div>';}
   function pdMetric(l,v,p,ok){return '<div class="sd-metric"><div class="sd-metric-t"><span>'+l+'</span><b'+(ok?' class="ok"':'')+'>'+v+'</b></div>'+pdBar(p)+'</div>';}
@@ -2205,16 +2186,7 @@ function open(initial){
     centerTop();
   }
   function lxAv(c,cls){return '<span class="'+cls+'"><img src="https://i.pravatar.cc/150?u='+encodeURIComponent(c.name)+'" alt="" loading="lazy"></span>';}
-  var LX_BANDS=[['Strong fit','85+',85,'g'],['Good fit','70\u201384',70,'b'],['Others','Under 70',0,'n']],spotSel=null;
-  function tiersHTML(items){
-    var cols=LX_BANDS.map(function(){return[];});
-    items.forEach(function(it){var v=it.x.s.overall;for(var i=0;i<LX_BANDS.length;i++){if(v>=LX_BANDS[i][2]){cols[i].push(it);break;}}});
-    return '<div class="lxt">'+LX_BANDS.map(function(b,i){var its=cols[i];
-      return '<section class="lxt-col '+b[3]+'"><header class="lxt-h"><span class="lxt-t">'+b[0]+'</span><span class="lxt-r">'+b[1]+'% match</span><span class="lxt-n">'+its.length+'</span></header><div class="lxt-list">'
-        +(its.length?its.map(function(it){var c=it.x.c,s=it.x.s;
-          return '<button type="button" class="lxt-card" data-lx="'+it.idx+'"><span class="lxt-top">'+lxAv(c,'lxt-av')+'<span class="lxt-id"><span class="lxt-nm">'+esc(c.name)+'</span><span class="lxt-role">'+esc(c.role)+' \u00b7 '+esc(c.city)+'</span></span><span class="lxt-m">'+s.overall+'<em>%</em></span></span><span class="lxt-bar"><i style="width:'+s.overall+'%"></i></span><span class="lxt-meta"><span>'+c.years+' yrs</span><span>'+esc(c.avail)+'</span><span>'+c.done+' challenges</span></span><span class="pc-sk">'+c.skills.slice(0,3).map(function(k){return '<span>'+esc(k)+'</span>';}).join('')+(c.skills.length>3?'<span>+'+(c.skills.length-3)+'</span>':'')+'</span></button>';}).join(''):'<div class="lxt-empty">No candidates in this range</div>')
-        +'</div></section>';}).join('')+'</div>';
-  }
+  var spotSel=null;
   function spotPanel(it){return fitInner(it.idx);}
   function spotHTML(items){
     if(spotSel==null||!items.some(function(it){return it.idx===spotSel;}))spotSel=items[0].idx;
@@ -2235,7 +2207,6 @@ function open(initial){
     pagBox.innerHTML='';
     if(!items.length){resBox.innerHTML='<div class="cand-empty">No candidates match. Clear a requirement, the tech stack or your search to widen the list.</div>';return;}
     var LX=document.documentElement.getAttribute('data-tw-cpage-layout');
-    if(LX==='tiers'){resBox.innerHTML=tiersHTML(items);return;}
     if(LX==='spot'){resBox.innerHTML=spotHTML(items);return;}
     if(layout==='list'){
       var pages=Math.max(1,Math.ceil(items.length/PER));if(page>pages)page=pages;
@@ -2261,7 +2232,7 @@ function open(initial){
   el.querySelector('.lay-tog').addEventListener('click',function(e){var b=e.target.closest('[data-lay]');if(!b)return;layout=b.getAttribute('data-lay');page=1;try{localStorage.setItem('tc-pool-layout',layout);}catch(_){}render();});
   pagBox.addEventListener('click',function(e){var b=e.target.closest('[data-p]');if(!b||b.disabled)return;page=+b.getAttribute('data-p');render();var sec=el.querySelector('.all-sec');if(sec)el.scrollTop=Math.max(0,sec.offsetTop-20);});
   resBox.addEventListener('click',function(e){var r=e.target.closest('.prw');if(r)showFit(+r.getAttribute('data-i'));});
-  resBox.addEventListener('click',function(e){if(e.target.closest('.lxs-panel .fitm-full')){showProfile(spotSel);return;}var a=e.target.closest('[data-lx]');if(a){showFit(+a.getAttribute('data-lx'));return;}var r=e.target.closest('[data-sp]');if(!r)return;if(window.innerWidth<=960){showFit(+r.getAttribute('data-sp'));return;}selectSpot(+r.getAttribute('data-sp'));});
+  resBox.addEventListener('click',function(e){if(e.target.closest('.lxs-panel .fitm-full')){showProfile(spotSel);return;}var r=e.target.closest('[data-sp]');if(!r)return;if(window.innerWidth<=960){showFit(+r.getAttribute('data-sp'));return;}selectSpot(+r.getAttribute('data-sp'));});
   document.addEventListener('keydown',function(e){
     if(document.documentElement.getAttribute('data-tw-cpage-layout')!=='spot'||!el.isConnected||!resBox.offsetParent||(e.key!=='ArrowDown'&&e.key!=='ArrowUp'))return;
     var t=e.target;if(t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA'||t.isContentEditable))return;

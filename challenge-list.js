@@ -10,7 +10,7 @@ var css=`
 .cl-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;padding:0 14px 20px}
 .cl-body::-webkit-scrollbar{display:none}
 .cl-head{position:sticky;top:0;z-index:6;background:color-mix(in srgb,var(--field) 45%,#fff);margin:0 -14px 12px;padding:18px 16px 12px 20px;display:flex;flex-direction:column;gap:14px}
-.cl-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.cl-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:0 -16px 0 -20px;padding:0 16px 14px 20px;border-bottom:1px solid var(--line)}
 .cl-top h2{font-family:"P22Mackinac",serif;font-weight:500;font-size:24px;letter-spacing:-.015em;margin:0;color:var(--ink2);line-height:1.1}
 .cl-top h2{display:flex;align-items:center;gap:10px}.cl-top h2 svg{width:20px;height:20px;stroke:var(--ink2);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex:none}
 .cl-live{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:var(--t-mute);white-space:nowrap}
@@ -93,6 +93,7 @@ html[data-tw-cltype-style="tabs"] .cl-f button.on::after{content:"";position:abs
 .cl-card:hover .cl-cta svg{transform:translateX(3px)}
 .cl-card.on .cl-cta{background:var(--ink2);border-color:var(--ink2);color:#fff}
 .cl-empty{font-size:13px;color:var(--t-mute);padding:6px 4px}
+.cl.cl-draft .cl-f,.cl.cl-draft .cl-fdd{display:none!important}
 @media (max-width:1320px){.load.detailed .result{padding-left:384px;box-sizing:border-box}}
 @media (max-width:760px){.load.detailed .cl{display:none}.load.detailed .result{padding-left:0}}
 `;
@@ -102,9 +103,10 @@ var ARW='<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
 var logo=(document.querySelector('.res-logo img')||{}).getAttribute?document.querySelector('.res-logo img').getAttribute('src'):'assets/lg-1.png';
 function DOT(k){return K[k]?'<i class="cl-dot" style="background:'+K[k][1]+'"></i>':'';}
 var el=document.createElement('aside');el.className='cl';
-el.innerHTML='<div class="cl-panel"><div class="cl-body"><div class="cl-head"><div class="cl-top"><h2><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"/><line x1="13" y1="19" x2="19" y2="13"/><line x1="16" y1="16" x2="20" y2="20"/><line x1="19" y1="21" x2="21" y2="19"/><polyline points="14.5 6.5 18 3 21 3 21 6 17.5 9.5"/><line x1="5" y1="14" x2="9" y2="18"/><line x1="7" y1="17" x2="4" y2="20"/><line x1="3" y1="19" x2="5" y2="21"/></svg>Challenges</h2><button type="button" class="cl-new"><span class="ic"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>New challenge</button></div><div class="cl-f">'+[['all','All'],['bounty','Bounty'],['hiring','Hiring'],['job','Job']].map(function(o,i){return '<button type="button" data-f="'+o[0]+'"'+(i?'':' class="on"')+'>'+DOT(o[0])+o[1]+'</button>';}).join('')+'</div><div class="cl-fdd"><button type="button" class="cl-fdd-btn"><span class="t">All types</span><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button><div class="cl-fdd-menu">'+[['all','All types'],['bounty','Bounty'],['hiring','Hiring'],['job','Job']].map(function(o,i){return '<button type="button" data-fd="'+o[0]+'"'+(i?'':' class="on"')+'>'+DOT(o[0])+o[1]+'</button>';}).join('')+'</div></div><div class="cl-st2" role="tablist"><button type="button" class="on" data-s="pub">Published<b>0</b></button><button type="button" data-s="draft">Drafts<b>0</b></button></div></div><div class="cl-list"></div></div></div>';
+el.innerHTML='<div class="cl-panel"><div class="cl-body"><div class="cl-head"><div class="cl-top"><h2><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"/><line x1="13" y1="19" x2="19" y2="13"/><line x1="16" y1="16" x2="20" y2="20"/><line x1="19" y1="21" x2="21" y2="19"/><polyline points="14.5 6.5 18 3 21 3 21 6 17.5 9.5"/><line x1="5" y1="14" x2="9" y2="18"/><line x1="7" y1="17" x2="4" y2="20"/><line x1="3" y1="19" x2="5" y2="21"/></svg>Challenges</h2><button type="button" class="cl-new"><span class="ic"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>New challenge</button></div><div class="cl-st2" role="tablist"><button type="button" class="on" data-s="pub">Published<b>0</b></button><button type="button" data-s="draft">Drafts<b>0</b></button></div><div class="cl-f">'+[['bounty','Bounty'],['hiring','Hiring'],['job','Job']].map(function(o,i){return '<button type="button" data-f="'+o[0]+'"'+(i?'':' class="on"')+'>'+DOT(o[0])+o[1]+'</button>';}).join('')+'</div><div class="cl-fdd"><button type="button" class="cl-fdd-btn"><span class="t">Bounty</span><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button><div class="cl-fdd-menu">'+[['bounty','Bounty'],['hiring','Hiring'],['job','Job']].map(function(o,i){return '<button type="button" data-fd="'+o[0]+'"'+(i?'':' class="on"')+'>'+DOT(o[0])+o[1]+'</button>';}).join('')+'</div></div></div><div class="cl-list"></div></div></div>';
 load.appendChild(el);
-var body=el.querySelector('.cl-body'),list=el.querySelector('.cl-list'),filter='all',stat='pub';
+var body=el.querySelector('.cl-body'),list=el.querySelector('.cl-list'),filter='bounty',stat='pub';
+function setFilter(v){if(!K[v])return;filter=v;el.querySelectorAll('.cl-f button').forEach(function(x){x.classList.toggle('on',x.getAttribute('data-f')===v);});syncDD();}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');}
 function money(it){if(it.kind==='job'&&it.job&&it.job.comp){var f=function(v){var n=parseInt(String(v).replace(/[^0-9]/g,''),10);return n?'$'+Math.round(n/1000)+'k':'';};return f(it.job.comp.from)+'\u2013'+f(it.job.comp.to);}
   if(it.split){var t=0;it.split.forEach(function(v){t+=parseInt((v||'').replace(/[^0-9]/g,''),10)||0;});if(t)return '$'+t.toLocaleString('en-US');}
@@ -120,24 +122,25 @@ function setStat(v){stat=v;el.querySelectorAll('.cl-st2 button').forEach(functio
 function render(){
   var info=nav.info(),chips=nav.chips(),c=nav.cur();
   var all=info.map(function(it,i){return{i:i,it:it,t:((chips[i]&&chips[i].textContent.trim())||'Untitled challenge')};});
-  var rows=all.filter(function(r){return filter==='all'||r.it.kind===filter;});
-  var pub=rows.filter(function(r){return r.it.published;}),dr=rows.filter(function(r){return !r.it.published;});
+  var rows=all.filter(function(r){return r.it.kind===filter||!K[r.it.kind];});
+  var pub=rows.filter(function(r){return r.it.published;}),dr=all.filter(function(r){return !r.it.published;});el.classList.toggle('cl-draft',stat!=='pub');
   var bs=el.querySelectorAll('.cl-st2 b');bs[0].textContent=pub.length;bs[1].textContent=dr.length;
   var show=stat==='pub'?pub:dr;
-  list.innerHTML=show.map(function(r){return cardHtml(r,c);}).join('')||'<div class="cl-empty">'+(stat==='pub'?'No published challenges'+(filter==='all'?'':' of this type')+' yet.':'No drafts'+(filter==='all'?'':' of this type')+'.')+'</div>';
+  list.innerHTML=show.map(function(r){return cardHtml(r,c);}).join('')||'<div class="cl-empty">'+(stat==='pub'?'No published challenges of this type yet.':'No drafts yet.')+'</div>';
 }
 el.addEventListener('click',function(e){
   var b;
   if(b=e.target.closest('.cl-fdd-btn')){e.stopPropagation();b.parentNode.classList.toggle('open');return;}
   if(b=e.target.closest('.cl-fdd-menu button')){var t=el.querySelector('.cl-f button[data-f="'+b.getAttribute('data-fd')+'"]');el.querySelector('.cl-fdd').classList.remove('open');if(t)t.click();return;}
-  if(b=e.target.closest('.cl-f button')){filter=b.getAttribute('data-f');el.querySelectorAll('.cl-f button').forEach(function(x){x.classList.toggle('on',x===b);});syncDD();render();return;}
+  if(b=e.target.closest('.cl-f button')){setFilter(b.getAttribute('data-f'));render();return;}
   if(b=e.target.closest('.cl-st2 button')){setStat(b.getAttribute('data-s'));render();return;}
-  if(e.target.closest('.cl-new')){setStat('draft');var ad=document.querySelector('.ch-head .ch-add');if(filter!=='all'){filter='all';el.querySelectorAll('.cl-f button').forEach(function(x){x.classList.toggle('on',x.getAttribute('data-f')==='all');});syncDD();}if(ad)ad.click();return;}
+  if(e.target.closest('.cl-new')){setStat('draft');var ad=document.querySelector('.ch-head .ch-add');if(ad)ad.click();return;}
   if(b=e.target.closest('.cl-card'))nav.go(+b.getAttribute('data-i'));
 });
 document.addEventListener('chcenter',render);
-var mp=window.__markPublished;if(mp)window.__markPublished=function(){var r=mp.apply(this,arguments);setStat('pub');render();return r;};
+var mp=window.__markPublished;if(mp)window.__markPublished=function(){var r=mp.apply(this,arguments);setStat('pub');setFilter((nav.info()[nav.cur()]||{}).kind);render();return r;};
 document.addEventListener('focusout',function(e){if(e.target.closest&&e.target.closest('.ch-chips'))setTimeout(render,0);});
+setFilter((nav.info()[nav.cur()]||{}).kind);
 render();
 var dv=document.querySelector('.ch-view .ch-divider');
 function place(){if(!dv||!load.classList.contains('detailed'))return;dv.style.left='0px';dv.style.width='';var z=parseFloat(getComputedStyle(load).zoom)||1;var lr=load.getBoundingClientRect(),r=dv.getBoundingClientRect();dv.style.left=((lr.left+24*z-r.left)/z)+'px';dv.style.width=(lr.width/z-48)+'px';el.style.top=((r.bottom-lr.top)/z+load.scrollTop+20)+'px';}
