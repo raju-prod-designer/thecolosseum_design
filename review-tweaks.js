@@ -2,6 +2,9 @@
    Register more groups from any page: TCTweaks.register({id,title,controls:[{key,label,options:[[value,label],...],def}],apply(state)}) */
 (function(){
 var KEY='tc-tweaks-v1',store={};try{store=JSON.parse(localStorage.getItem(KEY))||{};}catch(e){}
+if(!store.__caDef1){store.__caDef1=1;['nav','filters','cards','dash'].forEach(function(k){delete store[k];});if(store.header){delete store.header.style;delete store.header.logo;delete store.header.size;delete store.header.sticky;}try{localStorage.setItem(KEY,JSON.stringify(store));}catch(e){}}
+if(!store.__coDef2){store.__coDef2=1;['cpage','chpage','thpos','cltype','cdash','dash'].forEach(function(k){delete store[k];});if(store.header){delete store.header.style;delete store.header.logo;delete store.header.size;delete store.header.sticky;}try{localStorage.setItem(KEY,JSON.stringify(store));}catch(e){}}
+if(!store.__hdrFloat){store.__hdrFloat=1;if(store.header)store.header.style='floating';try{localStorage.setItem(KEY,JSON.stringify(store));}catch(e){}}
 var groups=[],openG={},root=document.documentElement;
 var css=`
 .tw-fab{position:fixed;left:18px;bottom:18px;z-index:900;height:34px;display:flex;align-items:center;gap:7px;padding:0 13px 0 11px;border-radius:999px;border:1px solid var(--line,#e6e4df);background:#fff;color:var(--ink2,#1c1d1c);font:600 12.5px/1 inherit;font-family:inherit;cursor:pointer;box-shadow:0 6px 18px -8px rgba(31,33,32,.22)}

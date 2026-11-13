@@ -1,6 +1,9 @@
 (function(){if(!window.TCTweaks)return;
+var headerOnly=!!(document.currentScript&&document.currentScript.hasAttribute('data-header-only'));
 /* ---- Header ---- */
 var hcss=`
+html[data-tw-header-style] .app-top{border:0;border-radius:0;box-shadow:none}
+html.app-shell[data-tw-header-style]:not([data-tw-header-style="floating"]) .load.detailed .load-logo{top:0;left:0;right:0;border-radius:0;border-width:0 0 1px;box-shadow:none}
 html[data-tw-header-style] .app-top{width:calc(100% + 64px);margin:-30px -32px 32px;padding:16px 32px;box-sizing:border-box;justify-content:flex-start;background:#fff;transition:box-shadow .2s,background .2s}
 html[data-tw-header-logo="center"] .app-top{justify-content:center}
 html[data-tw-header-style] .app-top{min-height:70px}
@@ -32,12 +35,12 @@ var hs=document.createElement('style');hs.id='tw-header-css';hs.textContent=hcss
 function onScroll(){var t=document.querySelector('.app-top');if(t)t.classList.toggle('tw-scrolled',window.scrollY>4);}
 window.addEventListener('scroll',onScroll,{passive:true});
 TCTweaks.register({id:'header',title:'Header',controls:[
-  {key:'style',label:'Style',def:'divider',options:[['divider','Divider'],['shadow','Soft shadow'],['frosted','Frosted glass'],['accent','Brand top bar'],['band','Tinted band'],['floating','Floating bar']]},
+  {key:'style',label:'Style',def:'floating',options:[['divider','Divider'],['shadow','Soft shadow'],['frosted','Frosted glass'],['accent','Brand top bar'],['band','Tinted band'],['floating','Floating bar']]},
   {key:'logo',label:'Logo position',def:'left',options:[['left','Left'],['center','Center']]},
   {key:'size',label:'Height',def:'regular',options:[['regular','Regular'],['compact','Compact']]},
   {key:'sticky',label:'Stick on scroll',def:'on',options:[['on','On'],['off','Off']]}
 ]});
-
+if(headerOnly)return;
 /* ---- Navigation ---- */
 var NAV=[
  ['Candidate - Dashboard.html','Dashboard','<rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/>'],
@@ -104,7 +107,7 @@ function syncDash(){var n=document.querySelector('.tw-nav');
   document.querySelectorAll(dashOff?'a[href="'+DASH+'"]':'a[data-dash-home]').forEach(function(l){if(l.closest('.tw-nav'))return;l.setAttribute('href',dashOff?APPS:DASH);if(dashOff)l.setAttribute('data-dash-home','');else l.removeAttribute('data-dash-home');});
   if(dashOff&&here===DASH)location.replace(APPS);}
 TCTweaks.register({id:'nav',title:'Navigation',controls:[
-  {key:'place',label:'Placement',def:'page',options:[['page','In page (current)'],['center','Center links'],['segmented','Center switcher'],['left','Next to logo'],['tabs','Tab row'],['dock','Bottom dock']]},
+  {key:'place',label:'Placement',def:'center',options:[['page','In page (current)'],['center','Center links'],['segmented','Center switcher'],['left','Next to logo'],['tabs','Tab row'],['dock','Bottom dock']]},
   {key:'icons',label:'Icons',def:'on',options:[['on','On'],['off','Off']]},
   {key:'dupes',label:'In-page shortcuts',def:'hide',options:[['hide','Hide'],['show','Keep']]}
 ]});

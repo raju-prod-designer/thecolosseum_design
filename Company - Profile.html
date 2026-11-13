@@ -335,7 +335,7 @@ a:hover{color:var(--blue)}
       <button class="app-user-btn" type="button" aria-label="Account menu"><img src="assets/lg-1.png" alt="Company" /></button>
       <div class="app-user-menu">
         <div class="app-user-opt" data-view="profile"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/></svg><span>Profile</span></div>
-        <a class="app-user-opt" href="Company - Funds Escrow.html"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="6" width="20" height="13" rx="2.5"/><path d="M2 10.5h20"/><circle cx="17.5" cy="15" r="1.2"/></svg><span>Funds</span></a><a class="app-user-opt" href="Company - Activity Log.html"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span>Activity log</span></a>
+        <a class="app-user-opt" href="Company - Activity Log.html"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span>Activity log</span></a>
         <div class="app-user-opt" data-view="onboarding"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg><span>Onboarding</span></div>
         <a class="app-user-opt" href="Company - Settings.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Settings</span></a>
         <div class="app-user-sep"></div>
@@ -789,5 +789,6 @@ document.querySelectorAll('.sel-dd[data-dd="years"]').forEach(function(p){initDD
   
 document.querySelectorAll('.qz-up input[type=file]').forEach(function(inp){inp.addEventListener('change',function(){var w=inp.closest('.qz-up'),s=w.querySelector('.qz-up-s'),f=inp.files||[];if(f.length){s.textContent=f.length>1?f.length+' files selected':f[0].name;w.classList.add('has');}else{s.textContent=s.getAttribute('data-def');w.classList.remove('has');}});});
 })();</script><script src="company-dash.js"></script>
+<script src="review-tweaks.js?v=3"></script><script src="header-nav-tweaks.js?v=2" data-header-only></script>
 </body>
 </html>

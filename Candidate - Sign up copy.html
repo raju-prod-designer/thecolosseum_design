@@ -1125,7 +1125,7 @@ document.querySelectorAll('.su .qz-file input[type=file]').forEach(function(inp)
 <script>
 document.querySelectorAll('.qz-up input[type=file]').forEach(function(inp){inp.addEventListener('change',function(){var w=inp.closest('.qz-up'),s=w.querySelector('.qz-up-s'),f=inp.files||[];if(f.length){s.textContent=f.length>1?f.length+' files selected':f[0].name;w.classList.add('has');}else{s.textContent=s.getAttribute('data-def');w.classList.remove('has');}});});
 </script>
-<script src="notifications.js?v=3"></script><script src="chat.js?v=2"></script><script src="candidate-complete.js"></script><script src="review-tweaks.js"></script><script src="header-nav-tweaks.js"></script><script src="mobile.js"></script>
+<script src="notifications.js?v=3"></script><script src="chat.js?v=2"></script><script src="candidate-complete.js"></script><script src="review-tweaks.js?v=4"></script><script src="header-nav-tweaks.js?v=3"></script><script src="mobile.js"></script>
 <script src="avatar-crop.js"></script>
 <script id="mobile-input-fix-js">(function(){
 function tag(el){if(el.dataset.mfx)return;el.dataset.mfx=1;var t=(el.type||'').toLowerCase(),p=(el.placeholder||'').toLowerCase(),a=function(k,v){if(!el.hasAttribute(k))el.setAttribute(k,v)};

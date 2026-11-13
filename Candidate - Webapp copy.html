@@ -368,7 +368,7 @@ html:has(.browse.layout-tl:not(.pulse)),html:has(.browse.layout-tl:not(.pulse)) 
 .gsm-x{width:32px;height:32px;border:0;border-radius:50%;background:none;color:#8a8a85;font-size:20px;line-height:1;cursor:pointer;display:grid;place-items:center}
 .gsm-x:hover{background:var(--field);color:var(--ink2)}
 @media (max-width:720px){.gsm{width:100%;flex-wrap:wrap;align-items:flex-start;padding:14px 14px 14px 16px;gap:12px}.gsm-ic{display:none}.gsm-tx{flex:1 1 calc(100% - 44px);max-width:none}.gsm-act{order:3;flex:1 1 100%}.gsm-in{flex:1;width:auto;max-width:none}.gsm-x{order:2;margin:-6px -4px 0 0}}
-</style><link rel="stylesheet" href="app-shell.css" /><link rel="stylesheet" href="pulse-dock.css?v=9" />
+</style><link rel="stylesheet" href="app-shell.css" /><link rel="stylesheet" href="pulse-dock.css?v=10" />
 </head>
 <body>
 <div class="app">
@@ -926,10 +926,10 @@ var sc=document.querySelector('.tl-scroll');if(sc)new MutationObserver(function(
 <script>document.addEventListener('wheel',function(e){var b=document.querySelector('.browse.pulse');if(!b)return;var f=b.querySelector('.pulse-feed');if(!f||f.contains(e.target)||e.target.closest('.app-top,.cd,.cop,.filter-menu,[class*="modal"],[class*="drawer"],[class*="panel"]'))return;f.scrollTop+=e.deltaMode===1?e.deltaY*16:e.deltaY;e.preventDefault();},{passive:false});</script>
 <script>window.PD_TWEAKS=/*EDITMODE-BEGIN*/{"rail":"peek","density":"comfortable","link":true,"startOpen":true}/*EDITMODE-END*/;</script>
 <script src="pulse-dock.js"></script>
-<script src="pulse-dock-ui.js?v=3"></script>
+<script src="pulse-dock-ui.js?v=4"></script>
 <script src="notifications.js?v=3"></script>
 <script src="chat.js?v=2"></script>
-<script src="candidate-complete.js"></script><script src="mobile.js"></script><script src="review-tweaks.js"></script><script src="header-nav-tweaks.js"></script>
+<script src="candidate-complete.js"></script><script src="mobile.js"></script><script src="review-tweaks.js?v=4"></script><script src="header-nav-tweaks.js?v=3"></script>
 <style id="chal-grid-css">
 .browse{grid-template-columns:minmax(0,1fr) var(--pdw,392px)!important}
 .browse>.pdock{grid-column:2!important}
@@ -985,7 +985,7 @@ html[data-tw-filters-layout="spread"] .browse-filters2>.bsearch{order:0;flex:non
 html[data-tw-filters-layout="spread"] .browse:not(.pd-closed) .browse-filters2>.bsearch{width:252px}
 }
 </style>
-<script>TCTweaks.register({id:'filters',title:'Filter bar',controls:[{key:'layout',label:'Arrangement',def:'center',options:[['center','Centered'],['spread','Filters left · Sort right']]}]});</script>
+<script>TCTweaks.register({id:'filters',title:'Filter bar',controls:[{key:'layout',label:'Arrangement',def:'spread',options:[['center','Centered'],['spread','Filters left · Sort right']]}]});</script>
 <style id="cards-layout-css">
 @media (min-width:981px){
 html[data-tw-cards-layout="list"] .tl-scroll{grid-template-columns:minmax(0,1fr)!important;gap:10px}
