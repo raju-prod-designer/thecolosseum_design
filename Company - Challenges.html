@@ -1039,7 +1039,7 @@ a:hover{color:var(--blue)}
 <script src="review-tweaks.js?v=3"></script><script src="header-nav-tweaks.js?v=2" data-header-only></script>
 <script>TCTweaks.register({id:'cpage',title:'Candidates page layout',controls:[{key:'layout',label:'Layout',def:'spot',options:[['rows','Category rows'],['spot','Spotlight']]}],apply:function(){if(window.__poolRerender)window.__poolRerender();}});if(document.documentElement.getAttribute('data-tw-cpage-layout')==='tiers')TCTweaks.set('cpage','layout','spot');</script>
 <script>TCTweaks.register({id:'chpage',title:'Challenges page layout',controls:[{key:'layout',label:'Layout',def:'command',options:[['focus','Focus'],['command','Command centre'],['inbox','Inbox + pipeline']]}],apply:function(){if(window.__chLayout)window.__chLayout();}});</script>
-<script src="challenge-layouts.js?v=29"></script><script src="challenge-inbox.js?v=7"></script>
+<script src="challenge-layouts.js?v=30"></script><script src="challenge-inbox.js?v=7"></script>
 <script>TCTweaks.register({id:'thpos',title:'Hiring threshold',controls:[{key:'pos',label:'Placement',def:'list',options:[['card','Below stage card'],['list','Above candidate list']]}],apply:function(){window.dispatchEvent(new Event('tc-thpos'));}});</script>
 <script>TCTweaks.register({id:'cltype',title:'Challenge type filter',controls:[{key:'style',label:'Style',def:'seg',options:[['seg','Segmented'],['chips','Chips'],['tabs','Underline tabs']]}]});</script>
 <script id="mobile-reward-fix-js">(function(){
