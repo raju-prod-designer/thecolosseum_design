@@ -67,7 +67,7 @@ a:hover{color:var(--blue)}
 .fwrap .eye:hover{stroke:var(--ink2)}
 .frow{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .fres{margin-top:14px}
-
+@media (max-width:640px){.frow:has(.btn-linkedin),.frow.fres{grid-template-columns:minmax(0,1fr)}.frow:has(.btn-linkedin) .btn-linkedin{width:100%}}
 /* google + divider */
 .gbtn{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;font-family:inherit;font-size:14.5px;font-weight:700;color:var(--ink2);background:#fff;border:1px solid var(--line);border-radius:var(--r-pill);padding:13px 18px;cursor:pointer;transition:border-color .15s,color .15s}
 .gbtn:hover{border-color:var(--blue);color:var(--blue)}
@@ -136,6 +136,7 @@ a:hover{color:var(--blue)}
 .actions{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
 .actions.end{justify-content:flex-end}
 
+
 .pane{display:none}
 .pane.on{display:block;animation:fade .3s ease}
 @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
@@ -154,6 +155,7 @@ a:hover{color:var(--blue)}
 .load-logo .the{font-weight:400;color:inherit}.load-logo-a{font-weight:800;display:flex;align-items:center;gap:13px;color:inherit;text-decoration:none}.load-logo-a:hover{color:inherit;text-decoration:none}.load-logo-a svg{width:26px;height:28px;flex:none}
 .qz-head{display:flex;align-items:center;gap:18px;margin-bottom:22px}
 .qz-div{border-top:1px solid var(--line);margin:0 0 30px}
+@media (max-width:640px){.qz-div{display:none}}
 .qz-avatar{position:relative;width:65px;height:65px;flex:none;border-radius:50%;overflow:hidden;border:1px solid var(--line);cursor:pointer;background:#fff}
 .qz-avatar img{width:100%;height:100%;object-fit:cover;display:block}
 .qz-avatar-up{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(20,20,20,.5);opacity:0;transition:opacity .2s ease}
@@ -315,6 +317,7 @@ a:hover{color:var(--blue)}
 .qz-chip.show{opacity:1;transform:scale(1)}
 .qz-steps .qs .t{font-size:12px;font-weight:600;color:var(--t-faint);transition:color .3s}
 .qz-steps .qs.active .t,.qz-steps .qs.done .t{color:var(--ink2)}
+@media (max-width:640px){.qz-steps{gap:6px;align-items:flex-end}.qz-steps .qs{flex:none;width:22px;transition:width .3s}.qz-steps .qs.active{flex:1;width:auto;display:flex;flex-wrap:wrap;align-items:center;gap:0 8px}.qz-steps .qs:not(.active) .t,.qz-steps .qs:not(.active) .qz-chip{display:none}.qz-steps .qs.active .t{white-space:nowrap}.qz-steps .qs.active .qz-chip{position:static}.qz-steps .qs.active .bar{flex-basis:100%}}
 .qz-step{display:none;text-align:left}
 .qz-step.on{display:block;animation:fade .3s ease}
 .qz-eyebrow{font-size:11px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;color:var(--t-mute);margin:0 0 8px}
@@ -426,7 +429,14 @@ html:not(:has(.load.testing)) .tw{display:none!important}
 .arena-avs img:nth-child(n+5){display:none}
 .arena-chip span{font-size:13px;line-height:1.4;min-width:0}
 }
-@media (min-width:761px){.res-dots{display:none}}</style><style>.qz-links .fres{margin-top:14px}</style><style>.res-skip{display:block;width:max-content;margin:14px auto 0;padding:6px 10px;font-size:14px;font-weight:600;color:var(--ink2);text-decoration:none}.res-skip:hover{color:var(--blue)}</style></head>
+@media (min-width:761px){.res-dots{display:none}}</style><style>.qz-links .fres{margin-top:14px}</style><style>.res-skip{display:block;width:max-content;margin:14px auto 0;padding:6px 10px;font-size:14px;font-weight:600;color:var(--ink2);text-decoration:none}.res-skip:hover{color:var(--blue)}</style><style id="mobile-actions">@media (max-width:640px){.actions:has(#createAcct),.qz .actions{flex-direction:column;align-items:stretch;gap:10px}.actions:has(#createAcct)>button,.qz .actions>button{width:100%;margin:0!important;justify-content:center;height:50px;padding:0 26px;border-radius:var(--r-pill);font-size:15px}.actions:has(#createAcct)>.btn-black,.qz .actions>.btn-black{order:-1}.actions:has(#createAcct)>.link-back,.qz .actions>.link-back{text-decoration:none;border:1px solid var(--line);background:#fff;font-weight:600}}</style>
+<style id="mobile-full-inputs">@media (max-width:640px){.qz .qz-comp,.qz .qz-f>*:not(.flbl),.qz .qz-q>.finput,.qz .qz-sl,.qz .qz-file,.qz .qz-up,.qz .finput,.qz .sel-dd,.qz .ccpick{max-width:none!important;width:100%!important;box-sizing:border-box}}</style>
+<style id="mobile-qz-head">@media (max-width:640px){.qz-head{flex-direction:column;align-items:stretch;gap:20px}.qz-head .qz-avatar{width:96px;height:96px;align-self:center}.qz-head .qz-steps{width:100%;flex:none}}</style>
+<style id="load-logo-divider">.load-logo::after{content:"";position:absolute;left:0;right:0;bottom:-22px;height:1px;background:var(--line);pointer-events:none}</style>
+<style id="qz-hide-titles">.qz-steps .qs .t,.qz-steps .qs .qz-chip{display:none!important}.qz-steps .qs .bar{margin-top:0!important}</style>
+<style id="mobile-qz-bars">@media (max-width:640px){.qz-head .qz-steps{width:auto!important;align-self:center;justify-content:center;gap:6px}.qz-steps .qs{flex:none!important;width:16px!important}.qz-steps .qs.active{width:56px!important}.qz-steps .qs .bar{height:6px!important;border-radius:999px!important}.qz-steps .qs .bar-fill{border-radius:999px!important}}</style>
+<style id="qz-head-all">.qz-head{flex-direction:column!important;align-items:stretch!important;gap:20px!important}.qz-head .qz-avatar{width:96px!important;height:96px!important;align-self:center!important}.qz-head .qz-steps{width:auto!important;flex:none!important;align-self:center!important;justify-content:center!important;gap:6px!important}.qz-steps .qs{flex:none!important;width:16px!important}.qz-steps .qs.active{width:56px!important}.qz-steps .qs .bar{height:6px!important;border-radius:999px!important;margin-top:0!important}.qz-steps .qs .bar-fill{border-radius:999px!important}.qz-steps .qs .t,.qz-steps .qs .qz-chip{display:none!important}.qz-div{display:none!important}</style>
+<style id="mobile-continue-full">@media (max-width:640px){.actions:has(#toStep2){flex-direction:column;align-items:stretch}#toStep2{width:100%;height:50px;padding:0 26px;font-size:15px;justify-content:center}}</style><style id="mobile-res-skip">@media (max-width:640px){.res-skip{display:flex;align-items:center;justify-content:center;width:100%;max-width:none;height:50px;margin:12px 0 0;padding:0 26px;border:1px solid var(--line);border-radius:var(--r-pill);background:#fff;font-size:15px;box-sizing:border-box}}</style><style id="mobile-res-btns">@media (max-width:760px){.res-dots{display:none!important}}@media (max-width:640px){.res-go{display:flex;align-items:center;justify-content:center;width:100%;max-width:none;height:50px;padding:0 26px;font-size:15px;box-sizing:border-box;margin-left:0;margin-right:0}.res-skip{margin-top:12px}}</style><style id="mobile-test">@media (max-width:640px){.load.testing{padding:0 20px 24px!important}html[data-tw-header-style] .load.testing>.app-top{margin:0 calc(50% - 50vw) 28px!important}.load.testing .test-ribbon{display:none!important}.test-title{font-size:28px;line-height:1.15;margin-bottom:12px}.test-sub{font-size:15px;margin-bottom:20px}.test-meta{flex-wrap:wrap;gap:10px;margin-bottom:8px}.test-timer{order:0;padding:7px 14px}.test-start{order:1;width:100%;height:50px;padding:0 26px;font-size:15px}.test-meta .test-skip{order:2;width:100%;height:50px;margin:0;border:1px solid var(--line);border-radius:999px;background:#fff;font-size:15px}.test .step-disclaimer{margin-top:14px}.test-ribbon{padding:24px 0 8px}.test-ribbon .arena-chip{width:100%;box-sizing:border-box;border-radius:18px;padding:12px 16px 12px 12px}.test.started{padding-bottom:0}.test.started~.test-ribbon{display:none!important}.test.started .test-title{font-size:22px}.test.started .test-sub{display:none}.test-chat{margin-top:12px;padding:16px 0}.test-input{position:sticky;bottom:0;background:#fff;gap:8px;padding:12px 0 max(12px,env(safe-area-inset-bottom))}.test-input input{height:48px;padding:0 16px 0 44px;box-sizing:border-box}.test-send{height:48px;padding:0 18px}}</style></head>
 <body>
 <div class="su">
   <div class="su-left">
@@ -726,7 +736,7 @@ Open-source maintainer with 2k+ GitHub stars</textarea>
             </div>
           </div><div class="frow fres"><div><label class="flbl">Website / Portfolio</label><input class="finput" type="url" placeholder="https://yourportfolio.com" /></div><div><label class="flbl">Resume</label><label class="qz-file has"><span class="qz-sl-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm0 2 4 4h-4V4zM8 13h8v1.6H8V13zm0 3.4h8V18H8v-1.6z"/></svg></span><input type="file" accept=".pdf,.doc,.docx" hidden /><span class="qz-file-txt">Marcus_Vela_Resume.pdf</span></label></div></div></div>
       <div class="qz-q">
-        <label class="flbl">More ways to know you better</label>
+        <label class="flbl">Twitter / X</label>
         <div class="qz-social" style="grid-template-columns:1fr">
           <div class="qz-sl"><span class="qz-sl-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 3h3l-6.9 7.9L22 21h-6.3l-4.9-6.4L5.1 21H2l7.4-8.5L2 3h6.4l4.4 5.9zm-1.1 16h1.7L7.7 4.8H5.9z"/></svg></span><input class="finput" type="url" placeholder="Twitter / X" /></div>
         </div>
@@ -753,7 +763,6 @@ Open-source maintainer with 2k+ GitHub stars</textarea>
       </div>
       <div class="actions">
         <button class="link-back" type="button" data-qz="back">← Back</button>
-        <button class="link-back" type="button" data-qz="next">Skip</button>
         <button class="btn-black" type="button" data-qz="next">Continue</button>
       </div>
     </div>
@@ -777,7 +786,6 @@ Open-source maintainer with 2k+ GitHub stars</textarea>
       </div>
       <div class="actions">
         <button class="link-back" type="button" data-qz="back">← Back</button>
-        <button class="link-back" type="button" data-qz="finish">Skip</button>
         <button class="btn-black" type="button" data-qz="finish">Get started</button>
       </div>
     </div>
@@ -832,7 +840,6 @@ Awwwards Site of the Day for a client launch</textarea>
       </div>
       <div class="actions">
         <button class="link-back" type="button" data-qz="back">← Back</button>
-        <button class="link-back" type="button" data-qz="next">Skip</button>
         <button class="btn-black" type="button" data-qz="next">Continue</button>
       </div>
     </div>
@@ -856,7 +863,6 @@ Awwwards Site of the Day for a client launch</textarea>
       </div>
       <div class="actions">
         <button class="link-back" type="button" data-qz="back">← Back</button>
-        <button class="link-back" type="button" data-qz="finish">Skip</button>
         <button class="btn-black" type="button" data-qz="finish">Get started</button>
       </div>
     </div>
@@ -1158,5 +1164,8 @@ wrap.addEventListener('touchend',function(e){if(x0===null)return;var dx=e.change
 if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy)){var s=wrap.querySelector(dx<0?'.slot-right':'.slot-left');if(s){var m=moved;moved=false;s.click();moved=m;}}});
 wrap.addEventListener('click',function(e){if(moved){moved=false;e.stopPropagation();e.preventDefault();}},true);
 });})();</script><script>(function(){if(location.hash!=='#assessment')return;var ld=document.getElementById('load');if(!ld)return;ld.classList.remove('revealed','quizmode');ld.classList.add('on','testing');ld.scrollTop=0;if(window._startTest)window._startTest();})();</script><script>document.querySelectorAll('.su .qz-file input[type=file]').forEach(function(inp){inp.addEventListener('change',function(){if(!inp.files||!inp.files[0])return;var n=inp.files[0].name;document.querySelectorAll('.qz-links .qz-file-txt,.qz-res .qz-file-txt').forEach(function(t){t.textContent=n;t.closest('.qz-file').classList.add('has');});});});</script><script>(function(){var a=new URLSearchParams(location.search).get('as');if(a!=='company')return;var b=document.querySelector('#trackToggle .seg-btn[data-track="creative"]');if(b)b.click();})();</script>
-</body>
+<style id="mobile-ta-grow">@media (max-width:640px){.qz-ta{field-sizing:content;min-height:0!important;height:auto;max-height:none!important;overflow:hidden!important;resize:none!important}}</style>
+<script id="mobile-ta-grow-js">(function(){var mq=matchMedia('(max-width:640px)');function fit(t){if(!mq.matches){t.style.height='';return;}if(!t.offsetParent)return;t.style.height='auto';t.style.height=t.scrollHeight+2+'px';}function all(){document.querySelectorAll('.qz-ta').forEach(fit);}document.addEventListener('input',function(e){if(e.target.classList&&e.target.classList.contains('qz-ta'))fit(e.target);});addEventListener('resize',all);new MutationObserver(function(){requestAnimationFrame(all);}).observe(document.documentElement,{attributes:true,subtree:true,attributeFilter:['class']});if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',all);else all();})();</script>
+<style id="sc-mobile">@media (max-width:640px){.test.done{flex:none!important;min-height:auto!important;height:auto!important;padding-bottom:24px}.test.done .test-success{margin:0 auto}.sc-card{padding:18px}.sc-num{font-size:34px}}@media (max-width:640px){.test .test-title,.test .test-sub{text-align:center}}
+</style><script id="sc-toggle">document.addEventListener("click",function(e){var s=e.target.closest(".sc-top");if(!s)return;e.preventDefault();var c=s.parentNode;c.open=!c.open;});</script></body>
 </html>

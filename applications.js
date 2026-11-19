@@ -514,12 +514,13 @@
     var si=ui.stage,list=rowsFor(si),total=list.length;
     var slide=VIS.map(function(i){
       var s=sName(i),pv=VIS.indexOf(i)?VIS[VIS.indexOf(i)-1]:null;
-      if(i===si)return '<div class="bf-big" data-k="'+i+'"><div class="bf-big-top"><span class="'+pillCls(i)+'">'+esc(s)+'</span>'+(FLAGS[i]?'<span class="bf-flag"><i></i>'+FLAGS[i]+'</span>':'')+'</div>'
+      var full=function(pre){return '<div class="bf-big"'+(pre?'':' data-k="'+i+'"')+'><div class="bf-big-top"><span class="'+pillCls(i)+'">'+esc(s)+'</span>'+(FLAGS[i]?'<span class="bf-flag"><i></i>'+FLAGS[i]+'</span>':'')+'</div>'
         +'<div class="bf-n"><b>'+counts[i]+'</b><span class="bf-sub">'+(i===4&&isB()?'awards won':SUB[i])+(pv!==null&&counts[pv]?' \u00b7 '+Math.round(counts[i]/counts[pv]*100)+'% of '+sName(pv):'')+'</span></div>'
         +'<p class="bf-note">'+NOTES[i]+'</p>'
-        +'<div class="bf-big-f">'+(CTA[i]?'<button type="button" class="bf-btn" data-jump="1">'+esc(CTA[i])+'</button>':'')+'</div></div>';
+        +'<div class="bf-big-f">'+(CTA[i]?'<button type="button" class="bf-btn" '+(pre?'data-pvjump':'data-jump')+'="1">'+esc(CTA[i])+'</button>':'')+'</div></div>';};
+      if(i===si)return full(false);
       var far=Math.abs(VIS.indexOf(i)-VIS.indexOf(si))>1;
-      return '<div class="bf-mini'+(far?' far':'')+'" data-k="'+i+'" data-s="'+i+'" role="button" tabindex="0"><span class="'+pillCls(i)+'">'+esc(s)+'</span><span class="bf-mini-n">'+counts[i]+'</span><span class="bf-sub">'+esc(i===4&&isB()?'awards won':SUB[i])+'</span></div>';
+      return '<div class="bf-mini'+(far?' far':'')+'" data-k="'+i+'" data-s="'+i+'" role="button" tabindex="0"><span class="'+pillCls(i)+'">'+esc(s)+'</span><span class="bf-mini-n">'+counts[i]+'</span><span class="bf-sub">'+esc(i===4&&isB()?'awards won':SUB[i])+'</span><template class="bf-full">'+full(true)+'</template></div>';
     }).join('');
     var focus='<div class="bf-focus">'
       +'<div class="bf-stack"><div class="bf-slide">'+slide+'</div></div>'
@@ -557,7 +558,7 @@
     });
     host.innerHTML='<div class="bf">'+focus+'<div class="bf-exp"><div class="bf-wrap">'
       +'<div class="bf-stat'+(ui.statOpen?' on':'')+'" role="button" tabindex="0" aria-expanded="'+(ui.statOpen?'true':'false')+'"><div class="bf-stat-g">'+st.map(function(p){return statCell(p[0],p[1],p[2]);}).join('')+'</div><span class="bf-stat-x" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></div>'
-      +'<div class="bf-list"><div class="bf-row head"><span>#</span><span>Challenges and jobs</span><span>'+esc(si===4&&isB()?'Final':STAGES[si])+' score</span><span>Status</span><span></span></div>'
+      +'<div class="bf-list'+(si===4?' no-sc':'')+'"><div class="bf-row head"><span>#</span><span>Challenges and jobs</span><span>'+esc(si===4&&isB()?'Final':STAGES[si])+' score</span><span>Status</span><span></span></div>'
       +body
       +(total?(ui.lim<total?'<div class="bf-more"><span>Showing '+ui.lim+' of '+total+'</span><button type="button" class="bf-btn line bf-showmore">Show next '+Math.min(10,total-ui.lim)+'</button></div>':'<div class="bf-more"><span>Showing all '+total+'</span></div>'):'<div class="bf-more"><span>Nothing has reached this stage under this filter.</span></div>')
       +'</div></div></div></div>';

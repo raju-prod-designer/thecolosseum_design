@@ -57,7 +57,16 @@ var CSS=`
 .cc-in:focus{border-color:var(--blue);background:#fff}
 .cc-send{height:38px;padding:0 18px;border-radius:999px;border:0;background:var(--ink2);color:#fff;font:inherit;font-size:12.5px;font-weight:700;cursor:pointer}
 .cc-send:disabled{opacity:.4;cursor:default}
-@media (max-width:700px){.cc-back>.cc{grid-template-columns:1fr}.cc-side{display:none}}
+.cc-bk{display:none}
+@media (max-width:700px){.cc-back{padding:0;align-items:flex-end}.cc-back>.cc{grid-template-columns:1fr;width:100%;height:92dvh;border-radius:22px 22px 0 0;transform:translateY(40px)}
+.cc-side{border-right:0;background:#fff}.cc.thread .cc-side{display:none}.cc:not(.thread) .cc-main{display:none}
+.cc-sh{padding:24px 64px 12px 20px}.cc-sh h3{font-size:20px}.cc-sh p{font-size:12.5px}
+.cc-list{padding:4px 10px calc(14px + env(safe-area-inset-bottom))}.cc-it{grid-template-columns:44px minmax(0,1fr) auto;gap:12px;padding:12px;min-height:68px;border-bottom:1px solid var(--line);border-radius:0}.cc-it:last-child{border-bottom:0}.cc-it.on{box-shadow:none;background:none}.cc-it:active{background:#f4f4f2}.cc-it .cc-av{width:44px;height:44px}.cc-it b{font-size:14.5px}.cc-it em{font-size:13px}.cc-meta{font-size:11.5px}
+.cc-x{top:16px;right:14px;width:36px;height:36px}
+.cc-bk{display:grid;place-items:center;width:38px;height:38px;flex:none;border:1px solid var(--line);border-radius:50%;background:#fff;cursor:pointer;padding:0;margin-right:-2px}.cc-bk svg{width:16px;height:16px;stroke:var(--ink2);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.cc-hd{gap:10px;padding:12px 60px 12px 12px}.cc-hd b{font-size:15px}.cc-hd em{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cc-log{padding:16px 14px}.cc-m{max-width:84%}.cc-bub{font-size:14px}
+.cc-comp{padding:10px 12px calc(10px + env(safe-area-inset-bottom));gap:8px}.cc-att{width:44px;height:44px}.cc-in{height:44px;font-size:16px}.cc-send{height:44px;padding:0 18px;font-size:14px}}
 
 .app-chat-btn{border:0!important;background:none!important;box-shadow:none!important;border-radius:8px}.app-chat-btn svg{width:21px;height:21px}.app-chat-btn:hover svg,.app-chat.open .app-chat-btn svg{stroke:var(--blue)}.app-chat-dot{top:-4px;right:-6px}
 `;
@@ -124,11 +133,11 @@ function open(key){
     +'<aside class="cc-side"><div class="cc-sh"><h3>Messages</h3><p>'+(state.side==='co'?'Only candidates in the final stage can be messaged: Human interview, or bounty winners.':'You can message a company once you reach its final stage: Human interview, or Awards for bounties.')+'</p></div><div class="cc-list"></div></aside>'
     +'<section class="cc-main"><div class="cc-hd"></div><div class="cc-log"></div><form class="cc-comp"><button type="button" class="cc-att" aria-label="Attach file">'+CLIP+'</button><input class="cc-in" placeholder="Write a message" autocomplete="off"><button class="cc-send" type="submit" disabled>Send</button></form></section></div>';
   document.body.appendChild(back);requestAnimationFrame(function(){back.classList.add('on');});
-  var list=back.querySelector('.cc-list'),hd=back.querySelector('.cc-hd'),log=back.querySelector('.cc-log'),inp=back.querySelector('.cc-in'),snd=back.querySelector('.cc-send');
+  var cc=back.querySelector('.cc'),mob=function(){return matchMedia('(max-width:700px)').matches;};var list=back.querySelector('.cc-list'),hd=back.querySelector('.cc-hd'),log=back.querySelector('.cc-log'),inp=back.querySelector('.cc-in'),snd=back.querySelector('.cc-send');
   function drawList(){list.innerHTML=state.threads.map(function(x){var l=lastOf(x);return '<button type="button" class="cc-it'+(x===state.cur?' on':'')+(x.un?' un':'')+'" data-id="'+esc(x.id)+'"><img class="cc-av" src="'+esc(x.lg)+'" alt=""><span><b>'+esc(x.name)+'</b><em>'+esc(snippet(x))+'</em></span><span class="cc-meta">'+(l?esc(l[2]):'')+(x.un?'<i></i>':'')+'</span></button>';}).join('');}
   function select(x){state.cur=x;x.un=0;syncDots();drawList();
-    hd.innerHTML='<img class="cc-av" src="'+esc(x.lg)+'" alt=""><div style="min-width:0"><b>'+esc(x.name)+'</b><em>'+esc(x.sub)+'</em></div>';
-    log.innerHTML=renderMsgs(x);log.scrollTop=log.scrollHeight;inp.focus();}
+    hd.innerHTML='<button type="button" class="cc-bk" aria-label="All chats"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button><img class="cc-av" src="'+esc(x.lg)+'" alt=""><div style="min-width:0"><b>'+esc(x.name)+'</b><em>'+esc(x.sub)+'</em></div>';
+    log.innerHTML=renderMsgs(x);log.scrollTop=log.scrollHeight;cc.classList.add('thread');if(!mob())inp.focus();}
   function now(){var d=new Date();return (d.getHours()<10?'0':'')+d.getHours()+':'+(d.getMinutes()<10?'0':'')+d.getMinutes();}
   function push(x,m){var l=x.m[x.m.length-1];if(!x.m.some(function(z){return z[0]==='day'&&z[1]==='Today';}))x.m.push(['day','Today']);x.m.push(m);if(x===state.cur){log.innerHTML=renderMsgs(x);log.scrollTop=log.scrollHeight;}drawList();}
   function reply(x){var other=state.side==='co'?'ca':'co';var ty=document.createElement('div');ty.className='cc-typing';ty.textContent=(state.side==='co'?x.name.split(' ')[0]:x.name)+' is typing\u2026';
@@ -142,7 +151,8 @@ function open(key){
   function kd(e){if(e.key==='Escape')close();}
   document.addEventListener('keydown',kd);
   back.querySelector('.cc-x').onclick=close;back.onclick=function(e){if(e.target===back)close();};
-  if(t)select(t);else{drawList();log.innerHTML='<div class="cc-empty">No conversations yet.</div>';}
+  hd.onclick=function(e){if(e.target.closest('.cc-bk')){cc.classList.remove('thread');drawList();}};
+  if(t&&(key||!mob()))select(t);else if(t){state.cur=null;drawList();}else{drawList();log.innerHTML='<div class="cc-empty">No conversations yet.</div>';}
 }
 function mount(wrap){
   if(wrap.querySelector('.app-chat'))return;

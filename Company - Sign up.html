@@ -129,6 +129,7 @@ a:hover{color:var(--blue)}
 /* loading takeover */
 .load{position:fixed;inset:0;z-index:200;background:#fff;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:96px 32px 48px;overflow-y:auto}
 .load.on{display:flex}
+.load .app-actions,.load .app-hb{display:none!important}
 .arena-chip{display:inline-flex;align-items:center;gap:14px;margin:48px auto 0;padding:10px 20px 10px 12px;border:1px solid var(--line);border-radius:999px;background:var(--field);animation:arenaPulse 3s ease-in-out infinite}
 @keyframes arenaPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.025)}}
 .arena-avs{display:flex}
@@ -389,6 +390,7 @@ a:hover{color:var(--blue)}
 .qz-steps .qs.active .bar,.qz-steps .qs.done .bar{background:var(--ink2)}
 .qz-steps .qs .t{font-size:12px;font-weight:600;color:var(--t-faint);transition:color .3s}
 .qz-steps .qs.active .t,.qz-steps .qs.done .t{color:var(--ink2)}
+@media (max-width:640px){.qz-steps{gap:6px;align-items:flex-start}.qz-steps .qs{flex:none;width:22px;transition:width .3s}.qz-steps .qs.active{flex:1;width:auto}.qz-steps .qs:not(.active) .t{display:none}.qz-steps .qs.active .t{white-space:nowrap}}
 .qz-step{display:none;text-align:left}
 .qz-step.on{display:block;animation:fade .3s ease}
 .qz-eyebrow{font-size:11px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;color:var(--t-mute);margin:0 0 8px}
@@ -472,7 +474,14 @@ a:hover{color:var(--blue)}
 .ch-cand{padding:16px}
 }</style><style id="mobile-reward-fix">.ch-meta-chips .ch-reward{position:relative!important}
 @media (max-width:760px){.ch-reward .ch-split{min-width:0;width:min(330px,calc(100vw - 32px));right:auto;left:var(--split-x,0px)}}</style><style id="tc-mark-css">.tc-mark{display:inline-flex;align-items:center;flex:none;margin-right:.5em;vertical-align:-.12em;line-height:0}.tc-mark svg{width:1em;height:1.08em;display:block}</style><style>.qz .actions{justify-content:flex-end;gap:14px}.qz .actions [data-qz="back"]{margin-right:auto}</style><script id="nav-ca-hide">(function(){try{var s=JSON.parse(localStorage.getItem('tc-tweaks-v1'))||{};if(s.chpage&&s.chpage.layout)document.documentElement.setAttribute('data-tw-chpage-layout',s.chpage.layout);}catch(e){}})();</script><style id="nav-ca-hide-css">html[data-tw-chpage-layout="command"] .tw-nav a[data-nav="ca"],html[data-tw-chpage-layout="command"] .tw-nav .sep:has(+a[data-nav="ca"]){display:none!important}</style>
-</head>
+<style id="mobile-actions">@media (max-width:640px){.actions:has(#createAcct),.qz .actions{flex-direction:column;align-items:stretch;gap:10px}.actions:has(#createAcct)>button,.qz .actions>button{width:100%;margin:0!important;justify-content:center;height:50px;padding:0 26px;border-radius:var(--r-pill);font-size:15px}.actions:has(#createAcct)>.btn-black,.qz .actions>.btn-black{order:-1}.actions:has(#createAcct)>.link-back,.qz .actions>.link-back{text-decoration:none;border:1px solid var(--line);background:#fff;font-weight:600}}</style>
+<style id="mobile-full-inputs">@media (max-width:640px){.qz .qz-comp,.qz .qz-f>*:not(.flbl),.qz .qz-q>.finput,.qz .qz-sl,.qz .qz-file,.qz .qz-up,.qz .finput,.qz .sel-dd,.qz .ccpick{max-width:none!important;width:100%!important;box-sizing:border-box}}</style>
+<style id="mobile-qz-head">@media (max-width:640px){.qz-head{flex-direction:column;align-items:stretch;gap:20px}.qz-head .qz-avatar{width:96px;height:96px;align-self:center}.qz-head .qz-steps{width:100%;flex:none}}</style>
+<style id="load-logo-divider">.load-logo::after{content:"";position:absolute;left:0;right:0;bottom:-22px;height:1px;background:var(--line);pointer-events:none}</style>
+<style id="qz-hide-titles">.qz-steps .qs .t,.qz-steps .qs .qz-chip{display:none!important}.qz-steps .qs .bar{margin-top:0!important}</style>
+<style id="mobile-qz-bars">@media (max-width:640px){.qz-head .qz-steps{width:auto!important;align-self:center;justify-content:center;gap:6px}.qz-steps .qs{flex:none!important;width:16px!important}.qz-steps .qs.active{width:56px!important}.qz-steps .qs .bar{height:6px!important;border-radius:999px!important}.qz-steps .qs .bar-fill{border-radius:999px!important}}</style>
+<style id="qz-head-all">.qz-head{flex-direction:column!important;align-items:stretch!important;gap:20px!important}.qz-head .qz-avatar{width:96px!important;height:96px!important;align-self:center!important}.qz-head .qz-steps{width:auto!important;flex:none!important;align-self:center!important;justify-content:center!important;gap:6px!important}.qz-steps .qs{flex:none!important;width:16px!important}.qz-steps .qs.active{width:56px!important}.qz-steps .qs .bar{height:6px!important;border-radius:999px!important;margin-top:0!important}.qz-steps .qs .bar-fill{border-radius:999px!important}.qz-steps .qs .t,.qz-steps .qs .qz-chip{display:none!important}.qz-div{display:none!important}</style>
+<style id="mobile-continue-full">@media (max-width:640px){.actions:has(#toStep2){flex-direction:column;align-items:stretch}#toStep2{width:100%;height:50px;padding:0 26px;font-size:15px;justify-content:center}}</style></head>
 <body>
 <div class="su">
   <div class="su-left">
@@ -504,8 +513,8 @@ a:hover{color:var(--blue)}
         </div>
 
         <div class="fgrp">
-          <label class="flbl">Company website</label>
-          <input class="finput" type="url" placeholder="https://example.com" />
+          <label class="flbl">Company website <span class="ast">*</span></label>
+          <input class="finput" type="url" placeholder="https://company.com" required />
         </div>
 
         <p class="terms">By submitting this form, you agree to the Terms of Service and Privacy Policy.</p>
@@ -589,8 +598,8 @@ a:hover{color:var(--blue)}
         </div>
 
         <div class="fgrp">
-          <label class="flbl">Company website</label>
-          <input class="finput" type="url" placeholder="https://example.com" />
+          <label class="flbl">Company website <span class="ast">*</span></label>
+          <input class="finput" type="url" placeholder="https://company.com" required />
         </div>
 
         <div class="fgrp">
@@ -713,10 +722,6 @@ document.getElementById('sr-track').innerHTML=one+one.replace(/class="sr-co"/g,'
         </div>
       </div>
       <div class="qz-q">
-        <label class="flbl">Company website</label>
-        <input class="finput" type="url" placeholder="https://example.com" />
-      </div>
-      <div class="qz-q">
         <label class="flbl">Social links</label>
         <div class="qz-social">
           <div class="qz-sl"><span class="qz-sl-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-.95 1.83-1.95 3.77-1.95 4.03 0 4.78 2.5 4.78 5.75V21h-4v-5.3c0-1.26-.02-2.9-1.9-2.9-1.9 0-2.2 1.4-2.2 2.8V21h-4z"/></svg></span><input class="finput" type="url" placeholder="LinkedIn" /></div>
@@ -745,7 +750,6 @@ document.getElementById('sr-track').innerHTML=one+one.replace(/class="sr-co"/g,'
       </div>
       <div class="actions">
         <button class="link-back" type="button" data-qz="back">← Back</button>
-        <button class="link-back" type="button" data-qz="next">Skip</button>
         <button class="btn-black" type="button" data-qz="next">Continue</button>
       </div>
     </div>
@@ -766,7 +770,6 @@ document.getElementById('sr-track').innerHTML=one+one.replace(/class="sr-co"/g,'
       </div>
       <div class="actions">
         <button class="link-back" type="button" data-qz="back">← Back</button>
-        <button class="link-back" type="button" data-qz="finish">Skip</button>
         <button class="btn-black" type="button" data-qz="finish">Get started</button>
       </div>
     </div>
@@ -1074,5 +1077,7 @@ function place(rw){var sp=rw.querySelector('.ch-split');if(!sp)return;if(window.
 var r=rw.getBoundingClientRect(),w=Math.min(330,window.innerWidth-32),x=r.right-w;x=Math.max(16,Math.min(x,window.innerWidth-16-w));rw.style.setProperty('--split-x',(x-r.left)+'px');}
 ['mouseover','touchstart','focusin','click'].forEach(function(ev){document.addEventListener(ev,function(e){var rw=e.target.closest&&e.target.closest('.ch-reward');if(rw)place(rw);},{passive:true,capture:true});});
 window.addEventListener('resize',function(){document.querySelectorAll('.ch-reward').forEach(place);});
-})();</script></body>
+})();</script><style id="mobile-ta-grow">@media (max-width:640px){.qz-ta{field-sizing:content;min-height:0!important;height:auto;max-height:none!important;overflow:hidden!important;resize:none!important}}</style>
+<script id="mobile-ta-grow-js">(function(){var mq=matchMedia('(max-width:640px)');function fit(t){if(!mq.matches){t.style.height='';return;}if(!t.offsetParent)return;t.style.height='auto';t.style.height=t.scrollHeight+2+'px';}function all(){document.querySelectorAll('.qz-ta').forEach(fit);}document.addEventListener('input',function(e){if(e.target.classList&&e.target.classList.contains('qz-ta'))fit(e.target);});addEventListener('resize',all);new MutationObserver(function(){requestAnimationFrame(all);}).observe(document.documentElement,{attributes:true,subtree:true,attributeFilter:['class']});if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',all);else all();})();</script>
+</body>
 </html>

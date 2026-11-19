@@ -325,6 +325,17 @@ a:hover{color:var(--blue)}
 @media (max-width:720px){.qz-trio{grid-template-columns:1fr}}
 .qz-other .ot-in{font-size:16px}
 </style><script id="nav-ca-hide">(function(){try{var s=JSON.parse(localStorage.getItem('tc-tweaks-v1'))||{};if(s.chpage&&s.chpage.layout)document.documentElement.setAttribute('data-tw-chpage-layout',s.chpage.layout);}catch(e){}})();</script><style id="nav-ca-hide-css">html[data-tw-chpage-layout="command"] .tw-nav a[data-nav="ca"],html[data-tw-chpage-layout="command"] .tw-nav .sep:has(+a[data-nav="ca"]){display:none!important}</style>
+<style id="profile-onb-mobile">.qz-steps .qs .t,.qz-steps .qs .qz-chip{display:none!important}.qz-steps .qs .bar{margin-top:0!important}
+@media (max-width:640px){
+.qz-head{flex-direction:column;align-items:stretch;gap:20px}.qz-head .qz-avatar{width:96px;height:96px;align-self:center}
+.qz-head .qz-steps{width:auto!important;flex:none!important;align-self:center;justify-content:center;gap:6px}.qz-steps .qs{flex:none!important;width:16px!important}.qz-steps .qs.active{width:56px!important}.qz-steps .qs .bar{height:6px!important;border-radius:999px!important}.qz-steps .qs .bar-fill{border-radius:999px!important}
+.qz-div{display:none}
+.frow:has(.btn-linkedin),.frow.fres,.qz-links .frow{grid-template-columns:minmax(0,1fr)!important}.frow:has(.btn-linkedin) .btn-linkedin{width:100%}
+.qz .actions{flex-direction:column;align-items:stretch;gap:10px}.qz .actions>button,.qz .actions>span>.btn-black{width:100%;margin:0!important;justify-content:center;height:50px;padding:0 26px;border-radius:var(--r-pill);font-size:15px}.qz .actions>.btn-black,.qz .actions>span{order:-1}.qz .actions>span{display:flex!important;flex-direction:column-reverse;align-items:stretch!important;gap:8px!important;width:100%}.qz .actions>span>.qz-saved{text-align:center}.qz .actions>.link-back{text-decoration:none;border:1px solid var(--line);background:#fff;font-weight:600}
+.qz-ta{field-sizing:content;min-height:0!important;max-height:none!important;overflow:hidden!important;resize:none!important}
+.qz .qz-comp,.qz .qz-f>*:not(.flbl),.qz .qz-sl,.qz .qz-file,.qz .qz-up,.qz .finput,.qz .sel-dd,.qz .ccpick{max-width:none!important;width:100%!important;box-sizing:border-box}
+}</style>
+<style id="qz-head-all">.qz-head{flex-direction:column!important;align-items:stretch!important;gap:20px!important}.qz-head .qz-avatar{width:96px!important;height:96px!important;align-self:center!important}.qz-head .qz-steps{width:auto!important;flex:none!important;align-self:center!important;justify-content:center!important;gap:6px!important}.qz-steps .qs{flex:none!important;width:16px!important}.qz-steps .qs.active{width:56px!important}.qz-steps .qs .bar{height:6px!important;border-radius:999px!important;margin-top:0!important}.qz-steps .qs .bar-fill{border-radius:999px!important}.qz-steps .qs .t,.qz-steps .qs .qz-chip{display:none!important}.qz-div{display:none!important}</style>
 </head>
 <body>
 <div class="app">
@@ -496,10 +507,6 @@ a:hover{color:var(--blue)}
           <div class="qz-f"><label class="flbl">Team size <span class="ast">*</span></label><div class="ccpick sel-dd" data-dd="team"><button class="ccode dd-full" type="button"><span class="dd-v">11–50 employees</span><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button><div class="ccmenu dd-menu"><div class="cclist"></div></div></div></div>
           <div class="qz-f"><label class="flbl">Location <span class="ast">*</span></label><div class="ccpick sel-dd" data-dd="country"><button class="ccode dd-full" type="button"><img class="ccflag" src="https://flagcdn.com/w40/us.png" alt="" /><span class="dd-v">United States</span><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button><div class="ccmenu dd-menu"><input class="ccsearch" placeholder="Search country" /><div class="cclist"></div></div></div></div>
         </div>
-      </div>
-      <div class="qz-q">
-        <label class="flbl">Company website</label>
-        <input class="finput" type="url" placeholder="https://example.com" value="https://nimbuslab.io" />
       </div>
       <div class="qz-q">
         <label class="flbl">Social links</label>
@@ -790,5 +797,6 @@ document.querySelectorAll('.sel-dd[data-dd="years"]').forEach(function(p){initDD
 document.querySelectorAll('.qz-up input[type=file]').forEach(function(inp){inp.addEventListener('change',function(){var w=inp.closest('.qz-up'),s=w.querySelector('.qz-up-s'),f=inp.files||[];if(f.length){s.textContent=f.length>1?f.length+' files selected':f[0].name;w.classList.add('has');}else{s.textContent=s.getAttribute('data-def');w.classList.remove('has');}});});
 })();</script><script src="company-dash.js"></script>
 <script src="review-tweaks.js?v=3"></script><script src="header-nav-tweaks.js?v=2" data-header-only></script>
+<script id="mobile-ta-grow-js">(function(){var mq=matchMedia('(max-width:640px)');function fit(t){if(!mq.matches){t.style.height='';return;}if(!t.offsetParent)return;t.style.height='auto';t.style.height=t.scrollHeight+2+'px';}function all(){document.querySelectorAll('.qz-ta').forEach(fit);}document.addEventListener('input',function(e){if(e.target.classList&&e.target.classList.contains('qz-ta'))fit(e.target);});addEventListener('resize',all);new MutationObserver(function(){requestAnimationFrame(all);}).observe(document.documentElement,{attributes:true,subtree:true,attributeFilter:['class']});if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',all);else all();})();</script>
 </body>
 </html>
