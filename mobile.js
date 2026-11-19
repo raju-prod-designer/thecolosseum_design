@@ -1,3 +1,4 @@
+(function(){try{var p=decodeURIComponent(location.pathname);if(/sign up|onboarding|entry/i.test(p))document.documentElement.classList.add('tc-onb');}catch(e){}})();
 /* Shared mobile layer: generic small-screen fixes + hamburger for header actions */
 (function(){
 if(window.__colMobile)return;window.__colMobile=1;
@@ -10,7 +11,7 @@ var css=document.createElement('style');css.id='col-mobile-css';css.textContent=
 
 html,body{overflow-x:clip;-webkit-text-size-adjust:100%}
 .app,.cd,.iv,.load.revealed{zoom:1!important}
-html,body{background:#f7f7f5!important}.app-top{background:#f7f7f5!important}
+html:not(.tc-onb):not(:has(#viewOnboarding.on)),html:not(.tc-onb):not(:has(#viewOnboarding.on)) body,html:not(.tc-onb):not(:has(#viewOnboarding.on)) .app-top{background:#f7f7f5!important}
 .app{padding:16px 14px 28px!important}
 .app-top{margin-bottom:18px!important;min-height:40px}
 .app-logo,.load-logo,.su-logo{font-size:22px!important}

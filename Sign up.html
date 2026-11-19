@@ -501,8 +501,8 @@ html:not(:has(.load.testing)) .tw{display:none!important}
           <input class="finput" type="text" placeholder="Company name" />
         </div>
         <div class="fgrp" data-track-field="creative" hidden>
-          <label class="flbl">Company website</label>
-          <input class="finput" type="url" placeholder="https://example.com" />
+          <label class="flbl">Company website <span class="ast">*</span></label>
+          <input class="finput" type="url" placeholder="https://company.com" required />
         </div>
 
         <p class="terms">By submitting this form, you agree to the Terms of Service and Privacy Policy.</p>
@@ -583,8 +583,8 @@ html:not(:has(.load.testing)) .tw{display:none!important}
           <input class="finput" type="text" placeholder="Company name" />
         </div>
         <div class="fgrp" data-track-field="creative" hidden>
-          <label class="flbl">Company website</label>
-          <input class="finput" type="url" placeholder="https://example.com" />
+          <label class="flbl">Company website <span class="ast">*</span></label>
+          <input class="finput" type="url" placeholder="https://company.com" required />
         </div>
 
         <div class="fgrp">
@@ -1055,7 +1055,7 @@ Awwwards Site of the Day for a client launch</textarea>
   document.querySelectorAll('.sel-dd[data-dd="years"]').forEach(function(p){initDD(p,YEARS.map(function(y){return{l:y};}),false,'5–8 years');});
   document.querySelectorAll('.sel-dd[data-dd="country"]').forEach(function(p){initDD(p,COUNTRIES.map(function(c){return{l:c[1],f:c[0]};}),true,'United States');});
   var startLoad=function(){var l=document.getElementById('load');var tb=document.querySelector('#trackToggle .seg-btn.on');l.setAttribute('data-track',tb?tb.getAttribute('data-track'):'technical');l.classList.add('on');setTimeout(function(){l.classList.add('leaving');},2000);setTimeout(function(){l.classList.add('quizmode');l.classList.remove('leaving');if(l._beginQuiz)l._beginQuiz();},2360);};
-  document.getElementById('createAcct').onclick=function(){var tb=document.querySelector('#trackToggle .seg-btn.on');if(tb&&tb.getAttribute('data-track')==='creative'){location.href='Company - Sign up.html#onboard';return;}startLoad();};
+  document.getElementById('createAcct').onclick=function(){var tb=document.querySelector('#trackToggle .seg-btn.on');if(tb&&tb.getAttribute('data-track')==='creative'){location.href='Company - Onboarding.html#onboard';return;}startLoad();};
   var ea=document.getElementById('enterArena');if(ea)ea.onclick=startLoad;
 })();
 (function(){
