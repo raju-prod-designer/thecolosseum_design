@@ -1043,7 +1043,7 @@ document.getElementById('sr-track').innerHTML=one+one.replace(/class="sr-co"/g,'
 <script src="wallet-topup.js?v=26"></script>
 <script src="company-complete.js"></script><script src="mobile.js"></script>
 <script src="avatar-crop.js"></script>
-<script id="mobile-input-fix-js">(function(){
+<script src="keyboard.js"></script><script id="mobile-input-fix-js">(function(){
 function tag(el){if(el.dataset.mfx)return;el.dataset.mfx=1;var t=(el.type||'').toLowerCase(),p=(el.placeholder||'').toLowerCase(),a=function(k,v){if(!el.hasAttribute(k))el.setAttribute(k,v)};
 if(t==='email'){a('autocomplete','email');a('inputmode','email');a('autocapitalize','off');a('autocorrect','off');a('spellcheck','false');}
 else if(t==='password'){a('autocomplete',/create/.test(p)?'new-password':'current-password');}
@@ -1056,9 +1056,6 @@ else if(el.classList.contains('ccsearch')){a('autocomplete','off');a('autocorrec
 else a('autocomplete','off');}
 function all(){document.querySelectorAll('input:not([type=checkbox]):not([type=radio]):not([type=file]),textarea').forEach(tag)}
 all();new MutationObserver(all).observe(document.body,{childList:true,subtree:true});
-function keep(el){var vv=window.visualViewport;if(!vv)return;var r=el.getBoundingClientRect(),top=vv.height*0.3;if(r.top<80||r.bottom>vv.height-24){var sc=el.closest('.qz,.load,.su-left')||null;var d=r.top-top;if(sc&&sc.scrollHeight>sc.clientHeight)sc.scrollTop+=d;else window.scrollBy({top:d,behavior:'smooth'});}}
-document.addEventListener('focusin',function(e){var el=e.target;if(!el.matches||!el.matches('input,textarea')||window.innerWidth>820)return;setTimeout(function(){keep(el)},320);});
-if(window.visualViewport)visualViewport.addEventListener('resize',function(){var el=document.activeElement;if(el&&el.matches&&el.matches('input,textarea')&&window.innerWidth<=820)keep(el);});
 })();</script><script id="mobile-carousel-swipe">(function(){
 document.querySelectorAll('.res-cards').forEach(function(wrap){
 var cards=[].slice.call(wrap.querySelectorAll('.res-card'));if(cards.length<3)return;

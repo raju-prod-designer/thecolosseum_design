@@ -131,7 +131,7 @@ feed.addEventListener('click',function(e){
   var t=e.target,b;
   if(b=t.closest('.pl-fol')){e.stopPropagation();plFollow(b.getAttribute('data-a'));return;}
   if(b=t.closest('.pl-like')){var on=!b.classList.contains('on');b.classList.toggle('on',on);b.classList.remove('pop');if(on){void b.offsetWidth;b.classList.add('pop');}bump(b,on?1:-1);return;}
-  if(b=t.closest('.pl-share')){var w=b.parentNode;closePops(w);w.classList.toggle('open');return;}
+  if(b=t.closest('.pl-share')){var w=b.parentNode;if(navigator.share&&matchMedia('(max-width:640px), (pointer:coarse)').matches){closePops();var cd=b.closest('.pl-card'),bx=cd.querySelector('.pl-text'),sb=b;navigator.share({title:'theColosseum',text:bx?bx.textContent.trim().slice(0,200):'',url:'https://thecolosseum.app/pulse/'+cd.getAttribute('data-i')}).then(function(){bump(sb,1);}).catch(function(){});return;}closePops(w);w.classList.toggle('open');return;}
   if(b=t.closest('.pl-so')){var w2=b.closest('.pl-share-w');w2.classList.remove('open');bump(w2.querySelector('.pl-share'),1);var so=b.getAttribute('data-so');
     if(so==='cp'){try{navigator.clipboard&&navigator.clipboard.writeText('https://thecolosseum.app/pulse/'+b.closest('.pl-card').getAttribute('data-i'));}catch(_){}toast('Link copied');}
     else toast('Shared to '+({li:'LinkedIn',x:'X',wa:'WhatsApp'}[so]));return;}
